@@ -16,6 +16,7 @@ CREATE TABLE `user` (
   `freeze_balance` decimal(6,2) DEFAULT NULL COMMENT '冻结金额',
   `imei` varchar(32) DEFAULT NULL COMMENT '手机IMEI号',
   `last_login_time` bigint(20) NOT NULL COMMENT '上次登录时间',
+  `status` tinyint(2) NOT NULL COMMENT '用户状态',
   `created_time` int(10) NOT NULL,
   `modified_time` int(10) NOT NULL,
   PRIMARY KEY (`id`),
