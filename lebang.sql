@@ -7,30 +7,20 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `app_id` int(10) unsigned DEFAULT NULL COMMENT '用户来源app',
-  `alias_id` char(64) DEFAULT NULL COMMENT '？？？',
+  `app_user_id` varchar(32) DEFAULT NULL COMMENT '用户在来源app中user_id',
   `username` varchar(20) NOT NULL COMMENT '用户名',
   `mobile` char(11) NOT NULL COMMENT '手机号',
   `password` char(80) DEFAULT NULL COMMENT '密码',
   `all_history_balance` decimal(6,2) DEFAULT NULL COMMENT '历史全部余额',
   `balance` decimal(6,2) DEFAULT NULL COMMENT '当前账户余额',
-  `channel` varchar(50) DEFAULT NULL COMMENT '来源渠道',
-  `first_check_time` bigint(20) NOT NULL COMMENT '？？？',
   `freeze_balance` decimal(6,2) DEFAULT NULL COMMENT '冻结金额',
-  `imei` varchar(128) DEFAULT NULL COMMENT '手机IMEI号',
-  `invite_code` char(5) DEFAULT NULL COMMENT '邀请码',
-  `is_valid` tinyint(1) NOT NULL COMMENT '？？？',
-  `valid_time` bigint(20) NOT NULL COMMENT '？？？',
+  `imei` varchar(32) DEFAULT NULL COMMENT '手机IMEI号',
   `last_login_time` bigint(20) NOT NULL COMMENT '上次登录时间',
-  `reg_ip` bigint(20) NOT NULL COMMENT '注册ip',
-  `uuid` varchar(128) DEFAULT NULL COMMENT 'uuid',
-  `master_id` bigint(20) DEFAULT NULL COMMENT '？？？',
   `created_time` int(10) NOT NULL,
   `modified_time` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_username` (`username`) USING BTREE,
   KEY `idx_mobile` (`mobile`) USING BTREE,
-  KEY `idx_invite_code` (`invite_code`) USING BTREE,
-  KEY `idx_master_id` (`master_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
