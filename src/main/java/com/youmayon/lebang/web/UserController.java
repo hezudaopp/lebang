@@ -168,17 +168,17 @@ public class UserController extends BaseController {
         Assert.notNull(savedUser, "User not found.");
         String oldPassword = passwordMap.get("oldPassword");
         Assert.notNull(oldPassword, "Old password cannot be null");
-        Assert.isTrue(oldPassword.length() >= PASSWORD_MIN_LENGTH && oldPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between 6 and 20.");
+        Assert.isTrue(oldPassword.length() >= PASSWORD_MIN_LENGTH && oldPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between " + PASSWORD_MIN_LENGTH + " and " + PASSWORD_MAX_LENGTH + ".");
         Assert.isTrue(passwordEncoder.matches(oldPassword, savedUser.getPassword()), "Old password wrong.");
 
         String newPassword = passwordMap.get("newPassword1");
         Assert.notNull(newPassword, "New password1 cannot be null");
-        Assert.isTrue(newPassword.length() >= PASSWORD_MIN_LENGTH && newPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between 6 and 20.");
+        Assert.isTrue(newPassword.length() >= PASSWORD_MIN_LENGTH && newPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between " + PASSWORD_MIN_LENGTH + " and " + PASSWORD_MAX_LENGTH + ".");
         Assert.isTrue(!oldPassword.equals(newPassword), "Old password cannot equal to new password.");
 
         String confirmedNewPassword = passwordMap.get("newPassword2");
         Assert.notNull(confirmedNewPassword, "New password2 cannot be null");
-        Assert.isTrue(confirmedNewPassword.length() >= PASSWORD_MIN_LENGTH && confirmedNewPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between 6 and 20.");
+        Assert.isTrue(confirmedNewPassword.length() >= PASSWORD_MIN_LENGTH && confirmedNewPassword.length() <= PASSWORD_MAX_LENGTH, "Password length is between " + PASSWORD_MIN_LENGTH + " and " + PASSWORD_MAX_LENGTH + ".");
         Assert.isTrue(confirmedNewPassword.equals(newPassword), "New password1 is not equal to new password2.");
 
         savedUser.setPassword(passwordEncoder.encode(newPassword));
