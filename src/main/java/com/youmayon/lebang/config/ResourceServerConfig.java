@@ -35,14 +35,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(POST, "/users").hasAuthority("ROLE_ADMIN")
-
-//                .antMatchers(GET, "/users/**").hasAuthority("") // role name should start with ROLE_
-
                 .antMatchers(GET, "/users/me").authenticated()
                 .antMatchers(PATCH, "/users/password").authenticated()
                 .antMatchers(DELETE, "/users/logout").authenticated()
+                .antMatchers("/users/**").hasAuthority("ROLE_ADMIN")
 
-//                .antMatchers("/users/**").hasAuthority("ROLE_ADMIN")
 
 
                 .anyRequest().authenticated();

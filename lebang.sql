@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-02 11:28:55
+Date: 2017-05-02 17:15:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -119,14 +119,16 @@ CREATE TABLE `user` (
   `password` char(80) DEFAULT NULL COMMENT '用户密码（登录用）,使用Spring Security的BaseEncoder加密',
   `status` tinyint(2) unsigned NOT NULL COMMENT '用户状态',
   `username` varchar(20) NOT NULL COMMENT '用户账号（登录用）',
+  `role` varchar(20) NOT NULL COMMENT '用户角色',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`),
   UNIQUE KEY `uk_mobile` (`mobile`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', null, null, null, null, '1493713718', null, null, null, '13075881402', '1493713718', '20734678056d1948cb5ee03c6745d0875a7b88da3d2da041c8fb91d1a951e0ecbd139959cc517ca4', '1', 'lebang', 'ROLE_ADMIN');
 
 -- ----------------------------
 -- Table structure for `user_task`

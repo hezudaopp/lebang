@@ -76,6 +76,7 @@ public class UserController extends BaseController {
         // encode password.
         user.setPassword(passwordEncoder.encode(SecurityConstants.DEFAULT_PASSWORD));
         Assert.isTrue(Roles.valueOf(user.getRole()) != null, "Role error.");
+        Assert.isTrue(UserStatus.contains(user.getStatus()), "Status error.");
 
         User savedUser = userService.save(user);
 
