@@ -122,10 +122,10 @@ public class UserController extends BaseController {
 
         User savedUser = userService.findOne(id);
         Assert.notNull(savedUser, "User not found.");
-        Assert.isTrue(savedUser.getUsername().equals(unsavedUser.getUsername()));
 
         // fields below cannot be modified.
         unsavedUser.setId(savedUser.getId());
+        unsavedUser.setUsername(savedUser.getUsername());
         unsavedUser.setPassword(savedUser.getPassword());
         unsavedUser.setCreatedTime(savedUser.getCreatedTime());
         unsavedUser.setModifiedTime(System.currentTimeMillis() / 1000);
@@ -157,10 +157,13 @@ public class UserController extends BaseController {
      * @param user
      * @param passwordMap
      */
-    @RequestMapping(value="/password", method = RequestMethod.PATCH, consumes = "application/json")
+    @RequestMapping(value="/{id}/password", method = RequestMethod.PATCH, consumes = "application/json")
     public void patch(
+            @PathVariable long id,
             @AuthenticationPrincipal User user,
             @RequestBody Map<String, String> passwordMap) {
+        Assert.isTrue(user.getId() == id, "Password can be only modified by owner.");
+
         User savedUser = userService.findByUsername(user.getUsername());
         Assert.notNull(savedUser, "User not found.");
         String oldPassword = passwordMap.get("oldPassword");
