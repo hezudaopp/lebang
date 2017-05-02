@@ -47,13 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> list(long deptId, String realName, String mobileNumber, String email, int status, int page, int size) {
+    public Page<User> list(String role, int status, int page, int size) {
         Pageable pageable = new PageRequest(page, size);
         SearchUser searchUser = new SearchUser();
-        searchUser.setDeptId(deptId);
-        searchUser.setRealName(realName);
-        searchUser.setMobileNumber(mobileNumber);
-        searchUser.setEmail(email);
+        searchUser.setRole(role);
         searchUser.setStatus(status);
         Specification<User> specification = this.getWhereClause(searchUser);
         Page<User> userPage =  userRepository.findAll(specification, pageable);
@@ -84,44 +81,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private class SearchUser {
-        private Long deptId;
-        private String realName;
-        private String mobileNumber;
-        private String email;
+        private String role;
         private Integer status;
 
         public SearchUser() {}
 
-        public Long getDeptId() {
-            return deptId;
+        public String getRole() {
+            return role;
         }
 
-        public void setDeptId(Long deptId) {
-            this.deptId = deptId;
-        }
-
-        public String getRealName() {
-            return realName;
-        }
-
-        public void setRealName(String realName) {
-            this.realName = realName;
-        }
-
-        public String getMobileNumber() {
-            return mobileNumber;
-        }
-
-        public void setMobileNumber(String mobileNumber) {
-            this.mobileNumber = mobileNumber;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
+        public void setRole(String role) {
+            this.role = role;
         }
 
         public void setStatus(Integer status) {
@@ -143,20 +113,11 @@ public class UserServiceImpl implements UserService {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 List<Predicate> predicate = new ArrayList<>();
-                if (searchUser.getDeptId() > 0L) {
-                    predicate.add(cb.equal(root.get("deptId").as(Long.class), searchUser.getDeptId()));
-                }
-                if (searchUser.getRealName() != null && !searchUser.getRealName().trim().isEmpty()) {
-                    predicate.add(cb.like(root.get("realName").as(String.class), searchUser.getRealName() + "%"));
-                }
-                if (searchUser.getMobileNumber() != null && !searchUser.getMobileNumber().trim().isEmpty()) {
-                    predicate.add(cb.like(root.get("mobileNumber").as(String.class), searchUser.getMobileNumber() + "%"));
-                }
-                if (searchUser.getEmail() != null && !searchUser.getEmail().trim().isEmpty()) {
-                    predicate.add(cb.like(root.get("email").as(String.class), searchUser.getEmail() + "%"));
+                if (searchUser.getRole() != null && !searchUser.getRole().trim().isEmpty()) {
+                    predicate.add(cb.equal(root.get("role").as(String.class), searchUser.getRole()));
                 }
                 if (searchUser.getStatus() >= 0) {
-                    predicate.add(cb.equal(root.get("enabled").as(Integer.class), searchUser.getStatus()));
+                    predicate.add(cb.equal(root.get("status").as(Integer.class), searchUser.getStatus()));
                 }
                 Predicate[] pre = new Predicate[predicate.size()];
                 return query.where(predicate.toArray(pre)).getRestriction();
@@ -166,7 +127,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO
         User user = findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found.");

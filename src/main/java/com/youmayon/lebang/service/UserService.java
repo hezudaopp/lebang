@@ -39,16 +39,13 @@ public interface UserService extends UserDetailsService {
 
     /**
      * 分页获取用户列表
-     * @param deptId 部门id
-     * @param realName 真实姓名
-     * @param mobileNumber 手机号
-     * @param email
+     * @param role 角色
      * @param status
      * @param page
      * @param size
      * @return
      */
-    Page<User> list(long deptId, String realName, String mobileNumber, String email, int status, int page, int size);
+    Page<User> list(String role, int status, int page, int size);
 
     /**
      * 判断用户是否存在

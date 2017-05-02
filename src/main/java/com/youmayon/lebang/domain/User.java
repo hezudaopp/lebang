@@ -2,12 +2,14 @@ package com.youmayon.lebang.domain;
 
 import com.youmayon.lebang.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -31,6 +33,11 @@ public class User implements UserDetails {
     @Size(min = 6, max = 80)
     @Column(columnDefinition = "CHAR(80) COMMENT '用户密码（登录用）,使用Spring Security的BaseEncoder加密'")
     private String password;
+
+    @NotNull
+    @Size(min = 5, max = 20)
+    @Column(columnDefinition = "VARCHAR(20) COMMENT '用户角色'")
+    private String role;
 
     @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '用户来源app'")
     private Long appId;
@@ -75,7 +82,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>(1);
+        authorities.add(new SimpleGrantedAuthority(getRole()));
+        return authorities;
     }
 
     @Override
@@ -123,6 +132,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getAppId() {

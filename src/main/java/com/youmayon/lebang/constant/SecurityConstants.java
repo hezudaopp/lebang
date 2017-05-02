@@ -8,7 +8,10 @@ import com.youmayon.lebang.domain.OAuth2Client;
  */
 public class SecurityConstants {
     // password secret
-    public static final String PASSWORD_SECRET = "7EsF+0BCtNRW1hLtf39QLDQq5G+4Eh1/euW4azW7Qux";
+    public static final String PASSWORD_SECRET = "fbc73e20-8f1e-4746-9081-eb135bd5562f";
+
+    // default password
+    public static final String DEFAULT_PASSWORD = "968a03c5a93c4eb5f2a8a410f8594cc9";
 
     // security constants
     public static final String REALM = "com.youmayon.lebang";
@@ -18,7 +21,7 @@ public class SecurityConstants {
     public static final OAuth2Client[] O_AUTH2_CLIENTS = {
         new OAuth2Client(
                 "lebang_client",
-                "ampnvaUQrmQj7r9a6f94ltjCuzqY7jcvX",
+                "lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO",
                 new String[]{"password", "refresh_token"},
                 new String[]{"CLIENT"},
                 new String[]{"read", "write"},

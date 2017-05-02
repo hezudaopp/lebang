@@ -3,6 +3,8 @@ package com.youmayon.lebang.web;
 import com.youmayon.lebang.constant.SecurityConstants;
 import com.youmayon.lebang.constant.LogicConstants;
 import com.youmayon.lebang.domain.User;
+import com.youmayon.lebang.enums.Roles;
+import com.youmayon.lebang.enums.UserStatus;
 import com.youmayon.lebang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +43,10 @@ public class UserController extends BaseController {
 
     private static final int PASSWORD_MAX_LENGTH = 32;
 
+    /**
+     * 退出登录
+     * @param tokenValue
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
     public void logout(@RequestParam(value = "access_token") String tokenValue) {
         OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
@@ -48,6 +54,13 @@ public class UserController extends BaseController {
     }
 
 
+    /**
+     * 添加用户
+     * @param user
+     * @param errors
+     * @param ucb
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<User> save(
             @Valid @RequestBody User user,
@@ -58,20 +71,47 @@ public class UserController extends BaseController {
         Assert.isTrue(!userService.isUsernameExists(user.getUsername()), "Username already exists.");
         Assert.isTrue(!userService.isMobileNoExists(user.getMobile()), "Mobile already exists.");
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        URI locationUri = ucb.path("/users/")
-                .path(String.valueOf(user.getUsername()))
-                .build()
-                .toUri();
-        httpHeaders.setLocation(locationUri);
         user.setCreatedTime(System.currentTimeMillis() / 1000);
         user.setModifiedTime(user.getCreatedTime());
         // encode password.
-        user.setPassword(passwordEncoder.encode(LogicConstants.DEFAULT_PASSWORD));
+        user.setPassword(passwordEncoder.encode(SecurityConstants.DEFAULT_PASSWORD));
+        Assert.isTrue(Roles.valueOf(user.getRole()) != null, "Role error.");
+
         User savedUser = userService.save(user);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI locationUri = ucb.path("/users/")
+                .path(String.valueOf(savedUser.getId()))
+                .build()
+                .toUri();
+        httpHeaders.setLocation(locationUri);
+
         return new ResponseEntity<>(savedUser, httpHeaders, HttpStatus.CREATED);
     }
 
+    /**
+     * 获取用户详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="/{id}", method = RequestMethod.GET, consumes = "application/json")
+    public User get(@PathVariable long id) {
+        User savedUser = userService.findOne(id);
+        Assert.notNull(savedUser, "User not found.");
+
+        // password 不返回
+        savedUser.setPassword(null);
+
+        return savedUser;
+    }
+
+    /**
+     * 修改用户信息
+     * @param id
+     * @param unsavedUser
+     * @param errors
+     * @return
+     */
     @RequestMapping(value="/{id}", method = RequestMethod.PUT, consumes = "application/json")
     public User put(
             @PathVariable long id,
@@ -92,18 +132,30 @@ public class UserController extends BaseController {
         return userService.save(unsavedUser);
     }
 
-    @RequestMapping(value="/{id}", method = RequestMethod.PATCH, consumes = "application/json")
+    /**
+     * 修改用户状态
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="/{id}/status/{status}", method = RequestMethod.PATCH, consumes = "application/json")
     public User patch(
             @PathVariable long id,
-            @RequestBody User unsavedUser) {
+            @PathVariable int status) {
         User savedUser = userService.findOne(id);
         Assert.notNull(savedUser, "User not found.");
-        Assert.notNull(unsavedUser.getStatus(), "User status cannot be null.");
-        savedUser.setStatus(unsavedUser.getStatus());
+        Assert.notNull(UserStatus.contains(status), "User status Error.");
+
+        savedUser.setStatus(status);
         savedUser.setModifiedTime(System.currentTimeMillis() / 1000);
+
         return userService.save(savedUser);
     }
 
+    /**
+     * 修改当前登录用户密码
+     * @param user
+     * @param passwordMap
+     */
     @RequestMapping(value="/password", method = RequestMethod.PATCH, consumes = "application/json")
     public void patch(
             @AuthenticationPrincipal User user,
@@ -130,27 +182,30 @@ public class UserController extends BaseController {
         userService.save(savedUser);
     }
 
+    /**
+     * 用户列表
+     * @param role
+     * @param status
+     * @param page
+     * @param size
+     * @return
+     */
     @RequestMapping(method=RequestMethod.GET)
     public Page<User> list(
-            @RequestParam(value = "deptId", defaultValue = "-1") long deptId,
-            @RequestParam(value = "realName", defaultValue = "") String realName,
-            @RequestParam(value = "mobileNumber", defaultValue = "") String mobileNumber,
-            @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam(value = "role", defaultValue = "") String role,
             @RequestParam(value = "status", defaultValue = "-1") int status,
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) {
-        return userService.list(deptId, realName, mobileNumber, email, status, page, size);
+        return userService.list(role, status, page, size);
     }
 
+    /**
+     * 获取当前登录用户信息
+     * @param user
+     * @return
+     */
     @RequestMapping(value="/me", method=RequestMethod.GET)
     public User get(@AuthenticationPrincipal User user) {
-        return user;
-    }
-
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = "application/json")
-    public User get(@PathVariable String username) {
-        User user = userService.findByUsername(username);
-        Assert.notNull(user, "User not found.");
         return user;
     }
 }
