@@ -17,4 +17,6 @@ public class LogicConstants {
 
     public static final int FINANCIAL_POST_ID = 1;
     public static final int ADMIN_POST_ID = 4;
+
+    public static final int ALL_DEVICE_TYPES_MASK = 511;
 }

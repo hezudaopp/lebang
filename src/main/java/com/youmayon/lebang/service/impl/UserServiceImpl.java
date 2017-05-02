@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByMobileNumber(String mobileNumber) {
-        return userRepository.findByMobileNumber(mobileNumber);
+    public User findByMobileNumber(String mobile) {
+        return userRepository.findByMobile(mobile);
     }
 
     @Override

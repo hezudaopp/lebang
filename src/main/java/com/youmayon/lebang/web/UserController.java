@@ -56,7 +56,7 @@ public class UserController extends BaseController {
         assertFieldError(errors);
 
         Assert.isTrue(!userService.isUsernameExists(user.getUsername()), "Username already exists.");
-        Assert.isTrue(!userService.isMobileNoExists(user.getMobileNumber()), "Mobile number already exists.");
+        Assert.isTrue(!userService.isMobileNoExists(user.getMobile()), "Mobile already exists.");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         URI locationUri = ucb.path("/users/")
@@ -88,7 +88,7 @@ public class UserController extends BaseController {
         unsavedUser.setPassword(savedUser.getPassword());
         unsavedUser.setCreatedTime(savedUser.getCreatedTime());
         unsavedUser.setModifiedTime(System.currentTimeMillis() / 1000);
-        unsavedUser.setEnabled(savedUser.getEnabled());
+        unsavedUser.setStatus(savedUser.getStatus());
         return userService.save(unsavedUser);
     }
 
@@ -98,7 +98,8 @@ public class UserController extends BaseController {
             @RequestBody User unsavedUser) {
         User savedUser = userService.findOne(id);
         Assert.notNull(savedUser, "User not found.");
-        savedUser.setEnabledIfNotNull(unsavedUser.getEnabled());
+        Assert.notNull(unsavedUser.getStatus(), "User status cannot be null.");
+        savedUser.setStatus(unsavedUser.getStatus());
         savedUser.setModifiedTime(System.currentTimeMillis() / 1000);
         return userService.save(savedUser);
     }
