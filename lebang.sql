@@ -10,10 +10,29 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-02 17:15:06
+Date: 2017-05-03 11:49:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `city_task`
+-- ----------------------------
+DROP TABLE IF EXISTS `city_task`;
+CREATE TABLE `city_task` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `city_id` bigint(20) unsigned NOT NULL COMMENT '城市id',
+  `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `enabled` tinyint(1) unsigned NOT NULL COMMENT '是否启用',
+  `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  `province_id` bigint(20) unsigned NOT NULL COMMENT '省份id',
+  `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of city_task
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `task`
@@ -38,12 +57,14 @@ CREATE TABLE `task` (
   `review_period` int(10) unsigned DEFAULT NULL COMMENT '审核周期',
   `task_type_id` bigint(20) unsigned NOT NULL COMMENT '任务类型id',
   `task_type_name` varchar(100) NOT NULL COMMENT '任务类型名称',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
+INSERT INTO `task` VALUES ('1', '5', '1493790500', '0', '18.00', '1493781437', '127', '1', '1503780500', '5', '1493781437', '19.89', '2', null, '0', null, '2', '淘宝评论', '1');
 
 -- ----------------------------
 -- Table structure for `task_city`
@@ -94,11 +115,17 @@ CREATE TABLE `task_type` (
   `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
   `name` varchar(100) NOT NULL COMMENT '任务类型名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task_type
 -- ----------------------------
+INSERT INTO `task_type` VALUES ('1', '1493780037', '0', '1493780260', '微信朋友圈');
+INSERT INTO `task_type` VALUES ('2', '1493780049', '1', '1493780049', '微信群');
+INSERT INTO `task_type` VALUES ('3', '1493780091', '1', '1493780091', 'QQ空间分享');
+INSERT INTO `task_type` VALUES ('4', '1493780102', '1', '1493780102', '微博分享');
+INSERT INTO `task_type` VALUES ('5', '1493780112', '1', '1493780112', '微信好友分享');
+INSERT INTO `task_type` VALUES ('6', '1493780130', '1', '1493780130', '淘宝评论');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -128,7 +155,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', null, null, null, null, '1493713718', null, null, null, '13075881402', '1493713718', '20734678056d1948cb5ee03c6745d0875a7b88da3d2da041c8fb91d1a951e0ecbd139959cc517ca4', '1', 'lebang', 'ROLE_ADMIN');
+INSERT INTO `user` VALUES ('1', null, null, null, null, '1493713718', null, null, null, '13075881402', '1493718295', '20734678056d1948cb5ee03c6745d0875a7b88da3d2da041c8fb91d1a951e0ecbd139959cc517ca4', '1', 'lebang', 'ROLE_ADMIN');
 
 -- ----------------------------
 -- Table structure for `user_task`
