@@ -95,7 +95,7 @@ public class UserController extends BaseController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}", method = RequestMethod.GET, consumes = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User get(@PathVariable long id) {
         User savedUser = userService.findOne(id);
         Assert.notNull(savedUser, "User not found.");
@@ -113,8 +113,8 @@ public class UserController extends BaseController {
      * @param errors
      * @return
      */
-    @RequestMapping(value="/{id}", method = RequestMethod.PUT, consumes = "application/json")
-    public User put(
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
+    public User update(
             @PathVariable long id,
             @Valid @RequestBody User unsavedUser,
             Errors errors) {
@@ -138,7 +138,7 @@ public class UserController extends BaseController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/status/{status}", method = RequestMethod.PATCH, consumes = "application/json")
+    @RequestMapping(value = "/{id}/status/{status}", method = RequestMethod.PATCH, consumes = "application/json")
     public User patch(
             @PathVariable long id,
             @PathVariable int status) {
@@ -157,7 +157,7 @@ public class UserController extends BaseController {
      * @param user
      * @param passwordMap
      */
-    @RequestMapping(value="/{id}/password", method = RequestMethod.PATCH, consumes = "application/json")
+    @RequestMapping(value = "/{id}/password", method = RequestMethod.PATCH, consumes = "application/json")
     public void patch(
             @PathVariable long id,
             @AuthenticationPrincipal User user,
@@ -194,10 +194,10 @@ public class UserController extends BaseController {
      * @param size
      * @return
      */
-    @RequestMapping(method=RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Page<User> list(
-            @RequestParam(value = "role", defaultValue = "") String role,
-            @RequestParam(value = "status", defaultValue = "-1") int status,
+            @RequestParam(value = "role", defaultValue = LogicConstants.EMPTY_STRING) String role,
+            @RequestParam(value = "status", defaultValue = LogicConstants.NEGATIVE_ONE) int status,
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) {
         return userService.list(role, status, page, size);
@@ -208,7 +208,7 @@ public class UserController extends BaseController {
      * @param user
      * @return
      */
-    @RequestMapping(value="/me", method=RequestMethod.GET)
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
     public User get(@AuthenticationPrincipal User user) {
         return user;
     }

@@ -40,7 +40,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(DELETE, "/users/logout").authenticated()
                 .antMatchers("/users/**").hasAuthority("ROLE_ADMIN")
 
+                .antMatchers("/task_types/**").hasAuthority("ROLE_ADMIN")
 
+                .antMatchers("/tasks/**").hasAuthority("ROLE_ADMIN")
 
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());

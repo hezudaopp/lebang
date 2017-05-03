@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * 用户service类
- * Created by Jawinton on 16/12/21.
+ * Created by Jawinton on 17/05/02.
  */
 public interface UserService extends UserDetailsService {
     /**

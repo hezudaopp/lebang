@@ -11,15 +11,11 @@ import javax.validation.constraints.Size;
  * 任务分派城市
  */
 @Entity
-public class TaskCity {
+public class CityTask {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '自增id'")
     private Long id;
-
-    @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务id'")
-    private Long taskId;
 
     @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '省份id'")
@@ -28,6 +24,10 @@ public class TaskCity {
     @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '城市id'")
     private Long cityId;
+
+    @NotNull
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务id'")
+    private Long taskId;
 
     @NotNull
     @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '是否启用'")
@@ -39,7 +39,10 @@ public class TaskCity {
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '修改时间'")
     private Long modifiedTime;
 
-    public TaskCity() {}
+    @Transient
+    private Task task;
+
+    public CityTask() {}
 
     public Long getId() {
         return id;

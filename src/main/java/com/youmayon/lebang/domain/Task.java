@@ -5,6 +5,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 
 /**
  * Created by Jawinton on 17/05/02.
@@ -21,9 +22,8 @@ public class Task {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务类型id'")
     private Long taskTypeId;
 
-    @NotNull
     @Size(min = 3, max = 100)
-    @Column(columnDefinition = "VARCHAR(100) COMMENT '任务类型名称'")
+    @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务类型名称'")
     private String taskTypeName;
 
     @NotNull
@@ -38,8 +38,7 @@ public class Task {
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '任务数量'")
     private Long amount;
 
-    @NotNull
-    @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '任务余量'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务余量'")
     private Long leftAmount;
 
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '审核周期'")
@@ -54,6 +53,7 @@ public class Task {
     private Long endTime;
 
     @NotNull
+    @Max(127)
     @Column(columnDefinition = "TINYINT(3) UNSIGNED COMMENT '设备类型掩码'")
     private Double deviceTypeMask;
 
@@ -74,6 +74,10 @@ public class Task {
     @Max(5)
     @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '任务步骤数'")
     private Integer procedureNum;
+
+    @NotNull
+    @Column(columnDefinition = "TINYINT(1) UNSIGNED DEFAULT TRUE COMMENT '是否启用'")
+    private Boolean enabled;
 
     @NotNull
     @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '是否限定城市'")
@@ -205,6 +209,14 @@ public class Task {
 
     public void setProcedureNum(Integer procedureNum) {
         this.procedureNum = procedureNum;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Boolean getCityLimited() {

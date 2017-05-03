@@ -19,7 +19,7 @@ import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
- * Created by Jawinton on 16/12/21.
+ * Created by Jawinton on 17/05/02.
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> list(String role, int status, int page, int size) {
         Pageable pageable = new PageRequest(page, size);
-        SearchUser searchUser = new SearchUser();
-        searchUser.setRole(role);
-        searchUser.setStatus(status);
-        Specification<User> specification = this.getWhereClause(searchUser);
+        UserFilter userFilter = new UserFilter();
+        userFilter.setRole(role);
+        userFilter.setStatus(status);
+        Specification<User> specification = this.getWhereClause(userFilter);
         Page<User> userPage =  userRepository.findAll(specification, pageable);
         if (userPage == null || userPage.getTotalElements() == 0) {
             return userPage;
@@ -80,11 +80,20 @@ public class UserServiceImpl implements UserService {
         return findByMobileNumber(mobileNo) != null;
     }
 
-    private class SearchUser {
-        private String role;
-        private Integer status;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + username + " not found.");
+        }
+        return user;
+    }
 
-        public SearchUser() {}
+    private class UserFilter {
+        private String role;
+        private int status;
+
+        public UserFilter() {}
 
         public String getRole() {
             return role;
@@ -94,43 +103,34 @@ public class UserServiceImpl implements UserService {
             this.role = role;
         }
 
-        public void setStatus(Integer status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 
-        public Integer getStatus() {
+        public int getStatus() {
             return status;
         }
     }
 
     /**
      * generate where clause dynamically.
-     * @param searchUser
+     * @param userFilter
      * @return
      */
-    private Specification<User> getWhereClause(final SearchUser searchUser){
+    private Specification<User> getWhereClause(final UserFilter userFilter){
         return new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 List<Predicate> predicate = new ArrayList<>();
-                if (searchUser.getRole() != null && !searchUser.getRole().trim().isEmpty()) {
-                    predicate.add(cb.equal(root.get("role").as(String.class), searchUser.getRole()));
+                if (userFilter.getRole() != null && !userFilter.getRole().trim().isEmpty()) {
+                    predicate.add(cb.equal(root.get("role").as(String.class), userFilter.getRole()));
                 }
-                if (searchUser.getStatus() >= 0) {
-                    predicate.add(cb.equal(root.get("status").as(Integer.class), searchUser.getStatus()));
+                if (userFilter.getStatus() >= 0) {
+                    predicate.add(cb.equal(root.get("status").as(Integer.class), userFilter.getStatus()));
                 }
                 Predicate[] pre = new Predicate[predicate.size()];
                 return query.where(predicate.toArray(pre)).getRestriction();
             }
         };
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User " + username + " not found.");
-        }
-        return user;
     }
 }

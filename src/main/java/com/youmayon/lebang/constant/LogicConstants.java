@@ -9,6 +9,8 @@ public class LogicConstants {
     public static final long DEPT_MAX_LEVEL = 5;
 
     // query constants
+    public static final String EMPTY_STRING = "";
+    public static final String NEGATIVE_ONE = "-1";
     public static final String DEFAULT_PAGE = "0";
     public static final String DEFAULT_SIZE = "10";
 
