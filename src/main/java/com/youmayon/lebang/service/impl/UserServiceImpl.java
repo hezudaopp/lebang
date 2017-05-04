@@ -37,11 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByMobileNumber(String mobile) {
-        return userRepository.findByMobile(mobile);
-    }
-
-    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -73,11 +68,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isUsernameExists(String username) {
         return findByUsername(username) != null;
-    }
-
-    @Override
-    public boolean isMobileNoExists(String mobileNo) {
-        return findByMobileNumber(mobileNo) != null;
     }
 
     @Override

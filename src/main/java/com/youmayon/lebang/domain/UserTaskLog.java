@@ -23,9 +23,15 @@ public class UserTaskLog {
     @Column(columnDefinition = "TINYINT(2) UNSIGNED COMMENT '操作类型'")
     private Integer operateType;
 
-    @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '操作用户'")
     private Long operatorUserId;
+
+    @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '操作用户来源app'")
+    private Long operatorAppId;
+
+    @Size(min = 2, max = 32)
+    @Column(columnDefinition = "VARCHAR(32) DEFAULT NULL COMMENT '操作用户在来源app中user_id'")
+    private String operatorAppUserId;
 
     @NotNull
     @Column(columnDefinition = "TINYINT(2) UNSIGNED COMMENT '操作前任务进度'")

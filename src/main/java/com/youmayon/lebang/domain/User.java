@@ -17,8 +17,7 @@ import java.util.Collection;
  * 用户，使用username登录到系统
  */
 @Entity
-@Table(indexes = { @Index(name = "uk_username", columnList = "username", unique = true),
-        @Index(name = "uk_mobile", columnList = "mobile", unique = true)})
+@Table(indexes = { @Index(name = "uk_username", columnList = "username", unique = true)})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -38,35 +37,6 @@ public class User implements UserDetails {
     @Size(min = 5, max = 20)
     @Column(columnDefinition = "VARCHAR(20) COMMENT '用户角色'")
     private String role;
-
-    @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '用户来源app'")
-    private Long appId;
-
-    @Size(min = 2, max = 32)
-    @Column(columnDefinition = "VARCHAR(32) DEFAULT NULL COMMENT '用户在来源app中user_id'")
-    private String appUserId;
-
-    @NotNull
-    @Pattern(regexp = "^1[34578][0-9]{9}$")
-    @Size(min = 11, max = 11)
-    @Column(columnDefinition = "CHAR(11) COMMENT '手机号'")
-    private String mobile;
-
-    @Column(columnDefinition = "DECIMAL(6,2) DEFAULT NULL COMMENT '历史全部余额'")
-    private Double allHistoryBalance;
-
-    @Column(columnDefinition = "DECIMAL(6,2) DEFAULT NULL COMMENT '当前账户余额'")
-    private Double balance;
-
-    @Column(columnDefinition = "DECIMAL(6,2) DEFAULT NULL COMMENT '冻结金额'")
-    private Double freezeBalance;
-
-    @Size(min = 15, max = 15)
-    @Column(columnDefinition = "CHAR(15) DEFAULT NULL COMMENT '手机IMEI号'")
-    private String imei;
-
-    @Column(columnDefinition = "INT(10) DEFAULT NULL COMMENT '上次登录时间'")
-    private Long lastLoginTime;
 
     @NotNull
     @Column(columnDefinition = "TINYINT(2) UNSIGNED COMMENT '用户状态'")
@@ -117,7 +87,6 @@ public class User implements UserDetails {
         return status == UserStatus.NORMAL.value();
     }
 
-
     public Long getId() {
         return id;
     }
@@ -140,70 +109,6 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public String getAppUserId() {
-        return appUserId;
-    }
-
-    public void setAppUserId(String appUserId) {
-        this.appUserId = appUserId;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public Double getAllHistoryBalance() {
-        return allHistoryBalance;
-    }
-
-    public void setAllHistoryBalance(Double allHistoryBalance) {
-        this.allHistoryBalance = allHistoryBalance;
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    public Double getFreezeBalance() {
-        return freezeBalance;
-    }
-
-    public void setFreezeBalance(Double freezeBalance) {
-        this.freezeBalance = freezeBalance;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
-    }
-
-    public Long getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Long lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
     }
 
     public Integer getStatus() {

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-03 11:49:35
+Date: 2017-05-04 10:10:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -133,29 +133,20 @@ INSERT INTO `task_type` VALUES ('6', '1493780130', '1', '1493780130', '淘宝评
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `all_history_balance` decimal(6,2) DEFAULT NULL COMMENT '历史全部余额',
-  `app_id` int(10) unsigned DEFAULT NULL COMMENT '用户来源app',
-  `app_user_id` varchar(32) DEFAULT NULL COMMENT '用户在来源app中user_id',
-  `balance` decimal(6,2) DEFAULT NULL COMMENT '当前账户余额',
   `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
-  `freeze_balance` decimal(6,2) DEFAULT NULL COMMENT '冻结金额',
-  `imei` char(15) DEFAULT NULL COMMENT '手机IMEI号',
-  `last_login_time` int(10) DEFAULT NULL COMMENT '上次登录时间',
-  `mobile` char(11) NOT NULL COMMENT '手机号',
   `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
   `password` char(80) DEFAULT NULL COMMENT '用户密码（登录用）,使用Spring Security的BaseEncoder加密',
+  `role` varchar(20) NOT NULL COMMENT '用户角色',
   `status` tinyint(2) unsigned NOT NULL COMMENT '用户状态',
   `username` varchar(20) NOT NULL COMMENT '用户账号（登录用）',
-  `role` varchar(20) NOT NULL COMMENT '用户角色',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_username` (`username`),
-  UNIQUE KEY `uk_mobile` (`mobile`)
+  UNIQUE KEY `uk_username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', null, null, null, null, '1493713718', null, null, null, '13075881402', '1493718295', '20734678056d1948cb5ee03c6745d0875a7b88da3d2da041c8fb91d1a951e0ecbd139959cc517ca4', '1', 'lebang', 'ROLE_ADMIN');
+INSERT INTO `user` VALUES ('1', '1493863306', '1493863306', '471dc9c238566c9687b4f03822dd0bddec2069d883554fd5e8b7cff7b538447fd4f35420751447b3', 'ROLE_ADMIN', '1', 'lebang');
 
 -- ----------------------------
 -- Table structure for `user_task`
@@ -166,17 +157,18 @@ CREATE TABLE `user_task` (
   `app_id` int(10) unsigned DEFAULT NULL COMMENT '用户来源app',
   `app_user_id` varchar(32) DEFAULT NULL COMMENT '用户在来源app中user_id',
   `city_id` bigint(20) unsigned NOT NULL COMMENT '城市id',
+  `completed_time` int(10) unsigned DEFAULT NULL COMMENT '任务完成时间',
   `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
   `images` varchar(1000) DEFAULT NULL COMMENT '用户完成任务图片',
   `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
   `note` varchar(200) DEFAULT NULL COMMENT '用户完成任务留言',
   `province_id` bigint(20) unsigned NOT NULL COMMENT '省份id',
   `review_end_time` int(10) unsigned DEFAULT NULL COMMENT '审核截至时间',
+  `reviewed_time` int(10) unsigned DEFAULT NULL COMMENT '任务审核时间',
   `reviewer_user_id` bigint(20) unsigned DEFAULT NULL COMMENT '审核用户id',
   `status` tinyint(2) unsigned NOT NULL COMMENT '任务进度',
   `task_end_time` int(10) unsigned NOT NULL COMMENT '任务结束时间',
   `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
-  `user_id` bigint(20) unsigned NOT NULL COMMENT '领取任务的用户id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -196,6 +188,8 @@ CREATE TABLE `user_task_log` (
   `operator_user_id` bigint(20) unsigned NOT NULL COMMENT '操作用户',
   `to_status` tinyint(2) unsigned NOT NULL COMMENT '操作后任务进度',
   `user_task_id` bigint(20) unsigned NOT NULL COMMENT '用户任务id',
+  `operator_app_id` int(10) unsigned DEFAULT NULL COMMENT '操作用户来源app',
+  `operator_app_user_id` varchar(32) DEFAULT NULL COMMENT '操作用户在来源app中user_id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

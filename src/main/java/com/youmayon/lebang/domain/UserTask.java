@@ -1,8 +1,6 @@
 package com.youmayon.lebang.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,10 +14,6 @@ public class UserTask {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '自增id'")
     private Long id;
-
-    @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '领取任务的用户id'")
-    private Long userId;
 
     @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '用户来源app'")
     private Long appId;
@@ -60,6 +54,12 @@ public class UserTask {
     @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '审核截至时间'")
     private Long reviewEndTime;
 
+    @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '任务完成时间'")
+    private Long completedTime;
+
+    @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '任务审核时间'")
+    private Long reviewedTime;
+
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '创建时间'")
     private Long createdTime;
 
@@ -74,14 +74,6 @@ public class UserTask {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getAppId() {
@@ -170,6 +162,22 @@ public class UserTask {
 
     public void setReviewEndTime(Long reviewEndTime) {
         this.reviewEndTime = reviewEndTime;
+    }
+
+    public Long getCompletedTime() {
+        return completedTime;
+    }
+
+    public void setCompletedTime(Long completedTime) {
+        this.completedTime = completedTime;
+    }
+
+    public Long getReviewedTime() {
+        return reviewedTime;
+    }
+
+    public void setReviewedTime(Long reviewedTime) {
+        this.reviewedTime = reviewedTime;
     }
 
     public Long getCreatedTime() {

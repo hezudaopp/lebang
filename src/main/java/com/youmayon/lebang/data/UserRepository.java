@@ -11,5 +11,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByUsernameIgnoringCase(String username);
-    User findByMobile(String mobile);
 }

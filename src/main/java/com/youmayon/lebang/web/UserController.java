@@ -69,7 +69,6 @@ public class UserController extends BaseController {
         assertFieldError(errors);
 
         Assert.isTrue(!userService.isUsernameExists(user.getUsername()), "Username already exists.");
-        Assert.isTrue(!userService.isMobileNoExists(user.getMobile()), "Mobile already exists.");
 
         user.setCreatedTime(System.currentTimeMillis() / 1000);
         user.setModifiedTime(user.getCreatedTime());

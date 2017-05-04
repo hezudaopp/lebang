@@ -24,13 +24,6 @@ public interface UserService extends UserDetailsService {
     User findOne(long id);
 
     /**
-     * 获取用户详情
-     * @param mobileNumber
-     * @return
-     */
-    User findByMobileNumber(String mobileNumber);
-
-    /**
      * 保存用户
      * @param user
      * @return
@@ -53,11 +46,4 @@ public interface UserService extends UserDetailsService {
      * @return
      */
     boolean isUsernameExists(String username);
-
-    /**
-     * 判断手机号是否被占用
-     * @param mobileNo
-     * @return
-     */
-    boolean isMobileNoExists(String mobileNo);
 }
