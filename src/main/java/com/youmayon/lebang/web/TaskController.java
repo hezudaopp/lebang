@@ -69,15 +69,13 @@ public class TaskController extends BaseController {
      * @param id
      * @param unsavedTask
      * @param errors
-     * @param ucb
      * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
     public Task update(
             @PathVariable long id,
             @Valid @RequestBody Task unsavedTask,
-            Errors errors,
-            UriComponentsBuilder ucb) {
+            Errors errors) {
         assertFieldError(errors);
 
         Task savedTask = taskService.findOne(id, true);

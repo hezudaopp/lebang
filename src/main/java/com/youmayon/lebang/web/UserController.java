@@ -3,7 +3,7 @@ package com.youmayon.lebang.web;
 import com.youmayon.lebang.constant.SecurityConstants;
 import com.youmayon.lebang.constant.LogicConstants;
 import com.youmayon.lebang.domain.User;
-import com.youmayon.lebang.enums.Roles;
+import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserStatus;
 import com.youmayon.lebang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class UserController extends BaseController {
         user.setModifiedTime(user.getCreatedTime());
         // encode password.
         user.setPassword(passwordEncoder.encode(SecurityConstants.DEFAULT_PASSWORD));
-        Assert.isTrue(Roles.valueOf(user.getRole()) != null, "Role error.");
+        Assert.isTrue(Role.valueOf(user.getRole()) != null, "Role error.");
         Assert.isTrue(UserStatus.contains(user.getStatus()), "Status error.");
 
         User savedUser = userService.save(user);

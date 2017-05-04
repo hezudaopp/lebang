@@ -19,10 +19,6 @@ public class UserTaskLog {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '用户任务id'")
     private Long userTaskId;
 
-    @NotNull
-    @Column(columnDefinition = "TINYINT(2) UNSIGNED COMMENT '操作类型'")
-    private Integer operateType;
-
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '操作用户'")
     private Long operatorUserId;
 
@@ -62,20 +58,28 @@ public class UserTaskLog {
         this.userTaskId = userTaskId;
     }
 
-    public Integer getOperateType() {
-        return operateType;
-    }
-
-    public void setOperateType(Integer operateType) {
-        this.operateType = operateType;
-    }
-
     public Long getOperatorUserId() {
         return operatorUserId;
     }
 
     public void setOperatorUserId(Long operatorUserId) {
         this.operatorUserId = operatorUserId;
+    }
+
+    public Long getOperatorAppId() {
+        return operatorAppId;
+    }
+
+    public void setOperatorAppId(Long operatorAppId) {
+        this.operatorAppId = operatorAppId;
+    }
+
+    public String getOperatorAppUserId() {
+        return operatorAppUserId;
+    }
+
+    public void setOperatorAppUserId(String operatorAppUserId) {
+        this.operatorAppUserId = operatorAppUserId;
     }
 
     public Integer getFromStatus() {

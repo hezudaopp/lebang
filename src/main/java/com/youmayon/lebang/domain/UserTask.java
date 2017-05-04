@@ -26,12 +26,21 @@ public class UserTask {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务id'")
     private Long taskId;
 
-    @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '省份id'")
+    @Size(min = 2, max = 100)
+    @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务名称'")
+    private String taskName;
+
+    @Column(columnDefinition = "DECIMAL(6,2) UNSIGNED NOT NULL COMMENT '任务单价'")
+    private Double price;
+
+    @Size(min = 2, max = 100)
+    @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务类型名称'")
+    private String taskTypeName;
+
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED DEFAULT NULL COMMENT '省份id'")
     private Long provinceId;
 
-    @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '城市id'")
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED DEFAULT NULL COMMENT '城市id'")
     private Long cityId;
 
     @Column(columnDefinition = "VARCHAR(200) DEFAULT NULL COMMENT '用户完成任务留言'")
@@ -40,12 +49,10 @@ public class UserTask {
     @Column(columnDefinition = "VARCHAR(1000) DEFAULT NULL COMMENT '用户完成任务图片'")
     private String images;
 
-    @NotNull
-    @Column(columnDefinition = "TINYINT(2) UNSIGNED COMMENT '任务进度'")
+    @Column(columnDefinition = "TINYINT(2) UNSIGNED NOT NULL COMMENT '任务进度'")
     private Integer status;
 
-    @NotNull
-    @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '任务结束时间'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务结束时间'")
     private Long taskEndTime;
 
     @Column(columnDefinition = "BIGINT(20) UNSIGNED DEFAULT NULL COMMENT '审核用户id'")
@@ -98,6 +105,30 @@ public class UserTask {
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getTaskTypeName() {
+        return taskTypeName;
+    }
+
+    public void setTaskTypeName(String taskTypeName) {
+        this.taskTypeName = taskTypeName;
     }
 
     public Long getProvinceId() {

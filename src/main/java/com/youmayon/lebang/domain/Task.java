@@ -19,15 +19,19 @@ public class Task {
     private Long id;
 
     @NotNull
+    @Size(min = 2, max = 100)
+    @Column(columnDefinition = "VARCHAR(100) COMMENT '任务名称'")
+    private String name;
+
+    @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务类型id'")
     private Long taskTypeId;
 
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 100)
     @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务类型名称'")
     private String taskTypeName;
 
-    @NotNull
-    @Column(columnDefinition = "DECIMAL(6,2) UNSIGNED COMMENT '任务成本'")
+    @Column(columnDefinition = "DECIMAL(6,2) UNSIGNED DEFAULT NULL COMMENT '任务成本'")
     private Double cost;
 
     @NotNull
@@ -97,6 +101,14 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getTaskTypeId() {

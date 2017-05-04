@@ -16,7 +16,7 @@ public class TaskType {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 2, max = 100)
     @Column(columnDefinition = "VARCHAR(100) COMMENT '任务类型名称'")
     private String name;
 
