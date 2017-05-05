@@ -131,8 +131,7 @@ public class TaskController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/{id}/enabled/{enabled}", method = RequestMethod.PATCH, consumes = "application/json")
-    public Task patch(@PathVariable long id,
-                          @PathVariable boolean enabled) {
+    public Task patch(@PathVariable long id, @PathVariable boolean enabled) {
         Task savedTask = taskService.findOne(id);
         Assert.notNull(savedTask, "Task not found.");
 

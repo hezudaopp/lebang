@@ -9,8 +9,7 @@ public enum UserTaskStatus {
     COMPLETED(1, "任务完成，待审核"),
     ACCEPTED(2, "任务通过"),
     REJECTED(3, "任务不通过"),
-    REDOING(4, "任务重做中"),
-    REWARDED(5, "任务奖励派发完成");
+    REDOING(4, "任务重做中");
 
     private final Integer value;
     private final String desc;

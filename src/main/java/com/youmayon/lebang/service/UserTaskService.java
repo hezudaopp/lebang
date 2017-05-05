@@ -1,6 +1,7 @@
 package com.youmayon.lebang.service;
 
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
 import org.springframework.data.domain.Page;
 
@@ -23,6 +24,15 @@ public interface UserTaskService {
      * @return
      */
     UserTask completeTask(UserTask userTask, Task task, int fromStatus);
+
+    /**
+     * 审核任务
+     * @param user
+     * @param userTask
+     * @param toStatus
+     * @return
+     */
+    UserTask reviewTask(User user, UserTask userTask, int toStatus);
 
 
     /**

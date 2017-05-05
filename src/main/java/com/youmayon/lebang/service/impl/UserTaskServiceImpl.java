@@ -106,6 +106,23 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
+    public UserTask reviewTask(User user, UserTask userTask, int toStatus) {
+        // save user task
+        UserTask savedUserTask = userTaskRepository.save(userTask);
+
+        // save log
+        UserTaskLog userTaskLog = new UserTaskLog();
+        userTaskLog.setUserTaskId(savedUserTask.getId());
+        userTaskLog.setOperatorUserId(user.getId());
+        userTaskLog.setCreatedTime(userTask.getCompletedTime());
+        userTaskLog.setFromStatus(UserTaskStatus.COMPLETED.value());
+        userTaskLog.setToStatus(toStatus);
+        userTaskLogService.save(userTaskLog);
+
+        return savedUserTask;
+    }
+
+    @Override
     public UserTask findOne(long id) {
         return userTaskRepository.findOne(id);
     }

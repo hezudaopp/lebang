@@ -1,8 +1,11 @@
 package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
+import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserTaskStatus;
+import com.youmayon.lebang.exceptions.InvalidArgumentException;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskService;
 import com.youmayon.lebang.service.UserTaskService;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -95,7 +99,8 @@ public class UserTaskController extends BaseController {
     public UserTask patch(
             @PathVariable long id,
             @PathVariable int userTaskStatus,
-            @RequestBody UserTask unsavedUserTask) {
+            @RequestBody UserTask unsavedUserTask,
+            @AuthenticationPrincipal User user) {
 
         UserTask savedUserTask = userTaskService.findOne(id);
         Assert.notNull(savedUserTask, "User task not found.");
@@ -103,9 +108,12 @@ public class UserTaskController extends BaseController {
 
         if (userTaskStatus == UserTaskStatus.COMPLETED.value()) {
             return completeTask(savedUserTask, unsavedUserTask);
+        } else if (userTaskStatus == UserTaskStatus.ACCEPTED.value() ||
+                userTaskStatus == UserTaskStatus.REJECTED.value() ||
+                userTaskStatus == UserTaskStatus.REDOING.value()) {
+            return reviewTask(user, savedUserTask, userTaskStatus);
         }
-
-        return null;
+        throw new InvalidArgumentException("Unsupported operation.");
     }
 
     /**
@@ -142,5 +150,26 @@ public class UserTaskController extends BaseController {
         }
 
         return userTaskService.completeTask(savedUserTask, task, fromStatus);
+    }
+
+    /**
+     * 审核任务
+     * @param user
+     * @param savedUserTask
+     * @param toStatus
+     * @return
+     */
+    private UserTask reviewTask(User user, UserTask savedUserTask, int toStatus) {
+        Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.COMPLETED.value(), "User task status error.");
+        long now = System.currentTimeMillis() / 1000;
+        if (!Role.ROLE_ADMIN.name().equals(user.getRole())) {
+            Assert.isTrue(user.getId() == savedUserTask.getReviewerUserId(), "Forbidden.");
+            Assert.isTrue(now < savedUserTask.getReviewEndTime(), "Review time has expired.");
+        }
+        savedUserTask.setReviewedTime(now);
+        savedUserTask.setStatus(toStatus);
+        savedUserTask.setModifiedTime(now);
+
+        return userTaskService.reviewTask(user, savedUserTask, toStatus);
     }
 }
