@@ -46,7 +46,7 @@ public class Task {
     private Long leftAmount;
 
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '审核周期'")
-    private Long reviewPeriod;
+    private Integer reviewPeriod;
 
     @NotNull
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '任务开始时间'")
@@ -159,11 +159,11 @@ public class Task {
         this.leftAmount = leftAmount;
     }
 
-    public Long getReviewPeriod() {
+    public Integer getReviewPeriod() {
         return reviewPeriod;
     }
 
-    public void setReviewPeriod(Long reviewPeriod) {
+    public void setReviewPeriod(Integer reviewPeriod) {
         this.reviewPeriod = reviewPeriod;
     }
 

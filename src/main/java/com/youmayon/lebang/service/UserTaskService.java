@@ -16,6 +16,14 @@ public interface UserTaskService {
      */
     UserTask receiveTask(UserTask userTask, Task task);
 
+    /**
+     * 用户完成任务
+     * @param userTask
+     * @param task
+     * @return
+     */
+    UserTask completeTask(UserTask userTask, Task task, int fromStatus);
+
 
     /**
      * 用户任务详情

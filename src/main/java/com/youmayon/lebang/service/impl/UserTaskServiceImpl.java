@@ -2,10 +2,14 @@ package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.UserTaskRepository;
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
 import com.youmayon.lebang.domain.UserTaskLog;
+import com.youmayon.lebang.enums.Role;
+import com.youmayon.lebang.enums.UserStatus;
 import com.youmayon.lebang.enums.UserTaskStatus;
 import com.youmayon.lebang.service.TaskService;
+import com.youmayon.lebang.service.UserService;
 import com.youmayon.lebang.service.UserTaskLogService;
 import com.youmayon.lebang.service.UserTaskService;
 import com.youmayon.lebang.util.TimeUtil;
@@ -15,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * Created by Jawinton on 17/05/04.
@@ -29,6 +35,9 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     @Autowired
     UserTaskLogService userTaskLogService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     @Transactional
@@ -62,6 +71,35 @@ public class UserTaskServiceImpl implements UserTaskService {
         userTaskLog.setCreatedTime(userTask.getCreatedTime());
         userTaskLog.setFromStatus(userTask.getStatus());
         userTaskLog.setToStatus(userTask.getStatus());
+        userTaskLogService.save(userTaskLog);
+
+        return savedUserTask;
+    }
+
+    @Override
+    @Transactional
+    public UserTask completeTask(UserTask userTask, Task task, int fromStatus) {
+        // set review end time
+        long reviewHours = (task.getReviewPeriod() == null || task.getReviewPeriod() == 0L) ? Integer.MAX_VALUE / 3600 : task.getReviewPeriod();
+        userTask.setReviewEndTime(userTask.getCompletedTime() + reviewHours * 3600);
+
+        // set reviewer user id.
+        User reviewerUser = userService.findOneRandomUser(Role.ROLE_TASK_REVIEWER.name(), UserStatus.NORMAL.value());
+        if (reviewerUser != null) {
+            userTask.setReviewerUserId(reviewerUser.getId());
+        }
+
+        // save user task
+        UserTask savedUserTask = userTaskRepository.save(userTask);
+
+        // save log
+        UserTaskLog userTaskLog = new UserTaskLog();
+        userTaskLog.setUserTaskId(savedUserTask.getId());
+        userTaskLog.setOperatorAppId(userTask.getAppId());
+        userTaskLog.setOperatorAppUserId(userTask.getAppUserId());
+        userTaskLog.setCreatedTime(userTask.getCompletedTime());
+        userTaskLog.setFromStatus(fromStatus);
+        userTaskLog.setToStatus(savedUserTask.getStatus());
         userTaskLogService.save(userTaskLog);
 
         return savedUserTask;

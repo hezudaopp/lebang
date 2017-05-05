@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 所有Controller基类，用以捕获特定异常，让返回的错误提示信息友好
- * Created by Jawinton on 16/12/22.
+ * Created by Jawinton on 17/05/02.
  */
 @RestController
 public class BaseController {

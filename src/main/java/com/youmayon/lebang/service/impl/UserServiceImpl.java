@@ -27,6 +27,11 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
+    public User findOneRandomUser(String role, int status) {
+        return userRepository.findOneRandomUser(role, status);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsernameIgnoringCase(username);
     }
@@ -48,21 +53,16 @@ public class UserServiceImpl implements UserService {
         userFilter.setRole(role);
         userFilter.setStatus(status);
         Specification<User> specification = this.getWhereClause(userFilter);
-        Page<User> userPage =  userRepository.findAll(specification, pageable);
-        if (userPage == null || userPage.getTotalElements() == 0) {
-            return userPage;
-        }
+        return  userRepository.findAll(specification, pageable);
+    }
 
-        // set user dept info and post info.
-        Set<String> usernames = new HashSet<>();
-        for (User user : userPage) {
-            if (user == null || user.getUsername() == null) {
-                continue;
-            }
-            usernames.add(user.getUsername());
-        }
-
-        return userPage;
+    @Override
+    public List<User> list(String role, int status) {
+        UserFilter userFilter = new UserFilter();
+        userFilter.setRole(role);
+        userFilter.setStatus(status);
+        Specification<User> specification = this.getWhereClause(userFilter);
+        return  userRepository.findAll(specification);
     }
 
     @Override
