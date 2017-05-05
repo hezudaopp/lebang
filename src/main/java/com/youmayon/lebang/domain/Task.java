@@ -1,11 +1,14 @@
 package com.youmayon.lebang.domain;
 
+import com.youmayon.lebang.constant.LogicConstants;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by Jawinton on 17/05/02.
@@ -57,7 +60,7 @@ public class Task {
     private Long endTime;
 
     @NotNull
-    @Max(127)
+    @Max(LogicConstants.ALL_DEVICE_TYPES_MASK)
     @Column(columnDefinition = "TINYINT(3) UNSIGNED COMMENT '设备类型掩码'")
     private Double deviceTypeMask;
 
@@ -74,12 +77,6 @@ public class Task {
     private String recommendedPerson;
 
     @NotNull
-    @Min(1)
-    @Max(5)
-    @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '任务步骤数'")
-    private Integer procedureNum;
-
-    @NotNull
     @Column(columnDefinition = "TINYINT(1) UNSIGNED DEFAULT TRUE COMMENT '是否启用'")
     private Boolean enabled;
 
@@ -92,6 +89,9 @@ public class Task {
 
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '修改时间'")
     private Long modifiedTime;
+
+    @Transient
+    private Collection<TaskProcedure> taskProcedures;
 
     public Task() {}
 
@@ -215,14 +215,6 @@ public class Task {
         this.recommendedPerson = recommendedPerson;
     }
 
-    public Integer getProcedureNum() {
-        return procedureNum;
-    }
-
-    public void setProcedureNum(Integer procedureNum) {
-        this.procedureNum = procedureNum;
-    }
-
     public Boolean getEnabled() {
         return enabled;
     }
@@ -253,5 +245,13 @@ public class Task {
 
     public void setModifiedTime(Long modifiedTime) {
         this.modifiedTime = modifiedTime;
+    }
+
+    public Collection<TaskProcedure> getTaskProcedures() {
+        return taskProcedures;
+    }
+
+    public void setTaskProcedures(Collection<TaskProcedure> taskProcedures) {
+        this.taskProcedures = taskProcedures;
     }
 }

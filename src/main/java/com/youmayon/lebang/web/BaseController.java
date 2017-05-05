@@ -66,12 +66,12 @@ public class BaseController {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getMessage());
     }
 
-    @ExceptionHandler(Throwable.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse unknownException(Throwable e) {
-        logger.error(e.getMessage());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), "Unknown error.");
-    }
+//    @ExceptionHandler(Throwable.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse unknownException(Throwable e) {
+//        logger.error(e.getMessage());
+//        return new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), "Unknown error.");
+//    }
 
     /**
      * @Valid错误判断

@@ -2,6 +2,8 @@ package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskRepository;
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.TaskProcedure;
+import com.youmayon.lebang.service.TaskProcedureService;
 import com.youmayon.lebang.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,6 +28,31 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    TaskProcedureService taskProcedureService;
+
+    @Override
+    @Transactional
+    public Task save(Task task, boolean withProcedure) {
+        Task savedTask = save(task);
+        if (!withProcedure) {
+            return savedTask;
+        }
+        if (task.getTaskProcedures() == null || task.getTaskProcedures().isEmpty()) {
+            return savedTask;
+        }
+        for (TaskProcedure taskProcedure : task.getTaskProcedures()) {
+            Assert.notNull(taskProcedure.getDescription(), "Task procedure description cannot be empty.");
+            Assert.notNull(taskProcedure.getImages(), "Task procedure images cannot be empty.");
+            Assert.notNull(taskProcedure.getProcedureOrder(), "Task procedure order cannot be empty.");
+            taskProcedure.setTaskId(savedTask.getId());
+            taskProcedure.setCreatedTime(task.getModifiedTime());
+            taskProcedure.setModifiedTime(task.getModifiedTime());
+        }
+        taskProcedureService.save(task.getTaskProcedures());
+        return savedTask;
+    }
 
     @Override
     public Task save(Task task) {
@@ -44,16 +73,21 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task findOne(long id) {
-        return taskRepository.findOne(id);
+        Task savedTask = taskRepository.findOne(id);
+        if (savedTask == null) {
+            return null;
+        }
+        savedTask.setTaskProcedures(taskProcedureService.list(id));
+        return savedTask;
     }
 
     @Override
     public Task findOne(long id, boolean enabled) {
-        Task task = findOne(id);
-        if (task == null) {
+        Task savedTask = findOne(id);
+        if (savedTask == null) {
             return null;
         }
-        return task.getEnabled() == enabled ? task : null;
+        return savedTask.getEnabled() == enabled ? savedTask : null;
     }
 
     private class TaskFilter {

@@ -15,6 +15,13 @@ public interface TaskService {
      * @param task
      * @return
      */
+    Task save(Task task, boolean withProcedure);
+
+    /**
+     * 保存任务类型
+     * @param task
+     * @return
+     */
     Task save(Task task);
 
     /**

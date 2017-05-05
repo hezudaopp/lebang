@@ -52,7 +52,7 @@ public class TaskController extends BaseController {
         task.setModifiedTime(task.getCreatedTime());
         task.setTaskTypeName(taskType.getName());
         task.setLeftAmount(task.getAmount());
-        Task savedTask = taskService.save(task);
+        Task savedTask = taskService.save(task, true);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         URI locationUri = ucb.path("/tasks/")

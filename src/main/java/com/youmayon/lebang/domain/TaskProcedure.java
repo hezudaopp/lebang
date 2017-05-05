@@ -1,6 +1,9 @@
 package com.youmayon.lebang.domain;
 
+import com.youmayon.lebang.constant.LogicConstants;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -8,6 +11,7 @@ import javax.validation.constraints.NotNull;
  * 任务步骤
  */
 @Entity
+@Table(indexes = { @Index(name = "uk_task_procedure_order", columnList = "taskId, procedureOrder", unique = true)})
 public class TaskProcedure {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -19,6 +23,7 @@ public class TaskProcedure {
     private Long taskId;
 
     @NotNull
+    @Max(LogicConstants.TASK_MAX_PROCEDURE_NUM)
     @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '顺序'")
     private Integer procedureOrder;
 
