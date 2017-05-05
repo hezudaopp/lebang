@@ -84,12 +84,14 @@ public class TaskController extends BaseController {
         TaskType taskType = taskTypeService.findOne(unsavedTask.getTaskTypeId(), true);
         Assert.notNull(taskType, "Task type not found.");
         Assert.isTrue(unsavedTask.getEndTime() > unsavedTask.getBeginTime(), "End time should be greater than begin time.");
+        long leftAmount = unsavedTask.getAmount() - savedTask.getAmount() + savedTask.getLeftAmount();
+        Assert.isTrue(leftAmount > 0, "Task amount error.");
 
         unsavedTask.setId(id);
         unsavedTask.setCreatedTime(savedTask.getCreatedTime());
         unsavedTask.setModifiedTime(System.currentTimeMillis() / 1000);
         unsavedTask.setTaskTypeName(taskType.getName());
-        unsavedTask.setLeftAmount(savedTask.getAmount());
+        unsavedTask.setLeftAmount(leftAmount);
         unsavedTask.setEnabled(savedTask.getEnabled());
         return taskService.save(unsavedTask);
     }
@@ -101,7 +103,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Task get(@PathVariable long id) {
-        Task task = taskService.findOne(id);
+        Task task = taskService.findOneWithProcedures(id);
         Assert.notNull(task, "Task not found.");
 
         return task;

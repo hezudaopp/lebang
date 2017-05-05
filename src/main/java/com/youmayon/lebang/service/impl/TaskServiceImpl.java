@@ -2,7 +2,9 @@ package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskRepository;
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.TaskCity;
 import com.youmayon.lebang.domain.TaskProcedure;
+import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskProcedureService;
 import com.youmayon.lebang.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -32,6 +36,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     TaskProcedureService taskProcedureService;
 
+    @Autowired
+    TaskCityService taskCityService;
+
     @Override
     @Transactional
     public Task save(Task task, boolean withProcedure) {
@@ -42,6 +49,8 @@ public class TaskServiceImpl implements TaskService {
         if (task.getTaskProcedures() == null || task.getTaskProcedures().isEmpty()) {
             return savedTask;
         }
+
+        // save task procedures
         for (TaskProcedure taskProcedure : task.getTaskProcedures()) {
             Assert.notNull(taskProcedure.getDescription(), "Task procedure description cannot be empty.");
             Assert.notNull(taskProcedure.getImages(), "Task procedure images cannot be empty.");
@@ -51,12 +60,53 @@ public class TaskServiceImpl implements TaskService {
             taskProcedure.setModifiedTime(task.getModifiedTime());
         }
         taskProcedureService.save(task.getTaskProcedures());
+
         return savedTask;
     }
 
     @Override
+    @Transactional
     public Task save(Task task) {
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        if (task.getCityLimited() == null || !task.getCityLimited() || task.getTaskCities() == null || task.getTaskCities().isEmpty()) {
+            return savedTask;
+        }
+
+        // set task city fields.
+        for (TaskCity taskCity : task.getTaskCities()) {
+            Assert.notNull(taskCity.getProvinceId(), "Province id cannot be empty.");
+            Assert.notNull(taskCity.getCityId(), "City id cannot be empty.");
+            taskCity.setTaskId(savedTask.getId());
+            taskCity.setCreatedTime(task.getModifiedTime());
+            taskCity.setModifiedTime(task.getModifiedTime());
+        }
+
+
+        List<TaskCity> savedTaskCityList = taskCityService.list(task.getId());
+
+        // add cities
+        Set<TaskCity> addedCities = new HashSet<>();
+        for (TaskCity taskCity : task.getTaskCities()) {
+            if (savedTaskCityList.contains(taskCity)) {
+                continue;
+            }
+            addedCities.add(taskCity);
+        }
+        taskCityService.save(addedCities);
+
+
+        // delete cities
+        Set<TaskCity> deletedTaskCities = new HashSet<>();
+        for (TaskCity taskCity : savedTaskCityList) {
+            if (task.getTaskCities().contains(taskCity)) {
+                continue;
+            }
+            deletedTaskCities.add(taskCity);
+        }
+        taskCityService.delete(deletedTaskCities);
+
+        return savedTask;
     }
 
     @Override
@@ -77,6 +127,15 @@ public class TaskServiceImpl implements TaskService {
         if (savedTask == null) {
             return null;
         }
+        if (savedTask.getCityLimited()) {
+            savedTask.setTaskCities(taskCityService.list(id));
+        }
+        return savedTask;
+    }
+
+    @Override
+    public Task findOneWithProcedures(long id) {
+        Task savedTask = findOne(id);
         savedTask.setTaskProcedures(taskProcedureService.list(id));
         return savedTask;
     }

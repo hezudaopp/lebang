@@ -12,5 +12,4 @@ import java.util.List;
 @Repository
 public interface TaskCityRepository extends JpaRepository<TaskCity, Long> {
     List<TaskCity> findByTaskId(long taskId);
-    List<TaskCity> findByTaskIdAndEnabled(long taskId, boolean enabled);
 }

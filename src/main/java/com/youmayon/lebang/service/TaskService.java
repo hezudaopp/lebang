@@ -43,5 +43,18 @@ public interface TaskService {
      */
     Task findOne(long id);
 
+    /**
+     * 任务类型详情，任务步骤一并返回
+     * @param id
+     * @return
+     */
+    Task findOneWithProcedures(long id);
+
+    /**
+     * 任务类型详情
+     * @param id
+     * @param enabled
+     * @return
+     */
     Task findOne(long id, boolean enabled);
 }

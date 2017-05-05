@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,13 +29,8 @@ public class TaskCityServiceImpl implements TaskCityService {
     }
 
     @Override
-    public List<TaskCity> list(long taskId, boolean enabled) {
-        return taskCityRepository.findByTaskIdAndEnabled(taskId, enabled);
-    }
-
-    @Override
     public boolean containsCity(UserTask userTask) {
-        List<TaskCity> taskCityList = list(userTask.getTaskId(), true);
+        List<TaskCity> taskCityList = list(userTask.getTaskId());
         for (TaskCity taskCity : taskCityList) {
             if (taskCity.getCityId() == null) {
                 continue;
@@ -47,5 +43,15 @@ public class TaskCityServiceImpl implements TaskCityService {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<TaskCity> save(Collection<TaskCity> taskCities) {
+        return taskCityRepository.save(taskCities);
+    }
+
+    @Override
+    public void delete(Collection<TaskCity> taskCities) {
+        taskCityRepository.delete(taskCities);
     }
 }

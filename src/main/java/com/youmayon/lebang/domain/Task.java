@@ -93,6 +93,9 @@ public class Task {
     @Transient
     private Collection<TaskProcedure> taskProcedures;
 
+    @Transient
+    private Collection<TaskCity> taskCities;
+
     public Task() {}
 
     public Long getId() {
@@ -253,5 +256,13 @@ public class Task {
 
     public void setTaskProcedures(Collection<TaskProcedure> taskProcedures) {
         this.taskProcedures = taskProcedures;
+    }
+
+    public Collection<TaskCity> getTaskCities() {
+        return taskCities;
+    }
+
+    public void setTaskCities(Collection<TaskCity> taskCities) {
+        this.taskCities = taskCities;
     }
 }

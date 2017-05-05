@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  * 任务分派城市
  */
 @Entity
-@Table(indexes = { @Index(name = "uk_task_city", columnList = "taskId,cityId", unique = true)})
+@Table(indexes = { @Index(name = "uk_task_city", columnList = "taskId, cityId", unique = true)})
 public class TaskCity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -30,20 +30,32 @@ public class TaskCity {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '城市id'")
     private Long cityId;
 
-    @NotNull
-    @Column(columnDefinition = "TINYINT(1) UNSIGNED COMMENT '是否启用'")
-    private Boolean enabled;
-
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '创建时间'")
     private Long createdTime;
 
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '修改时间'")
     private Long modifiedTime;
 
-    @Transient
-    private Task task;
-
     public TaskCity() {}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaskCity taskCity = (TaskCity) o;
+
+        if (taskId != null ? !taskId.equals(taskCity.taskId) : taskCity.taskId != null) return false;
+        return cityId != null ? cityId.equals(taskCity.cityId) : taskCity.cityId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = taskId != null ? taskId.hashCode() : 0;
+        result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
+        return result;
+    }
 
     public Long getId() {
         return id;
@@ -75,14 +87,6 @@ public class TaskCity {
 
     public void setCityId(Long cityId) {
         this.cityId = cityId;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Long getCreatedTime() {

@@ -3,6 +3,7 @@ package com.youmayon.lebang.service;
 import com.youmayon.lebang.domain.TaskCity;
 import com.youmayon.lebang.domain.UserTask;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,17 +19,22 @@ public interface TaskCityService {
     List<TaskCity> list(long taskId);
 
     /**
-     * 任务城市列表
-     * @param taskId
-     * @param enabled
-     * @return
-     */
-    List<TaskCity> list(long taskId, boolean enabled);
-
-    /**
      * 检测城市是否一致
      * @param userTask
      * @return
      */
     boolean containsCity(UserTask userTask);
+
+    /**
+     * 批量保存任务城市
+     * @param taskCities
+     * @return
+     */
+    List<TaskCity> save(Collection<TaskCity> taskCities);
+
+    /**
+     * 批量删除任务城市
+     * @param taskCities
+     */
+    void delete(Collection<TaskCity> taskCities);
 }
