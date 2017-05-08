@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-05 17:53:06
+Date: 2017-05-08 11:44:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -59,7 +59,7 @@ CREATE TABLE `task` (
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用',
   `name` varchar(100) NOT NULL COMMENT '任务名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
@@ -70,6 +70,7 @@ INSERT INTO `task` VALUES ('14', '5', '1493790500', '0', '18.00', '1493967645', 
 INSERT INTO `task` VALUES ('16', '5', '1493790500', '0', '18.00', '1493975061', '127', '1', '1503780500', '5', '1493975061', '19.89', null, '0', null, '2', '微信群', '1', '我的任务');
 INSERT INTO `task` VALUES ('17', '5', '1493790500', '1', '18.00', '1493977197', '127', '1', '1503780500', '5', '1493977830', '19.89', null, '0', null, '2', '微信群', '1', '我的任务');
 INSERT INTO `task` VALUES ('18', '5', '1493790500', '1', '18.00', '1493977929', '127', '1', '1503780500', '5', '1493977929', '19.89', null, '0', null, '2', '微信群', '1', '我的任务');
+INSERT INTO `task` VALUES ('19', '5', '1493790500', '1', '18.00', '1493978066', '127', '1', '1503780500', '5', '1493978066', '19.89', null, '0', null, '2', '微信群', '1', '我的任务');
 
 -- ----------------------------
 -- Table structure for `task_city`
@@ -108,7 +109,7 @@ CREATE TABLE `task_procedure` (
   `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_task_procedure_order` (`task_id`,`procedure_order`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task_procedure
@@ -122,6 +123,8 @@ INSERT INTO `task_procedure` VALUES ('24', '1493977197', 'order 1', '1.jpg,2.jpg
 INSERT INTO `task_procedure` VALUES ('25', '1493977197', 'order 2', '1.jpg,2.jpg', '1493977197', '1', '17');
 INSERT INTO `task_procedure` VALUES ('26', '1493977929', 'order 1', '1.jpg,2.jpg', '1493977929', '3', '18');
 INSERT INTO `task_procedure` VALUES ('27', '1493977929', 'order 2', '1.jpg,2.jpg', '1493977929', '1', '18');
+INSERT INTO `task_procedure` VALUES ('28', '1493978066', 'order 1', '1.jpg,2.jpg', '1493978066', '3', '19');
+INSERT INTO `task_procedure` VALUES ('29', '1493978066', 'order 2', '1.jpg,2.jpg', '1493978066', '1', '19');
 
 -- ----------------------------
 -- Table structure for `task_type`
@@ -158,6 +161,7 @@ CREATE TABLE `user` (
   `role` varchar(20) NOT NULL COMMENT '用户角色',
   `status` tinyint(2) unsigned NOT NULL COMMENT '用户状态',
   `username` varchar(20) NOT NULL COMMENT '用户账号（登录用）',
+  `avatar` varchar(50) DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
@@ -165,15 +169,15 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '1493863306', '1493863306', '471dc9c238566c9687b4f03822dd0bddec2069d883554fd5e8b7cff7b538447fd4f35420751447b3', 'ROLE_ADMIN', '1', 'lebang');
-INSERT INTO `user` VALUES ('2', '1493951428', '1493951428', 'd868a87d197667983fa5560f01a9bd6cf9d6d24c87ddb4a766b27b6603786d903e040baa561458fa', 'ROLE_TASK_REVIEWER', '1', 'reviewer1');
-INSERT INTO `user` VALUES ('3', '1493951434', '1493951434', '00c1c0f1e0279b09623d77a26ea795854fc70b6a0605f1bb7fa9067fa1fb4faf93254e28b8df1c58', 'ROLE_TASK_REVIEWER', '1', 'reviewer2');
-INSERT INTO `user` VALUES ('4', '1493951436', '1493951436', 'd79c9c9b445216fb8f4817f4e1b6011ff6594382124fda7b60a9aff421cb640f4983d78dee2201ab', 'ROLE_TASK_REVIEWER', '1', 'reviewer3');
-INSERT INTO `user` VALUES ('5', '1493951439', '1493951439', '93d9db7bced8efe57ec66f7ba5d48944ad09cca99df3d452822e5f5f887004c9c690f2ba9ac7e57a', 'ROLE_TASK_REVIEWER', '1', 'reviewer4');
-INSERT INTO `user` VALUES ('6', '1493951443', '1493951443', 'be07d414b258d4102bb8bde30460efbf24fb59a4d8470c7e620b1c59d31780d9744c6d8e36c38e07', 'ROLE_TASK_REVIEWER', '1', 'reviewer5');
-INSERT INTO `user` VALUES ('7', '1493951446', '1493951446', 'd1b0b4984577f1c2ef2bb586e8d0cf63da3c421412620e6e8ecf2159649c4db4eeacc556b3e87665', 'ROLE_TASK_REVIEWER', '1', 'reviewer6');
-INSERT INTO `user` VALUES ('8', '1493951450', '1493951450', '7dcc786a6dd09ba99babc895c66e21a938aeb9f0d29ada0addbc8601ca2b3f6ef7de27a47632ebe2', 'ROLE_TASK_REVIEWER', '1', 'reviewer7');
-INSERT INTO `user` VALUES ('9', '1493951454', '1493951454', '340ea2eac052f03b7af883e8972653cd354c78e3549f1947c0c3b03e09a64378b9847e6ee6ebc87a', 'ROLE_TASK_REVIEWER', '1', 'reviewer8');
+INSERT INTO `user` VALUES ('1', '1493863306', '1493863306', '471dc9c238566c9687b4f03822dd0bddec2069d883554fd5e8b7cff7b538447fd4f35420751447b3', 'ROLE_ADMIN', '1', 'lebang', null);
+INSERT INTO `user` VALUES ('2', '1493951428', '1493951428', 'd868a87d197667983fa5560f01a9bd6cf9d6d24c87ddb4a766b27b6603786d903e040baa561458fa', 'ROLE_TASK_REVIEWER', '1', 'reviewer1', null);
+INSERT INTO `user` VALUES ('3', '1493951434', '1493951434', '00c1c0f1e0279b09623d77a26ea795854fc70b6a0605f1bb7fa9067fa1fb4faf93254e28b8df1c58', 'ROLE_TASK_REVIEWER', '1', 'reviewer2', null);
+INSERT INTO `user` VALUES ('4', '1493951436', '1493951436', 'd79c9c9b445216fb8f4817f4e1b6011ff6594382124fda7b60a9aff421cb640f4983d78dee2201ab', 'ROLE_TASK_REVIEWER', '1', 'reviewer3', null);
+INSERT INTO `user` VALUES ('5', '1493951439', '1493951439', '93d9db7bced8efe57ec66f7ba5d48944ad09cca99df3d452822e5f5f887004c9c690f2ba9ac7e57a', 'ROLE_TASK_REVIEWER', '1', 'reviewer4', null);
+INSERT INTO `user` VALUES ('6', '1493951443', '1493951443', 'be07d414b258d4102bb8bde30460efbf24fb59a4d8470c7e620b1c59d31780d9744c6d8e36c38e07', 'ROLE_TASK_REVIEWER', '1', 'reviewer5', null);
+INSERT INTO `user` VALUES ('7', '1493951446', '1493951446', 'd1b0b4984577f1c2ef2bb586e8d0cf63da3c421412620e6e8ecf2159649c4db4eeacc556b3e87665', 'ROLE_TASK_REVIEWER', '1', 'reviewer6', null);
+INSERT INTO `user` VALUES ('8', '1493951450', '1493951450', '7dcc786a6dd09ba99babc895c66e21a938aeb9f0d29ada0addbc8601ca2b3f6ef7de27a47632ebe2', 'ROLE_TASK_REVIEWER', '1', 'reviewer7', null);
+INSERT INTO `user` VALUES ('9', '1493951454', '1493951454', '340ea2eac052f03b7af883e8972653cd354c78e3549f1947c0c3b03e09a64378b9847e6ee6ebc87a', 'ROLE_TASK_REVIEWER', '1', 'reviewer8', null);
 
 -- ----------------------------
 -- Table structure for `user_task`
