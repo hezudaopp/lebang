@@ -89,6 +89,13 @@ public class UserTaskController extends BaseController {
         return new ResponseEntity<>(savedUserTask, httpHeaders, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserTask get(@PathVariable long id) {
+        UserTask savedUserTask = userTaskService.findOne(id);
+        Assert.notNull(savedUserTask, "User task not found.");
+        return savedUserTask;
+    }
+
     /**
      * 更新任务
      * @param id

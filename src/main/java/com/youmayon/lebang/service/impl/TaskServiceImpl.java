@@ -136,6 +136,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task findOneWithProcedures(long id) {
         Task savedTask = findOne(id);
+        if (savedTask == null) {
+            return null;
+        }
         savedTask.setTaskProcedures(taskProcedureService.list(id));
         return savedTask;
     }
