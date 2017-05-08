@@ -87,7 +87,7 @@ public class TaskProcedureController extends BaseController {
      * 获取任务的任务步骤列表
      * @return
      */
-    @RequestMapping(value = "/task/{taskId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.GET)
     public List<TaskProcedure> list(@PathVariable long taskId) {
         return taskProcedureService.list(taskId);
     }

@@ -175,135 +175,23 @@
 }
 ```
 
-
-
 ## 接口列表：
-### 岗位相关
-#### 获取岗位类型列表
-  - 请求URI: /post_types
+
+### 角色相关
+#### 获取角色列表
+  - 请求URI: /roles
   - 请求Method: GET
-  - 请求参数:
-    - enabled: 1 // 是否启用 默认1
+  - 请求参数: 无
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:
 ``` javascript
-  [POST结构, POST结构, ...]
+  [
+    "ROLE_ADMIN",
+    "ROLE_TASK_REVIEWER",
+    "ROLE_REPORT_VIEWER"
+  ]
 ```
-
-#### 添加岗位
-  - 请求URI: /posts
-  - 请求Method: POST
-  - 请求参数: 无
-  - 请求内容: POST结构, id不用传
-  - 响应成功代码: 201
-  - 响应成功内容: POST结构
-
-#### 删除岗位
-  - 请求URI: /posts/{id}
-  - 请求Method: DELETE
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容: 无
-
-#### 编辑岗位
-  - 请求URI: /posts/{id}
-  - 请求Method: PUT
-  - 请求参数: 无
-  - 请求内容: POST结构, id不用传
-  - 响应成功代码: 200
-  - 响应成功内容: POST结构
-
-#### 岗位列表（分页）
-  - 请求URI: /posts
-  - 请求Method: GET
-  - 请求参数:
-    - page 当前页，默认0
-    - size 每页大小，默认10
-    - enabled 是否启用，默认1
-    - name 岗位名称，搜索岗位时模糊匹配岗位名，默认不传
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  {
-    "content": [POST结构, ...],
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 1,
-    "size": 20,
-    "number": 0,
-    "first": true,
-    "sort": null,
-    "numberOfElements": 1
-  }
-```
-
-#### 禁用/启用岗位
-  - 请求URI: /posts/{id}
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容:
-``` javascript
-  {
-    "enabled":1 // 启用状态
-  }
-```
-  - 响应成功代码: 200
-  - 响应成功内容: POST结构
-
-### 部门相关
-#### 添加部门
-  - 请求URI: /depts
-  - 请求Method: POST
-  - 请求参数: 无
-  - 请求内容: DEPT, id不用传
-  - 响应成功代码: 201
-  - 响应成功内容: DEPT
-
-#### 删除部门
-  - 请求URI: /depts/{id}
-  - 请求Method: DELETE
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容: 无
-
-#### 编辑部门
-  - 请求URI: /depts/{id}
-  - 请求Method: PUT
-  - 请求参数: 无
-  - 请求内容: DEPT, id不用传
-  - 响应成功代码: 200
-  - 响应成功内容: DEPT
-
-#### 岗位部门
-  - 请求URI: /depts
-  - 请求Method: GET
-  - 请求参数:（level和parentDeptId二选一）
-    - enabled 是否启用，默认1
-    - level 部门层级，默认为1，当为1时和parentDeptId为0是等效的
-    - parentDeptId 上级部门, 默认为0，当为parentDeptId为0时和level为1是等效的
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  [DEPT结构, ...]
-```
-
-#### 禁用/启用部门
-  - 请求URI: /depts/{id}
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容:
-``` javascript
-  {
-    "enabled":1 // 启用状态
-  }
-```
-  - 响应成功代码: 200
-  - 响应成功内容: DEPT结构
 
 ### 用户相关
 #### 用户登录
@@ -357,7 +245,7 @@
 
 #### 添加用户
   - 接口说明：
-    - username, mobileNumber, email字段必须唯一
+    - username字段必须唯一
   - 请求URI: /users
   - 请求Method: POST
   - 请求参数: 无
@@ -389,7 +277,7 @@
 ```
 
 #### 用户详情
-  - 请求URI: /users/{username}
+  - 请求URI: /users/{userId}
   - 请求Method: GET
   - 请求参数: 无
   - 请求内容: 无
@@ -404,199 +292,201 @@
   - 响应成功代码: 200
   - 响应成功内容: USER
 
-### 产品模板相关
-#### 添加产品模板
-  - 请求URI: /product_templates
+### 任务类型相关
+#### 添加任务类型
+  - 请求URI: /task_types
   - 请求Method: POST
   - 请求参数: 无
-  - 请求内容: PRODUCT_TEMPLATE, id不用传
+  - 请求内容: TASK_TYPE, id不用传
   - 响应成功代码: 201
-  - 响应成功内容: PRODUCT_TEMPLATE
+  - 响应成功内容: TASK_TYPE
 
-#### 删除产品模板
-  - 接口说明：那么该产品模板下必须没有产品
-  - 请求URI: /product_templates/{id}
+#### 禁用启用任务类型
+  - 请求URI: /task_types/{id}/enabled/{enabled}
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: TASK_TYPE
+
+#### 任务类型详情
+  - 请求URI: /task_types/{id}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: TASK_TYPE
+
+#### 任务类型列表
+  - 请求URI: /tasks/all
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  [TASK_TYPE, TASK_TYPE, ...]
+```
+
+#### 任务类型列表（分页）
+  - 请求URI: /tasks
+  - 请求Method: GET
+  - 请求参数:
+    - page: 1, 默认0
+    - size:10, 默认10
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  {
+    "content": [TASK_TYPE, ...],
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 1,
+    "size": 2,
+    "number": 0,
+    "first": true,
+    "sort": null,
+    "numberOfElements": 1
+  }
+```
+
+### 任务相关
+#### 添加任务
+  - 请求URI: /tasks
+  - 请求Method: POST
+  - 请求参数: 无
+  - 请求内容: TASK, id不用传
+  - 响应成功代码: 201
+  - 响应成功内容: TASK
+
+#### 禁用启用任务
+  - 请求URI: /tasks/{id}/enabled/{enabled}
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: TASK
+
+#### 编辑任务
+  - 请求URI: /tasks/{id}
+  - 请求Method: PUT
+  - 请求参数: 无
+  - 请求内容: TASK
+  - 响应成功代码: 200
+  - 响应成功内容: TASK
+
+#### 任务详情
+  - 请求URI: /tasks/{id}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: TASK
+
+#### 任务列表（分页）
+  - 请求URI: /tasks
+  - 请求Method: GET
+  - 请求参数:
+    - page: 1, 默认0
+    - size:10, 默认10
+    - beginTime:1234567890, 任务开始时间
+    - endTime:1234567890, 任务结束时间
+    - taskTypeId: 1, 任务类型id
+    - enabled: true, 是否启用
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  {
+    "content": [TASK, ...],
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 1,
+    "size": 2,
+    "number": 0,
+    "first": true,
+    "sort": null,
+    "numberOfElements": 1
+  }
+```
+
+### 任务步骤相关
+#### 添加任务步骤
+  - 请求URI: /task_procedures
+  - 请求Method: POST
+  - 请求参数: 无
+  - 请求内容: TASK_PROCEDURE, id不用传
+  - 响应成功代码: 201
+  - 响应成功内容: TASK_PROCEDURE
+
+#### 任务步骤详情
+  - 请求URI: /task_procedures/{id}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: TASK_PROCEDURE
+
+#### 删除任务
+  - 请求URI: /task_procedures/{id}
   - 请求Method: DELETE
   - 请求参数: 无
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容: 无
 
-#### 编辑产品模板
-  - 请求URI: /product_templates/{id}
+#### 编辑任务
+  - 请求URI: /task_procedures/{id}
   - 请求Method: PUT
   - 请求参数: 无
-  - 请求内容: PRODUCT_TEMPLATE
+  - 请求内容: TASK
   - 响应成功代码: 200
-  - 响应成功内容: PRODUCT_TEMPLATE
+  - 响应成功内容: TASK_PROCEDURE
 
-#### 产品模版列表（分页）
-  - 请求URI: /product_templates
+#### 任务步骤列表
+  - 接口说明: 任务的步骤列表
+  - 请求URI: /task_procedures/tasks/{taskId}
   - 请求Method: GET
-  - 请求参数:
-    - page: 1, 默认0
-    - size:10, 默认10
-    - name:"产品模版名", 默认为空字符串，表示不对该字段过滤
+  - 请求参数: 无
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:
 ``` javascript
-  {
-    "content": [PRODUCT_TEMPLATE, ...],
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 1,
-    "size": 2,
-    "number": 0,
-    "first": true,
-    "sort": null,
-    "numberOfElements": 1
-  }
+  [TASK_PROCEDURE, TASK_PROCEDURE, ...]
 ```
 
-### 产品相关
-#### 添加产品
-  - 请求URI: /products
+### 用户任务相关
+#### 用户领取任务
+  - 请求URI: /user_tasks
   - 请求Method: POST
   - 请求参数: 无
-  - 请求内容: PRODUCT, id不用传
+  - 请求内容: USER_TASK, id不用传
   - 响应成功代码: 201
-  - 响应成功内容: PRODUCT
+  - 响应成功内容: USER_TASK
 
-#### 编辑产品
-  - 接口说明：如果要编辑产品，产品状态必须是待审核
-  - 请求URI: /products/{id}
-  - 请求Method: PUT
-  - 请求参数: 无
-  - 请求内容: PRODUCT
-  - 响应成功代码: 200
-  - 响应成功内容: PRODUCT
-
-#### 产品列表（分页）
-  - 请求URI: /products
-  - 请求Method: GET
-  - 请求参数:
-    - page: 1, 默认0
-    - size:10, 默认10
-    - productTemplateId: 0， 默认-1，表示筛选productTemplateId > 0的产品
-    - status:1, 默认0
-    - name:"产品名", 默认为空字符串，表示不对该字段过滤
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  {
-    "content": [PRODUCT, ...],
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 1,
-    "size": 2,
-    "number": 0,
-    "first": true,
-    "sort": null,
-    "numberOfElements": 1
-  }
-```
-
-#### 审核产品
-  - 请求URI: /products/{id}
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容:
-``` javascript
-  {
-    "status":1, // 1: 审核通过 2: 审核拒绝
-    "remark":"审核说明"
-  }
-```
-  - 响应成功代码: 200
-  - 响应成功内容: PRODUCT
-
-#### 禁用产品
-  - 接口说明：产品状态必须是审核通过
-  - 请求URI: /products/{id}/disable
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容: PRODUCT
-
-#### 启用产品
-  - 接口说明：产品状态必须是审核通过
-  - 请求URI: /products/{id}/enable
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容: PRODUCT
-
-### 贷款相关
-#### 添加贷款
-  - 请求URI: /loans
-  - 请求Method: POST
-  - 请求参数: 无
-  - 请求内容: LOAN, id不用传
-  - 响应成功代码: 201
-  - 响应成功内容: LOAN
-
-#### 编辑贷款或审批贷款
-  - 接口说明：修改贷款信息或审核贷款
-  - 请求URI: /loans/{id}
-  - 请求Method: PATCH
-		  - 请求参数: loanOperate: 1. 修改 2. 提交审批申请 3. 审批通过 4. 审批拒绝 5. 放弃
-  - 请求内容: LOAN, id不用传
-  - 响应成功代码: 200
-  - 响应成功内容: LOAN
-
-#### 贷款列表（分页）
-  - 请求URI: /loans
-  - 请求Method: GET
-  - 请求参数:
-    - page: 1, 默认0
-    - size:10, 默认10
-    - isFilterSelf: 1， 可选，默认0，是否筛选本人创建的贷款
-    - sourceFinancialCommissioner: 跟单金融专员用户名 可选
-    - applicantName: 申请人姓名 可选
-    - applicantMobileNumber: 申请人手机号 可选
-    - createdTimeFrom: 最早创建时间 可选
-    - createdTimeTo: 最晚创建时间 可选
-    - status:1,2,3 可选 默认为空 筛选全部 （多选，也可以只选一种状态，多选的时候用逗号分割）
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  {
-    "content": [LOAN, ...],
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 1,
-    "size": 2,
-    "number": 0,
-    "first": true,
-    "sort": null,
-    "numberOfElements": 1
-  }
-```
-
-#### 获取贷款详情
-  - 请求URI: /loans/{id}
+#### 用户任务详情
+  - 请求URI: /user_tasks/{id}
   - 请求Method: GET
   - 请求参数: 无
   - 请求内容: 无
   - 响应成功代码: 200
-  - 响应成功内容: LOAN
+  - 响应成功内容: USER_TASK
 
-### 贷款日志相关
-#### 贷款日志列表
-  - 请求URI: /loan_logs
-  - 请求Method: GET
-  - 请求参数:
-    - loanId: 1, // 必选 贷款id
-    - fromStatus:1, // 必选 贷款原状态
-    - toStatus: 2, // 必选 贷款目标状态
-  - 请求内容: 无
+#### 用户完成任务
+  - 接口说明：用户完成任务后系统会自动分配审核人员审核
+  - 请求URI: /user_tasks/{id}/status/1
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: USER_TASK
   - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  [LOAN_LOG, LOAN_LOG, ...]
-```
+  - 响应成功内容: USER_TASK
+
+#### 审核用户任务
+  - 请求URI: /user_tasks/{id}/status/{userTaskStatus}
+  - 请求URI说明: userTaskStatus: 2. 审核通过 3. 审核拒绝 4. 重做任务
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: USER_TASK
+  - 响应成功代码: 200
+  - 响应成功内容: USER_TASK
