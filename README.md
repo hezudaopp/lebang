@@ -25,6 +25,18 @@
 
 ## 基础数据结构：
 
+###### APP渠道：APP
+``` javascript
+   {
+     "id": 1,
+     "name": "app1",
+     "secret": "23dsfdsgvfdfertjuyiu5642ewwefvf",
+     "enabled": true,
+     "createdTime": 1494313266,
+     "modifiedTime": 1494313487
+   }
+```
+
 ### 用户信息：USER
 ``` javascript
 {
@@ -69,6 +81,8 @@
   "price": 19.89,
   "amount": 5,
   "leftAmount": 5,
+  "completedAmount":3,
+  "acceptedAmount":2,
   "reviewPeriod": null,
   "beginTime": 1493790500,
   "endTime": 1503780500,
@@ -140,7 +154,7 @@
 ``` javascript
 {
   "id": 1,
-  "appId": 1,
+  "appId": "1",
   "appUserId": "9822438",
   "taskId": 1,
   "taskName": "评论快去",
@@ -165,7 +179,7 @@
 ``` javascript
 {
   "id": 2, // 用户任务日志id
-  "userTaskId": 1, // 用户任务id
+  "userTaskId": "1", // 用户任务id
   "operatorUserId": 12, // 操作用户id
   "operatorAppId":2, // 操作用户来源app
   "operatorAppUserId":"234221", // 操作用户在来源app中user_id
@@ -176,6 +190,65 @@
 ```
 
 ## 接口列表：
+
+### APP渠道相关
+#### 添加APP渠道
+  - 请求URI: /apps
+  - 请求Method: POST
+  - 请求参数: 无
+  - 请求内容: APP, id不用传
+  - 响应成功代码: 201
+  - 响应成功内容: APP
+
+#### 禁用启用APP渠道
+  - 请求URI: /apps/{id}/enabled/{enabled}
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: APP
+
+#### APP渠道详情
+  - 请求URI: /apps/{id}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: APP
+
+#### APP渠道列表
+  - 请求URI: /apps/all
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  [APP, APP, ...]
+```
+
+#### APP渠道列表（分页）
+  - 请求URI: /apps
+  - 请求Method: GET
+  - 请求参数:
+    - page: 1, 默认0
+    - size:10, 默认10
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  {
+    "content": [APP, ...],
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 1,
+    "size": 2,
+    "number": 0,
+    "first": true,
+    "sort": null,
+    "numberOfElements": 1
+  }
+```
 
 ### 角色相关
 #### 获取角色列表
@@ -457,12 +530,21 @@
 ```
 
 ### 用户任务相关
-#### 用户领取任务
+#### 用户领取任务(供渠道app调用)
   - 请求URI: /user_tasks
   - 请求Method: POST
   - 请求参数: 无
   - 请求内容: USER_TASK, id不用传
   - 响应成功代码: 201
+  - 响应成功内容: USER_TASK
+
+#### 用户完成任务(供渠道app调用)
+  - 接口说明：用户完成任务后系统会自动分配审核人员审核
+  - 请求URI: /user_tasks/{id}/completed
+  - 请求Method: PATCH
+  - 请求参数: 无
+  - 请求内容: USER_TASK
+  - 响应成功代码: 200
   - 响应成功内容: USER_TASK
 
 #### 用户任务详情
@@ -473,20 +555,11 @@
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
 
-#### 用户完成任务
-  - 接口说明：用户完成任务后系统会自动分配审核人员审核
-  - 请求URI: /user_tasks/{id}/status/1
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容: USER_TASK
-  - 响应成功代码: 200
-  - 响应成功内容: USER_TASK
-
 #### 审核用户任务
   - 请求URI: /user_tasks/{id}/status/{userTaskStatus}
   - 请求URI说明: userTaskStatus: 2. 审核通过 3. 审核拒绝 4. 重做任务
   - 请求Method: PATCH
   - 请求参数: 无
-  - 请求内容: USER_TASK
+  - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
