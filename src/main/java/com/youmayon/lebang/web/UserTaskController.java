@@ -113,12 +113,15 @@ public class UserTaskController extends BaseController {
         Assert.notNull(savedUserTask, "User task not found.");
         Assert.isTrue(UserTaskStatus.contains(userTaskStatus), "User task status error.");
 
+        Task task = taskService.findOne(savedUserTask.getTaskId());
+        Assert.notNull(task, "Task not found.");
+
         if (userTaskStatus == UserTaskStatus.COMPLETED.value()) {
-            return completeTask(savedUserTask, unsavedUserTask);
+            return completeTask(savedUserTask, unsavedUserTask, task);
         } else if (userTaskStatus == UserTaskStatus.ACCEPTED.value() ||
                 userTaskStatus == UserTaskStatus.REJECTED.value() ||
                 userTaskStatus == UserTaskStatus.REDOING.value()) {
-            return reviewTask(user, savedUserTask, userTaskStatus);
+            return reviewTask(user, savedUserTask, task, userTaskStatus);
         }
         throw new InvalidArgumentException("Unsupported operation.");
     }
@@ -129,7 +132,7 @@ public class UserTaskController extends BaseController {
      * @param unsavedUserTask
      * @return
      */
-    private UserTask completeTask(UserTask savedUserTask, UserTask unsavedUserTask) {
+    private UserTask completeTask(UserTask savedUserTask, UserTask unsavedUserTask, Task task) {
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.ONGOING.value() || savedUserTask.getStatus() == UserTaskStatus.REDOING.value(), "User task from status error.");
         Assert.notNull(unsavedUserTask.getAppId(), "App id cannot be empty.");
         Assert.notNull(unsavedUserTask.getAppUserId(), "App user id cannot be empty.");
@@ -138,8 +141,6 @@ public class UserTaskController extends BaseController {
         Assert.notNull(unsavedUserTask.getNote(), "Note cannot be empty.");
         Assert.notNull(unsavedUserTask.getImages(), "Images cannot be empty.");
 
-        Task task = taskService.findOne(savedUserTask.getTaskId());
-        Assert.notNull(task, "Task not found.");
         long now = System.currentTimeMillis() / 1000;
         Assert.isTrue(now <= savedUserTask.getTaskEndTime(), "Task has finished.");
 
@@ -166,7 +167,7 @@ public class UserTaskController extends BaseController {
      * @param toStatus
      * @return
      */
-    private UserTask reviewTask(User user, UserTask savedUserTask, int toStatus) {
+    private UserTask reviewTask(User user, UserTask savedUserTask, Task task, int toStatus) {
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.COMPLETED.value(), "User task status error.");
         long now = System.currentTimeMillis() / 1000;
         if (!Role.ROLE_ADMIN.name().equals(user.getRole())) {
@@ -177,6 +178,6 @@ public class UserTaskController extends BaseController {
         savedUserTask.setStatus(toStatus);
         savedUserTask.setModifiedTime(now);
 
-        return userTaskService.reviewTask(user, savedUserTask, toStatus);
+        return userTaskService.reviewTask(user, savedUserTask, task, toStatus);
     }
 }

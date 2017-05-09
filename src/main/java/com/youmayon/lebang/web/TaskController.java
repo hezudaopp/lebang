@@ -52,6 +52,8 @@ public class TaskController extends BaseController {
         task.setModifiedTime(task.getCreatedTime());
         task.setTaskTypeName(taskType.getName());
         task.setLeftAmount(task.getAmount());
+        task.setCompletedAmount(0L);
+        task.setAcceptedAmount(0L);
         Task savedTask = taskService.save(task, true);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -92,6 +94,8 @@ public class TaskController extends BaseController {
         unsavedTask.setModifiedTime(System.currentTimeMillis() / 1000);
         unsavedTask.setTaskTypeName(taskType.getName());
         unsavedTask.setLeftAmount(leftAmount);
+        unsavedTask.setCompletedAmount(savedTask.getCompletedAmount());
+        unsavedTask.setAcceptedAmount(savedTask.getAcceptedAmount());
         unsavedTask.setEnabled(savedTask.getEnabled());
         return taskService.save(unsavedTask);
     }

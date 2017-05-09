@@ -92,6 +92,10 @@ public class UserTaskServiceImpl implements UserTaskService {
         // save user task
         UserTask savedUserTask = userTaskRepository.save(userTask);
 
+        // increase task completed amount.
+        task.setCompletedAmount(task.getCompletedAmount() + 1);
+        taskService.save(task);
+
         // save log
         UserTaskLog userTaskLog = new UserTaskLog();
         userTaskLog.setUserTaskId(savedUserTask.getId());
@@ -106,9 +110,15 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public UserTask reviewTask(User user, UserTask userTask, int toStatus) {
+    public UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus) {
         // save user task
         UserTask savedUserTask = userTaskRepository.save(userTask);
+
+        // increase task accepted amount.
+        if (toStatus == UserTaskStatus.ACCEPTED.value()) {
+            task.setAcceptedAmount(task.getAcceptedAmount() + 1);
+            taskService.save(task);
+        }
 
         // save log
         UserTaskLog userTaskLog = new UserTaskLog();

@@ -48,6 +48,12 @@ public class Task {
     @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务余量'")
     private Long leftAmount;
 
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务完成量'")
+    private Long completedAmount;
+
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务通过量'")
+    private Long acceptedAmount;
+
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '审核周期'")
     private Integer reviewPeriod;
 
@@ -160,6 +166,22 @@ public class Task {
 
     public void setLeftAmount(Long leftAmount) {
         this.leftAmount = leftAmount;
+    }
+
+    public Long getCompletedAmount() {
+        return completedAmount;
+    }
+
+    public void setCompletedAmount(Long completedAmount) {
+        this.completedAmount = completedAmount;
+    }
+
+    public Long getAcceptedAmount() {
+        return acceptedAmount;
+    }
+
+    public void setAcceptedAmount(Long acceptedAmount) {
+        this.acceptedAmount = acceptedAmount;
     }
 
     public Integer getReviewPeriod() {

@@ -29,10 +29,11 @@ public interface UserTaskService {
      * 审核任务
      * @param user
      * @param userTask
+     * @param task
      * @param toStatus
      * @return
      */
-    UserTask reviewTask(User user, UserTask userTask, int toStatus);
+    UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus);
 
 
     /**
