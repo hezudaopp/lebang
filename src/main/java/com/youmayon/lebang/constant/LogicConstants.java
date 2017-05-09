@@ -16,4 +16,7 @@ public class LogicConstants {
 
     // 任务最大步骤数
     public static final int TASK_MAX_PROCEDURE_NUM = 5;
+
+    // app
+    public static final int APP_SECRET_LEN = 32;
 }

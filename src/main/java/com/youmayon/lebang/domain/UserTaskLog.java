@@ -22,8 +22,8 @@ public class UserTaskLog {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '操作用户'")
     private Long operatorUserId;
 
-    @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '操作用户来源app'")
-    private Long operatorAppId;
+    @Column(columnDefinition = "VARCHAR(20) DEFAULT NULL COMMENT '操作用户来源app'")
+    private String operatorAppId;
 
     @Size(min = 2, max = 32)
     @Column(columnDefinition = "VARCHAR(32) DEFAULT NULL COMMENT '操作用户在来源app中user_id'")
@@ -66,11 +66,11 @@ public class UserTaskLog {
         this.operatorUserId = operatorUserId;
     }
 
-    public Long getOperatorAppId() {
+    public String getOperatorAppId() {
         return operatorAppId;
     }
 
-    public void setOperatorAppId(Long operatorAppId) {
+    public void setOperatorAppId(String operatorAppId) {
         this.operatorAppId = operatorAppId;
     }
 

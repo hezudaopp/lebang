@@ -50,7 +50,7 @@ public interface UserTaskService {
      * @param taskId
      * @return
      */
-    UserTask findOne(long appId, String appUserId, long taskId);
+    UserTask findOne(String appId, String appUserId, long taskId);
 
     /**
      * 用户已领取的任务数量
@@ -59,5 +59,5 @@ public interface UserTaskService {
      * @param taskId
      * @return
      */
-    int count(long appId, String appUserId, long taskId);
+    int count(String appId, String appUserId, long taskId);
 }

@@ -10,10 +10,33 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-09 10:21:21
+Date: 2017-05-09 16:39:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `app`
+-- ----------------------------
+DROP TABLE IF EXISTS `app`;
+CREATE TABLE `app` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `enabled` tinyint(1) unsigned NOT NULL COMMENT '是否启用',
+  `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  `name` varchar(50) NOT NULL COMMENT 'app名称',
+  `secret` char(32) NOT NULL COMMENT 'app_secret',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of app
+-- ----------------------------
+INSERT INTO `app` VALUES ('1', '1494313266', '1', '1494313487', 'app1', 'xEE1a0jSGXxd!yV%jfi7YWBvY^TP@gW$');
+INSERT INTO `app` VALUES ('2', '1494313276', '1', '1494313276', 'app2', '$p9ULb8iMdABDtOIVhK3vOK4Fc!v2U@U');
+INSERT INTO `app` VALUES ('3', '1494313279', '1', '1494313279', 'app3', 'dZRm3TZ5DdehLE1mJBgl2+7IawkcD6g#');
+INSERT INTO `app` VALUES ('4', '1494313283', '1', '1494313283', 'app4', '4zU^EAxGD1oVwSAPdnD3uklz2W4ohl$%');
+INSERT INTO `app` VALUES ('5', '1494313286', '1', '1494313286', 'app5', 'V2j~3O85FIUcEDD8f3lR%i6OBnHg^3dW');
 
 -- ----------------------------
 -- Table structure for `city_task`
@@ -67,7 +90,7 @@ CREATE TABLE `task` (
 -- Records of task
 -- ----------------------------
 INSERT INTO `task` VALUES ('1', '5', '1493790500', '0', '18.00', '1493781437', '127', '2', '1503780500', '0', '1493781437', '19.89', null, '1', null, '2', '淘宝评论', '1', '评论快去', '1', '1');
-INSERT INTO `task` VALUES ('5', '5', '1493790500', '0', '18.00', '1493967172', '127', '1', '1503780500', '5', '1493967172', '19.89', null, '0', null, '2', '微信群', '1', '我的任务', '0', '0');
+INSERT INTO `task` VALUES ('5', '5', '1493790500', '0', '18.00', '1493967172', '127', '1', '1503780500', '4', '1493967172', '19.89', null, '0', null, '2', '微信群', '1', '我的任务', '1', '2');
 INSERT INTO `task` VALUES ('14', '5', '1493790500', '0', '18.00', '1493967645', '127', '1', '1503780500', '5', '1493967645', '19.89', null, '0', null, '2', '微信群', '1', '我的任务', '0', '0');
 INSERT INTO `task` VALUES ('16', '5', '1493790500', '0', '18.00', '1493975061', '127', '1', '1503780500', '5', '1493975061', '19.89', null, '0', null, '2', '微信群', '1', '我的任务', '0', '0');
 INSERT INTO `task` VALUES ('17', '5', '1493790500', '1', '18.00', '1493977197', '127', '1', '1503780500', '5', '1493977830', '19.89', null, '0', null, '2', '微信群', '1', '我的任务', '0', '0');
@@ -187,7 +210,7 @@ INSERT INTO `user` VALUES ('9', '1493951454', '1493951454', '340ea2eac052f03b7af
 DROP TABLE IF EXISTS `user_task`;
 CREATE TABLE `user_task` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `app_id` int(10) unsigned NOT NULL COMMENT '用户来源app',
+  `app_id` varchar(20) NOT NULL COMMENT '用户来源app',
   `app_user_id` varchar(32) NOT NULL COMMENT '用户在来源app中user_id',
   `city_id` bigint(20) unsigned DEFAULT NULL COMMENT '城市id',
   `completed_time` int(10) unsigned DEFAULT NULL COMMENT '任务完成时间',
@@ -206,7 +229,7 @@ CREATE TABLE `user_task` (
   `task_name` varchar(100) NOT NULL COMMENT '任务名称',
   `task_type_name` varchar(100) NOT NULL COMMENT '任务类型名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_task
@@ -216,6 +239,7 @@ INSERT INTO `user_task` VALUES ('2', '1', '98224383', null, null, '1494296186', 
 INSERT INTO `user_task` VALUES ('3', '1', '12345', null, null, '1494296192', null, '1494296192', null, '19.89', null, null, null, null, '0', '1503780500', '1', '评论快去', '淘宝评论');
 INSERT INTO `user_task` VALUES ('4', '1', '45678', null, null, '1494296199', null, '1494296199', null, '19.89', null, null, null, null, '0', '1503780500', '1', '评论快去', '淘宝评论');
 INSERT INTO `user_task` VALUES ('5', '1', '1234567', null, null, '1494296204', null, '1494296204', null, '19.89', null, null, null, null, '0', '1503780500', '1', '评论快去', '淘宝评论');
+INSERT INTO `user_task` VALUES ('6', '2', '421aa32', null, '1494319047', '1494318495', '1.jpg,2.jpg', '1494319123', '', '19.89', null, '3641801847', '1494319123', '4', '2', '1503780500', '5', '我的任务', '微信群');
 
 -- ----------------------------
 -- Table structure for `user_task_log`
@@ -225,13 +249,13 @@ CREATE TABLE `user_task_log` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
   `from_status` tinyint(2) unsigned NOT NULL COMMENT '操作前任务进度',
-  `operator_app_id` int(10) unsigned DEFAULT NULL COMMENT '操作用户来源app',
+  `operator_app_id` varchar(20) DEFAULT NULL COMMENT '操作用户来源app',
   `operator_app_user_id` varchar(32) DEFAULT NULL COMMENT '操作用户在来源app中user_id',
   `operator_user_id` bigint(20) unsigned DEFAULT NULL COMMENT '操作用户',
   `to_status` tinyint(2) unsigned NOT NULL COMMENT '操作后任务进度',
   `user_task_id` bigint(20) unsigned NOT NULL COMMENT '用户任务id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_task_log
@@ -243,3 +267,8 @@ INSERT INTO `user_task_log` VALUES ('4', '1494296199', '0', '1', '45678', null, 
 INSERT INTO `user_task_log` VALUES ('5', '1494296204', '0', '1', '1234567', null, '0', '5');
 INSERT INTO `user_task_log` VALUES ('6', '1494296247', '0', '1', '9822438', null, '1', '1');
 INSERT INTO `user_task_log` VALUES ('7', '1494296247', '1', null, null, '1', '2', '1');
+INSERT INTO `user_task_log` VALUES ('8', '1494318495', '0', '2', '421aa32', null, '0', '6');
+INSERT INTO `user_task_log` VALUES ('9', '1494318527', '0', '2', '421aa32', null, '1', '6');
+INSERT INTO `user_task_log` VALUES ('10', '1494318527', '1', null, null, '2', '4', '6');
+INSERT INTO `user_task_log` VALUES ('11', '1494319047', '4', '2', '421aa32', null, '1', '6');
+INSERT INTO `user_task_log` VALUES ('12', '1494319047', '1', null, null, '4', '2', '6');

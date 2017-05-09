@@ -1,5 +1,6 @@
 package com.youmayon.lebang.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youmayon.lebang.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +29,7 @@ public class User implements UserDetails {
     @Column(columnDefinition = "VARCHAR(20) COMMENT '用户账号（登录用）'")
     private String username;
 
+    @JsonIgnore
     @Size(min = 6, max = 80)
     @Column(columnDefinition = "CHAR(80) COMMENT '用户密码（登录用）,使用Spring Security的BaseEncoder加密'")
     private String password;

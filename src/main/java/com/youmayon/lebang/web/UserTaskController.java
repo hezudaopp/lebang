@@ -5,7 +5,6 @@ import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
 import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserTaskStatus;
-import com.youmayon.lebang.exceptions.InvalidArgumentException;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskService;
 import com.youmayon.lebang.service.UserTaskService;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +48,8 @@ public class UserTaskController extends BaseController {
     public ResponseEntity<UserTask> receiveTask(
             @Valid @RequestBody UserTask userTask,
             Errors errors,
-            UriComponentsBuilder ucb) {
+            UriComponentsBuilder ucb,
+            OAuth2Authentication auth) {
         assertFieldError(errors);
 
         Assert.notNull(userTask.getTaskId(), "Task id cannot be empty.");
@@ -65,6 +66,7 @@ public class UserTaskController extends BaseController {
             Assert.isTrue(taskCityService.containsCity(userTask));
         }
 
+        userTask.setAppId(auth.getOAuth2Request().getClientId());
         userTask.setTaskEndTime(task.getEndTime());
         userTask.setStatus(UserTaskStatus.ONGOING.value());
         userTask.setCreatedTime(now);
@@ -96,48 +98,21 @@ public class UserTaskController extends BaseController {
         return savedUserTask;
     }
 
-    /**
-     * 更新任务
-     * @param id
-     * @param unsavedUserTask
-     * @return
-     */
-    @RequestMapping(value = "/{id}/status/{userTaskStatus}", method = RequestMethod.PATCH, consumes = "application/json")
+    @RequestMapping(value = "/{id}/completed", method = RequestMethod.PATCH, consumes = "application/json")
     public UserTask patch(
             @PathVariable long id,
-            @PathVariable int userTaskStatus,
             @RequestBody UserTask unsavedUserTask,
-            @AuthenticationPrincipal User user) {
+            OAuth2Authentication auth) {
 
         UserTask savedUserTask = userTaskService.findOne(id);
         Assert.notNull(savedUserTask, "User task not found.");
-        Assert.isTrue(UserTaskStatus.contains(userTaskStatus), "User task status error.");
 
         Task task = taskService.findOne(savedUserTask.getTaskId());
         Assert.notNull(task, "Task not found.");
 
-        if (userTaskStatus == UserTaskStatus.COMPLETED.value()) {
-            return completeTask(savedUserTask, unsavedUserTask, task);
-        } else if (userTaskStatus == UserTaskStatus.ACCEPTED.value() ||
-                userTaskStatus == UserTaskStatus.REJECTED.value() ||
-                userTaskStatus == UserTaskStatus.REDOING.value()) {
-            return reviewTask(user, savedUserTask, task, userTaskStatus);
-        }
-        throw new InvalidArgumentException("Unsupported operation.");
-    }
-
-    /**
-     * 用户完成任务
-     * @param savedUserTask
-     * @param unsavedUserTask
-     * @return
-     */
-    private UserTask completeTask(UserTask savedUserTask, UserTask unsavedUserTask, Task task) {
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.ONGOING.value() || savedUserTask.getStatus() == UserTaskStatus.REDOING.value(), "User task from status error.");
-        Assert.notNull(unsavedUserTask.getAppId(), "App id cannot be empty.");
-        Assert.notNull(unsavedUserTask.getAppUserId(), "App user id cannot be empty.");
-        Assert.isTrue(unsavedUserTask.getAppId().equals(savedUserTask.getAppId()), "App id is different.");
-        Assert.isTrue(unsavedUserTask.getAppUserId().equals(savedUserTask.getAppUserId()), "App user id is different.");
+        Assert.isTrue(auth.getOAuth2Request().getClientId().equals(savedUserTask.getAppId()), "App id is different.");
+        Assert.isTrue(savedUserTask.getAppUserId().equals(unsavedUserTask.getAppUserId()), "App user id is different.");
         Assert.notNull(unsavedUserTask.getNote(), "Note cannot be empty.");
         Assert.notNull(unsavedUserTask.getImages(), "Images cannot be empty.");
 
@@ -162,12 +137,24 @@ public class UserTaskController extends BaseController {
 
     /**
      * 审核任务
-     * @param user
-     * @param savedUserTask
-     * @param toStatus
+     * @param id
      * @return
      */
-    private UserTask reviewTask(User user, UserTask savedUserTask, Task task, int toStatus) {
+    @RequestMapping(value = "/{id}/status/{userTaskStatus}", method = RequestMethod.PATCH, consumes = "application/json")
+    public UserTask patch(
+            @PathVariable long id,
+            @PathVariable int userTaskStatus,
+            @AuthenticationPrincipal User user) {
+
+        UserTask savedUserTask = userTaskService.findOne(id);
+        Assert.notNull(savedUserTask, "User task not found.");
+        Assert.isTrue(userTaskStatus == UserTaskStatus.ACCEPTED.value() ||
+                userTaskStatus == UserTaskStatus.REJECTED.value() ||
+                userTaskStatus == UserTaskStatus.REDOING.value(), "User task status error.");
+
+        Task task = taskService.findOne(savedUserTask.getTaskId());
+        Assert.notNull(task, "Task not found.");
+
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.COMPLETED.value(), "User task status error.");
         long now = System.currentTimeMillis() / 1000;
         if (!Role.ROLE_ADMIN.name().equals(user.getRole())) {
@@ -175,9 +162,9 @@ public class UserTaskController extends BaseController {
             Assert.isTrue(now < savedUserTask.getReviewEndTime(), "Review time has expired.");
         }
         savedUserTask.setReviewedTime(now);
-        savedUserTask.setStatus(toStatus);
+        savedUserTask.setStatus(userTaskStatus);
         savedUserTask.setModifiedTime(now);
 
-        return userTaskService.reviewTask(user, savedUserTask, task, toStatus);
+        return userTaskService.reviewTask(user, savedUserTask, task, userTaskStatus);
     }
 }

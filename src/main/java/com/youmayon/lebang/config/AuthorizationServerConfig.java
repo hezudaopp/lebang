@@ -1,7 +1,9 @@
 package com.youmayon.lebang.config;
 
 import com.youmayon.lebang.constant.SecurityConstants;
+import com.youmayon.lebang.domain.App;
 import com.youmayon.lebang.domain.OAuth2Client;
+import com.youmayon.lebang.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private TokenStore tokenStore;
 
     @Autowired
+    private AppService appService;
+
+    @Autowired
     private UserApprovalHandler userApprovalHandler;
 
     @Autowired
@@ -48,6 +53,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     .scopes(client.getScopes())
                     .accessTokenValiditySeconds(client.getAccessTokenValidSeconds())
                     .refreshTokenValiditySeconds(client.getAccessTokenValidSeconds());
+        }
+
+        for (App app : appService.list(true)) {
+            csb.withClient(app.getId().toString())
+                    .secret(app.getSecret())
+                    .authorizedGrantTypes(new String[]{"client_credentials"})
+                    .authorities(new String[]{"ROLE_APP"})
+                    .scopes(new String[]{"read", "trust"})
+                    .accessTokenValiditySeconds(7200);
         }
     }
 

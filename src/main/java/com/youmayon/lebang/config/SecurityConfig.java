@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 接口访问权限配置
+     * 认证接口访问权限配置
      * @param http
      * @throws Exception
      */
@@ -70,14 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
-//                .antMatchers("/**")
-//                .access("#oauth2.clientHasRole('CLIENT')")
+//                .access("#oauth2.clientHasRole('ROLE_CLIENT')")
 //                .regexMatchers(HttpMethod.DELETE, "/oauth/users/([^/].*?)/tokens/.*")
-//                .access("#oauth2.clientHasRole('CLIENT') and (hasRole('USER') or #oauth2.isClient()) and #oauth2.hasScope('write')")
+//                .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('USER') or #oauth2.isClient()) and #oauth2.hasScope('write')")
 //                .regexMatchers(HttpMethod.GET, "/oauth/clients/([^/].*?)/users/.*")
-//                .access("#oauth2.clientHasRole('CLIENT') and (hasRole('USER') or #oauth2.isClient()) and #oauth2.hasScope('read')")
+//                .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('USER') or #oauth2.isClient()) and #oauth2.hasScope('read')")
 //                .regexMatchers(HttpMethod.GET, "/oauth/clients/.*")
-//                .access("#oauth2.clientHasRole('CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')")
+//                .access("#oauth2.clientHasRole('ROLE_CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')")
                 .antMatchers("/auth/token").permitAll();
     }
 

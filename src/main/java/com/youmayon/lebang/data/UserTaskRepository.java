@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserTaskRepository extends JpaRepository<UserTask, Long> {
-    Page<UserTask> findByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(long appId, String appUserId, long taskId, Pageable pageable);
-    int countByAppIdAndAppUserIdAndTaskId(long appId, String appUserId, long taskId);
+    UserTask findFirstByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(String appId, String appUserId, long taskId);
+    int countByAppIdAndAppUserIdAndTaskId(String appId, String appUserId, long taskId);
 }

@@ -2,6 +2,7 @@ package com.youmayon.lebang.config;
 
 import com.youmayon.lebang.constant.SecurityConstants;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -43,6 +44,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/tasks/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/task_types/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/task_procedures/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/apps/**").hasAuthority("ROLE_ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/user_tasks").access("#oauth2.clientHasRole('ROLE_APP')")
+                .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('ROLE_APP')")
+                .antMatchers("/user_tasks/**").hasAnyAuthority("ROLE_ADMIN, ROLE_TASK_REVIEWER")
 
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());

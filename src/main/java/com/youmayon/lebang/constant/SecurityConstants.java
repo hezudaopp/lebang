@@ -23,7 +23,7 @@ public class SecurityConstants {
                 "lebang_client",
                 "lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO",
                 new String[]{"password", "refresh_token"},
-                new String[]{"CLIENT"},
+                new String[]{"ROLE_CLIENT"},
                 new String[]{"read", "write"},
                 7200,
                 86400 * 30)

@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 /**
  * Created by Jawinton on 17/05/04.
  */
@@ -138,16 +136,12 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public UserTask findOne(long appId, String appUserId, long taskId) {
-        Page<UserTask> userTaskPage = userTaskRepository.findByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(appId, appUserId, taskId, new PageRequest(0, 1));
-        if (!userTaskPage.hasContent()) {
-            return null;
-        }
-        return userTaskPage.getContent().get(0);
+    public UserTask findOne(String appId, String appUserId, long taskId) {
+        return userTaskRepository.findFirstByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(appId, appUserId, taskId);
     }
 
     @Override
-    public int count(long appId, String appUserId, long taskId) {
+    public int count(String appId, String appUserId, long taskId) {
         return userTaskRepository.countByAppIdAndAppUserIdAndTaskId(appId, appUserId, taskId);
     }
 }
