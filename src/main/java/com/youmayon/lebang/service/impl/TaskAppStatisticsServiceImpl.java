@@ -1,32 +1,19 @@
 package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskAppStatisticsRepository;
-import com.youmayon.lebang.data.TaskRepository;
-import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.TaskAppStatistics;
-import com.youmayon.lebang.domain.TaskCity;
-import com.youmayon.lebang.domain.TaskProcedure;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
-import com.youmayon.lebang.service.TaskCityService;
-import com.youmayon.lebang.service.TaskProcedureService;
-import com.youmayon.lebang.service.TaskService;
+import com.youmayon.lebang.service.UserTaskService;
+import com.youmayon.lebang.util.ReflectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -35,6 +22,9 @@ import java.util.Set;
 public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
     @Autowired
     TaskAppStatisticsRepository taskAppStatisticsRepository;
+
+    @Autowired
+    UserTaskService userTaskService;
 
     @Override
     public List<TaskAppStatistics> list(long beginTime, long endTime) {
@@ -60,6 +50,30 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
         taskAppStatisticsFilter.setEndTime(endTime);
         Specification<TaskAppStatistics> specification = this.getWhereClause(taskAppStatisticsFilter);
         return taskAppStatisticsRepository.findAll(specification);
+    }
+
+    @Override
+    public List<TaskAppStatistics> generateTaskAppStatistics(long beginTime, long endTime) throws IllegalAccessException {
+        List<TaskAppStatistics> taskAppStatisticsList = userTaskService.receivedAmountOfTaskIdAndAppId(beginTime, endTime);
+        taskAppStatisticsList.addAll(userTaskService.completedAmountOfTaskIdAndAppId(beginTime, endTime));
+        taskAppStatisticsList.addAll(userTaskService.acceptedAmountAndTotalFlowOfTaskIdAndAppId(beginTime, endTime));
+        Map<TaskAppStatistics, TaskAppStatistics> taskAppStatisticsSet = new HashMap<>();
+        for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
+            if (taskAppStatisticsSet.containsKey(taskAppStatistics)) {
+                TaskAppStatistics existTaskAppStatistics = taskAppStatisticsSet.get(taskAppStatistics);
+                ReflectUtil.mergeObject(existTaskAppStatistics, taskAppStatistics);
+            }
+
+            if (taskAppStatistics.getId() == null) {
+                TaskAppStatistics savedTaskAppStatistics = taskAppStatisticsRepository.findFirstByTaskIdAndAppIdAndBeginTimeAndEndTime(taskAppStatistics.getTaskId(), taskAppStatistics.getAppId(), beginTime, endTime);
+                if (savedTaskAppStatistics != null) {
+                    taskAppStatistics.setId(savedTaskAppStatistics.getId());
+                }
+            }
+
+            taskAppStatisticsSet.put(taskAppStatistics, taskAppStatistics);
+        }
+        return taskAppStatisticsRepository.save(taskAppStatisticsSet.values());
     }
 
     private class TaskAppStatisticsFilter {
@@ -120,10 +134,10 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
                     predicate.add(cb.equal(root.get("appId").as(Long.class), taskAppStatisticsFilter.getAppId()));
                 }
                 if (taskAppStatisticsFilter.getBeginTime() >= 0) {
-                    predicate.add(cb.ge(root.get("beginTime").as(Long.class), taskAppStatisticsFilter.getBeginTime()));
+                    predicate.add(cb.equal(root.get("beginTime").as(Long.class), taskAppStatisticsFilter.getBeginTime()));
                 }
                 if (taskAppStatisticsFilter.getEndTime() >= 0) {
-                    predicate.add(cb.le(root.get("endTime").as(Long.class), taskAppStatisticsFilter.getEndTime()));
+                    predicate.add(cb.equal(root.get("endTime").as(Long.class), taskAppStatisticsFilter.getEndTime()));
                 }
                 Predicate[] pre = new Predicate[predicate.size()];
                 return query.groupBy(root.get("beginTime"), root.get("endTime")).having(predicate.toArray(pre)).getRestriction();

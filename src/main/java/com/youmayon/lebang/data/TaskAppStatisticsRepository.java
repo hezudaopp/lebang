@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TaskAppStatisticsRepository extends JpaRepository<TaskAppStatistics, Long>, JpaSpecificationExecutor<TaskAppStatistics> {
+    TaskAppStatistics findFirstByTaskIdAndAppIdAndBeginTimeAndEndTime(long taskId, String appId, long beginTime, long endTime);
 }

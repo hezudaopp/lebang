@@ -13,11 +13,12 @@ public class ReflectUtil {
      * @param origin
      * @param destination
      * @param <T>
+     * @return destination
      * @throws IllegalAccessException
      */
-    public static final <T> void mergeObject(T origin, T destination) throws IllegalAccessException {
-        if (origin == null || destination == null) return;
-        if (!origin.getClass().equals(destination.getClass())) return;
+    public static final <T> T mergeObject(T origin, T destination) throws IllegalAccessException {
+        if (origin == null || destination == null) return destination;
+        if (!origin.getClass().equals(destination.getClass())) return destination;
 
         Field[] fields = origin.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -28,5 +29,6 @@ public class ReflectUtil {
             }
             fields[i].setAccessible(false);
         }
+        return destination;
     }
 }

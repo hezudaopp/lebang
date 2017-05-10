@@ -55,7 +55,7 @@ public class TimeUtil {
      * @return
      */
     public static final long dayEndTimestamp() {
-        return dayBeginTimestamp(System.currentTimeMillis(), 8) + 86400;
+        return dayBeginTimestamp(System.currentTimeMillis() / 1000, 8) + 86400;
     }
 
     /**

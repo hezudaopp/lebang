@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,18 @@ public class StatisticsController extends BaseController {
     private long beginTime;
 
     private long endTime;
+
+    @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)
+    public List<List<TaskAppStatistics>> put(@RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) throws IllegalAccessException {
+        this.setBeginTimeAndEndTime(days);
+        List<List<TaskAppStatistics>> response = new ArrayList<>();
+        for (long curTime = this.endTime; curTime >= this.beginTime; curTime -= 86400L) {
+            long endTime = curTime;
+            long beginTime = endTime - 86400L;
+            response.add(taskAppStatisticsService.generateTaskAppStatistics(beginTime, endTime));
+        }
+        return response;
+    }
 
     /**
      * 按天获取总统计信息

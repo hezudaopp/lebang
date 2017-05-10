@@ -1,10 +1,7 @@
 package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.UserTaskRepository;
-import com.youmayon.lebang.domain.Task;
-import com.youmayon.lebang.domain.User;
-import com.youmayon.lebang.domain.UserTask;
-import com.youmayon.lebang.domain.UserTaskLog;
+import com.youmayon.lebang.domain.*;
 import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserStatus;
 import com.youmayon.lebang.enums.UserTaskStatus;
@@ -14,11 +11,14 @@ import com.youmayon.lebang.service.UserTaskLogService;
 import com.youmayon.lebang.service.UserTaskService;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jawinton on 17/05/04.
@@ -143,5 +143,70 @@ public class UserTaskServiceImpl implements UserTaskService {
     @Override
     public int count(String appId, String appUserId, long taskId) {
         return userTaskRepository.countByAppIdAndAppUserIdAndTaskId(appId, appUserId, taskId);
+    }
+
+    @Override
+    public List<TaskAppStatistics> receivedAmountOfTaskIdAndAppId(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.taskAppReceivedAmount(beginTime, endTime);
+        List<TaskAppStatistics> taskAppStatisticsList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            if (objects.length != 2) {
+                continue;
+            }
+            UserTask userTask = (UserTask) objects[0];
+            Long receivedAmount = (Long) objects[1];
+            TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
+            taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setBeginTime(beginTime);
+            taskAppStatistics.setEndTime(endTime);
+            taskAppStatistics.setReceivedAmount(receivedAmount);
+            taskAppStatisticsList.add(taskAppStatistics);
+        }
+        return taskAppStatisticsList;
+    }
+
+    @Override
+    public List<TaskAppStatistics> completedAmountOfTaskIdAndAppId(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.taskAppCompletedAmount(beginTime, endTime);
+        List<TaskAppStatistics> taskAppStatisticsList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            if (objects.length != 2) {
+                continue;
+            }
+            UserTask userTask = (UserTask) objects[0];
+            Long completedAmount = (Long) objects[1];
+            TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
+            taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setBeginTime(beginTime);
+            taskAppStatistics.setEndTime(endTime);
+            taskAppStatistics.setCompletedAmount(completedAmount);
+            taskAppStatisticsList.add(taskAppStatistics);
+        }
+        return taskAppStatisticsList;
+    }
+
+    @Override
+    public List<TaskAppStatistics> acceptedAmountAndTotalFlowOfTaskIdAndAppId(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.taskAppAcceptedAmountAndTotalFlow(beginTime, endTime);
+        List<TaskAppStatistics> taskAppStatisticsList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            if (objects.length != 3) {
+                continue;
+            }
+            UserTask userTask = (UserTask) objects[0];
+            Long acceptedAmount = (Long) objects[1];
+            Double totalFlow = (Double) objects[2];
+            TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
+            taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setBeginTime(beginTime);
+            taskAppStatistics.setEndTime(endTime);
+            taskAppStatistics.setAcceptedAmount(acceptedAmount);
+            taskAppStatistics.setTotalFlow(totalFlow);
+            taskAppStatisticsList.add(taskAppStatistics);
+        }
+        return taskAppStatisticsList;
     }
 }

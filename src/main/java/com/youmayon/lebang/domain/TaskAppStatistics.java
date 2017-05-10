@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
  * 任务渠道统计
  */
 @Entity
+@Table(indexes = { @Index(name = "uk_task_app_begin_end", columnList = "taskId, appId, beginTime, endTime", unique = true)})
 public class TaskAppStatistics {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -19,8 +20,8 @@ public class TaskAppStatistics {
     private Long taskId;
 
     @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '渠道app id'")
-    private Long appId;
+    @Column(columnDefinition = "VARCHAR(20) COMMENT 'app渠道id'")
+    private String appId;
 
     @NotNull
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '统计开始时间'")
@@ -44,6 +45,29 @@ public class TaskAppStatistics {
 
     public TaskAppStatistics() {}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaskAppStatistics that = (TaskAppStatistics) o;
+
+        if (taskId != null ? !taskId.equals(that.taskId) : that.taskId != null) return false;
+        if (appId != null ? !appId.equals(that.appId) : that.appId != null) return false;
+        if (beginTime != null ? !beginTime.equals(that.beginTime) : that.beginTime != null) return false;
+        return endTime != null ? endTime.equals(that.endTime) : that.endTime == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = taskId != null ? taskId.hashCode() : 0;
+        result = 31 * result + (appId != null ? appId.hashCode() : 0);
+        result = 31 * result + (beginTime != null ? beginTime.hashCode() : 0);
+        result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
+        return result;
+    }
+
     public Long getId() {
         return id;
     }
@@ -60,11 +84,11 @@ public class TaskAppStatistics {
         this.taskId = taskId;
     }
 
-    public Long getAppId() {
+    public String getAppId() {
         return appId;
     }
 
-    public void setAppId(Long appId) {
+    public void setAppId(String appId) {
         this.appId = appId;
     }
 

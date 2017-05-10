@@ -1,9 +1,11 @@
 package com.youmayon.lebang.service;
 
 import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 /**
  * 任务service类
@@ -60,4 +62,29 @@ public interface UserTaskService {
      * @return
      */
     int count(String appId, String appUserId, long taskId);
+
+    /**
+     * 根据任务和APP渠道统计领取任务数据
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<TaskAppStatistics> receivedAmountOfTaskIdAndAppId(long beginTime, long endTime);
+
+    /**
+     * 根据任务和APP渠道统计完成任务数据
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<TaskAppStatistics> completedAmountOfTaskIdAndAppId(long beginTime, long endTime);
+
+    /**
+     * 根据任务和APP渠道统计审核通过任务和流水数据
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<TaskAppStatistics> acceptedAmountAndTotalFlowOfTaskIdAndAppId(long beginTime, long endTime);
+
 }

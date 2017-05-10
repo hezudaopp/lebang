@@ -44,4 +44,11 @@ public interface TaskAppStatisticsService {
      * @return
      */
     List<TaskAppStatistics> listTaskAppStatistics(long taskId, long appId, long beginTime, long endTime);
+
+    /**
+     * 生成任务APP渠道报表
+     * @param beginTime
+     * @param endTime
+     */
+    List<TaskAppStatistics> generateTaskAppStatistics(long beginTime, long endTime) throws IllegalAccessException;
 }
