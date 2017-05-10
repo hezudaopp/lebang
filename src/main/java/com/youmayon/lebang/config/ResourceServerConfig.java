@@ -1,6 +1,8 @@
 package com.youmayon.lebang.config;
 
 import com.youmayon.lebang.constant.SecurityConstants;
+import com.youmayon.lebang.enums.ClientRole;
+import com.youmayon.lebang.enums.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,20 +37,22 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(POST, "/users").hasAuthority("ROLE_ADMIN")
+                .antMatchers(POST, "/users").hasAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers(GET, "/users/me").authenticated()
                 .antMatchers(PATCH, "/users/password").authenticated()
                 .antMatchers(DELETE, "/users/logout").authenticated()
-                .antMatchers("/users/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/users/**").hasAuthority(Role.ROLE_ADMIN.name())
 
-                .antMatchers("/tasks/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/task_types/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/task_procedures/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/apps/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/tasks/**").hasAuthority(Role.ROLE_ADMIN.name())
+                .antMatchers("/task_types/**").hasAuthority(Role.ROLE_ADMIN.name())
+                .antMatchers("/task_procedures/**").hasAnyAuthority(Role.ROLE_ADMIN.name())
+                .antMatchers("/apps/**").hasAuthority(Role.ROLE_ADMIN.name())
 
-                .antMatchers(HttpMethod.POST, "/user_tasks").access("#oauth2.clientHasRole('ROLE_APP')")
-                .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('ROLE_APP')")
-                .antMatchers("/user_tasks/**").hasAnyAuthority("ROLE_ADMIN, ROLE_TASK_REVIEWER")
+                .antMatchers(HttpMethod.POST, "/user_tasks").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
+                .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
+                .antMatchers("/user_tasks/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_TASK_REVIEWER.name())
+
+                .antMatchers("/statistics/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_REPORT_VIEWER.name())
 
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());

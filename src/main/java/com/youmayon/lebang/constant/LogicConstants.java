@@ -19,4 +19,8 @@ public class LogicConstants {
 
     // app
     public static final int APP_SECRET_LEN = 32;
+
+    // statistic
+    public static final String DEFAULT_STATISTICS_DAYS = "7";
+    public static final int MAX_STATISTICS_DAYS = 30;
 }

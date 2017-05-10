@@ -118,7 +118,7 @@ public class TaskServiceImpl implements TaskService {
         taskFilter.setTaskTypeId(taskTypeId);
         taskFilter.setEnabled(enabled);
         Specification<Task> specification = this.getWhereClause(taskFilter);
-        return  taskRepository.findAll(specification, pageable);
+        return taskRepository.findAll(specification, pageable);
     }
 
     @Override

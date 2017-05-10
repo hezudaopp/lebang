@@ -1,6 +1,7 @@
 package com.youmayon.lebang.constant;
 
 import com.youmayon.lebang.domain.OAuth2Client;
+import com.youmayon.lebang.enums.ClientRole;
 
 /**
  * 配置常量
@@ -23,7 +24,7 @@ public class SecurityConstants {
                 "lebang_client",
                 "lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO",
                 new String[]{"password", "refresh_token"},
-                new String[]{"ROLE_CLIENT"},
+                new String[]{ClientRole.ROLE_CLIENT.name()},
                 new String[]{"read", "write"},
                 7200,
                 86400 * 30)
