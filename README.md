@@ -189,6 +189,21 @@
 }
 ```
 
+### 任务渠道统计：TASK_APP_STATISTICS
+``` javascript
+{
+    "id": 1,
+    "taskId": 2,
+    "appId": 4,
+    "beginTime": 1494259200, // 统计开始时间（包含）， 按天统计的话就是一天的开始时间
+    "endTime": 1494345600, // 统计结束时间（不包含），按天统计的话就是第二天的开始时间
+    "totalFlow": 39.78, // 审核通过的流水
+    "receivedAmount": 6, // 领取的任务数
+    "completedAmount": 2, // 完成的任务数
+    "acceptedAmount": 2  // 审核通过的任务数
+  }
+```
+
 ## 接口列表：
 
 ### APP渠道相关
@@ -563,3 +578,63 @@
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
+
+### 统计报表相关
+#### 生成任务app渠道报表
+  - 请求URI: /statistics/app_task_statistics
+  - 请求Method: PUT
+  - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: 二维数据，第一个维度表示天数，第二个维度表示任务APP渠道按天统计结果
+``` javascript
+    [
+    [{TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...}],
+    [{TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...}],
+    ...
+    ]
+```
+
+#### 总报表
+  - 请求URI: /statistics
+  - 请求Method: GET
+  - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+    [TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...]
+```
+
+#### 任务报表
+  - 请求URI: /statistics/tasks/{taskId}
+  - 请求Method: GET
+  - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+    [TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...]
+```
+
+#### APP渠道报表
+  - 请求URI: /statistics/apps/{appId}
+  - 请求Method: GET
+  - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+    [TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...]
+```
+
+#### 任务APP渠道报表
+  - 请求URI: /statistics/tasks/{taskId}/apps/{appId}
+  - 请求Method: GET
+  - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+    [TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...]
+```
