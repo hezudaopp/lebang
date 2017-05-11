@@ -45,6 +45,15 @@ public class TaskAppStatistics {
 
     public TaskAppStatistics() {}
 
+    public TaskAppStatistics(Long beginTime, Long endTime, Double totalFlow, Long receivedAmount, Long completedAmount, Long acceptedAmount) {
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.totalFlow = totalFlow;
+        this.receivedAmount = receivedAmount;
+        this.completedAmount = completedAmount;
+        this.acceptedAmount = acceptedAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

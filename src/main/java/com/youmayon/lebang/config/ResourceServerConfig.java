@@ -52,10 +52,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
                 .antMatchers("/user_tasks/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_TASK_REVIEWER.name())
 
-                .antMatchers("/statistics/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_REPORT_VIEWER.name())
-
-                .anyRequest().authenticated();
-//        .anyRequest().permitAll();
+//                .antMatchers("/statistics/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_REPORT_VIEWER.name())
+//
+//                .anyRequest().authenticated();
+        .anyRequest().permitAll();
         http.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
 }

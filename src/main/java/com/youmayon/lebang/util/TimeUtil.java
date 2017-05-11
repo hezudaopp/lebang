@@ -38,7 +38,7 @@ public class TimeUtil {
      * @return
      */
     public static final long dayBeginTimestamp() {
-        return dayBeginTimestamp(System.currentTimeMillis(), 8);
+        return dayBeginTimestamp(System.currentTimeMillis() / 1000, 8);
     }
 
     /**
