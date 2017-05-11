@@ -13,27 +13,33 @@ public interface TaskAppStatisticsService {
      * 统计列表
      * @param beginTime
      * @param endTime
+     * @param isDistinctTask
+     * @param isDistinctApp
      * @return
      */
-    List<TaskAppStatistics> list(long beginTime, long endTime);
+    List<TaskAppStatistics> list(long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp);
 
     /**
      * APP渠道统计列表
      * @param appId
      * @param beginTime
      * @param endTime
+     * @param isDistinctTask
+     * @param isDistinctApp
      * @return
      */
-    List<TaskAppStatistics> listAppStatistics(long appId, long beginTime, long endTime);
+    List<TaskAppStatistics> listAppStatistics(long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp);
 
     /**
      * 任务统计列表
      * @param taskId
      * @param beginTime
      * @param endTime
+     * @param isDistinctTask
+     * @param isDistinctApp
      * @return
      */
-    List<TaskAppStatistics> listTaskStatistics(long taskId, long beginTime, long endTime);
+    List<TaskAppStatistics> listTaskStatistics(long taskId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp);
 
     /**
      * 任务APP渠道统计列表
@@ -41,9 +47,11 @@ public interface TaskAppStatisticsService {
      * @param appId
      * @param beginTime
      * @param endTime
+     * @param isDistinctTask
+     * @param isDistinctApp
      * @return
      */
-    List<TaskAppStatistics> listTaskAppStatistics(long taskId, long appId, long beginTime, long endTime);
+    List<TaskAppStatistics> listTaskAppStatistics(long taskId, long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp);
 
     /**
      * 生成任务APP渠道报表

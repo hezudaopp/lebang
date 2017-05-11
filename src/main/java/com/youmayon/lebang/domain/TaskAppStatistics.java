@@ -45,7 +45,9 @@ public class TaskAppStatistics {
 
     public TaskAppStatistics() {}
 
-    public TaskAppStatistics(Long beginTime, Long endTime, Double totalFlow, Long receivedAmount, Long completedAmount, Long acceptedAmount) {
+    public TaskAppStatistics(Long taskId, String appId, Long beginTime, Long endTime, Double totalFlow, Long receivedAmount, Long completedAmount, Long acceptedAmount) {
+        this.taskId = taskId;
+        this.appId = appId;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.totalFlow = totalFlow;

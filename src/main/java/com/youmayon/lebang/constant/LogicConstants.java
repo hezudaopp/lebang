@@ -23,4 +23,8 @@ public class LogicConstants {
     // statistic
     public static final String DEFAULT_STATISTICS_DAYS = "7";
     public static final int MAX_STATISTICS_DAYS = 30;
+
+    // true/false string
+    public static final String FALSE = "false";
+    public static final String TRUE = "true";
 }

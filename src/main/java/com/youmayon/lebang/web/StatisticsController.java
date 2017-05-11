@@ -42,9 +42,12 @@ public class StatisticsController extends BaseController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<TaskAppStatistics> get(@RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) {
+    public List<TaskAppStatistics> get(
+            @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
+            @RequestParam(value = "isDistinctTask", defaultValue = LogicConstants.FALSE) boolean isDistinctTask,
+            @RequestParam(value = "isDistinctApp", defaultValue = LogicConstants.FALSE) boolean isDistinctApp) {
         this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.list(this.beginTime, this.endTime);
+        return taskAppStatisticsService.list(this.beginTime, this.endTime, isDistinctTask, isDistinctApp);
     }
 
     /**
@@ -56,9 +59,10 @@ public class StatisticsController extends BaseController {
     @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.GET)
     public List<TaskAppStatistics> getTaskStatistics(
             @PathVariable long taskId,
-            @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) {
+            @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
+            @RequestParam(value = "isDistinctApp", defaultValue = LogicConstants.FALSE) boolean isDistinctApp) {
         this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listTaskStatistics(taskId, this.beginTime, this.endTime);
+        return taskAppStatisticsService.listTaskStatistics(taskId, this.beginTime, this.endTime, false, isDistinctApp);
     }
 
     /**
@@ -70,9 +74,10 @@ public class StatisticsController extends BaseController {
     @RequestMapping(value = "/apps/{appId}", method = RequestMethod.GET)
     public List<TaskAppStatistics> getAppStatistics(
             @PathVariable long appId,
-            @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) {
+            @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
+            @RequestParam(value = "isDistinctTask", defaultValue = LogicConstants.FALSE) boolean isDistinctTask) {
         this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listAppStatistics(appId, this.beginTime, this.endTime);
+        return taskAppStatisticsService.listAppStatistics(appId, this.beginTime, this.endTime, isDistinctTask, false);
     }
 
     /**
@@ -88,7 +93,7 @@ public class StatisticsController extends BaseController {
             @PathVariable long appId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) {
         this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listTaskAppStatistics(taskId, appId, this.beginTime, this.endTime);
+        return taskAppStatisticsService.listTaskAppStatistics(taskId, appId, this.beginTime, this.endTime, false, false);
     }
 
     private void setBeginTimeAndEndTime(int days) {

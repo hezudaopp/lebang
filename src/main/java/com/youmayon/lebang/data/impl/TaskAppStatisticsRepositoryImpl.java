@@ -5,10 +5,7 @@ import com.youmayon.lebang.domain.TaskAppStatistics;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +17,13 @@ public class TaskAppStatisticsRepositoryImpl implements TaskAppStatisticsDao {
     private EntityManager entityManager;
 
     @Override
-    public List<TaskAppStatistics> findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long taskId, long appId, long beginTime, long endTime) {
+    public List<TaskAppStatistics> findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long taskId, long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TaskAppStatistics> criteriaQuery = criteriaBuilder.createQuery(TaskAppStatistics.class);
         Root<TaskAppStatistics> root = criteriaQuery.from(TaskAppStatistics.class);
         criteriaQuery.select(criteriaBuilder.construct(TaskAppStatistics.class,
+                root.get("taskId"),
+                root.get("appId"),
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("totalFlow")),
@@ -46,7 +45,16 @@ public class TaskAppStatisticsRepositoryImpl implements TaskAppStatisticsDao {
         }
         Predicate[] predicates = new Predicate[predicateList.size()];
         criteriaQuery.where(predicateList.toArray(predicates));
-        criteriaQuery.groupBy(root.get("beginTime"), root.get("endTime"));
+        List<Expression<?>> groupList = new ArrayList<>();
+        if (isDistinctApp) {
+            groupList.add(root.get("appId"));
+        }
+        if (isDistinctTask) {
+            groupList.add(root.get("taskId"));
+        }
+        groupList.add(root.get("beginTime"));
+        groupList.add(root.get("endTime"));
+        criteriaQuery.groupBy(groupList);
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

@@ -34,6 +34,9 @@ public class User implements UserDetails {
     @Column(columnDefinition = "CHAR(80) COMMENT '用户密码（登录用）,使用Spring Security的BaseEncoder加密'")
     private String password;
 
+    @Column(columnDefinition = "VARCHAR(20) DEFAULT NULL COMMENT COMMENT '昵称'")
+    private String nickname;
+
     @Column(columnDefinition = "VARCHAR(50) DEFAULT NULL COMMENT '头像'")
     private String avatar;
 
@@ -105,6 +108,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getAvatar() {

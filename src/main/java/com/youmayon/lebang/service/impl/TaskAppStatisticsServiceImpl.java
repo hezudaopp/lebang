@@ -25,23 +25,37 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
     UserTaskService userTaskService;
 
     @Override
-    public List<TaskAppStatistics> list(long beginTime, long endTime) {
-        return listTaskAppStatistics(0, 0, beginTime, endTime);
+    public List<TaskAppStatistics> list(long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp) {
+        return listTaskAppStatistics(0, 0, beginTime, endTime, isDistinctTask, isDistinctApp);
     }
 
     @Override
-    public List<TaskAppStatistics> listAppStatistics(long appId, long beginTime, long endTime) {
-        return listTaskAppStatistics(0, appId, beginTime, endTime);
+    public List<TaskAppStatistics> listAppStatistics(long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp) {
+        return listTaskAppStatistics(0, appId, beginTime, endTime, isDistinctTask, isDistinctApp);
     }
 
     @Override
-    public List<TaskAppStatistics> listTaskStatistics(long taskId, long beginTime, long endTime) {
-        return listTaskAppStatistics(taskId, 0, beginTime, endTime);
+    public List<TaskAppStatistics> listTaskStatistics(long taskId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp) {
+        return listTaskAppStatistics(taskId, 0, beginTime, endTime, isDistinctTask, isDistinctApp);
     }
 
     @Override
-    public List<TaskAppStatistics> listTaskAppStatistics(long taskId, long appId, long beginTime, long endTime) {
-        return taskAppStatisticsRepository.findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(taskId, appId, beginTime, endTime);
+    public List<TaskAppStatistics> listTaskAppStatistics(long taskId, long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp) {
+        List<TaskAppStatistics> taskAppStatisticsList = taskAppStatisticsRepository.findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(taskId, appId, beginTime, endTime, isDistinctTask, isDistinctApp);
+
+        if (!isDistinctApp) {
+            for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
+                taskAppStatistics.setAppId(null);
+            }
+        }
+
+        if (!isDistinctTask) {
+            for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
+                taskAppStatistics.setTaskId(null);
+            }
+        }
+
+        return taskAppStatisticsList;
     }
 
     @Override

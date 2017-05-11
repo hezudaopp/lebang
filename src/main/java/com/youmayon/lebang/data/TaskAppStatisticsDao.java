@@ -8,5 +8,5 @@ import java.util.List;
  * Created by Jawinton on 17/05/11.
  */
 public interface TaskAppStatisticsDao {
-    List<TaskAppStatistics> findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long taskId, long appId, long beginTime, long endTime);
+    List<TaskAppStatistics> findByTaskIdAndAppIdAndBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long taskId, long appId, long beginTime, long endTime, boolean isDistinctTask, boolean isDistinctApp);
 }
