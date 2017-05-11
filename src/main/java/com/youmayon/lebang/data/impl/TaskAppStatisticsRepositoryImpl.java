@@ -52,8 +52,10 @@ public class TaskAppStatisticsRepositoryImpl implements TaskAppStatisticsDao {
         if (isDistinctTask) {
             groupList.add(root.get("taskId"));
         }
-        groupList.add(root.get("beginTime"));
-        groupList.add(root.get("endTime"));
+        if (beginTime != endTime) {
+            groupList.add(root.get("beginTime"));
+            groupList.add(root.get("endTime"));
+        }
         criteriaQuery.groupBy(groupList);
         return entityManager.createQuery(criteriaQuery).getResultList();
     }

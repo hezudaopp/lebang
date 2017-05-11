@@ -98,7 +98,12 @@ public class StatisticsController extends BaseController {
 
     private void setBeginTimeAndEndTime(int days) {
         Assert.isTrue(days <= LogicConstants.MAX_STATISTICS_DAYS, "Days too large.");
+        Assert.isTrue(days >= 0, "Days cannot be negative.");
         this.endTime = TimeUtil.dayBeginTimestamp();
-        this.beginTime = this.endTime - days * 86400;
+        this.beginTime = this.endTime - days * 86400L;
+        if (this.beginTime == this.endTime) {
+            this.beginTime = -1L;
+            this.endTime = -1L;
+        }
     }
 }

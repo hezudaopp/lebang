@@ -55,6 +55,13 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
             }
         }
 
+        if (beginTime == endTime) {
+            for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
+                taskAppStatistics.setBeginTime(null);
+                taskAppStatistics.setEndTime(null);
+            }
+        }
+
         return taskAppStatisticsList;
     }
 
