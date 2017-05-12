@@ -20,17 +20,27 @@ public class StatisticsController extends BaseController {
     @Autowired
     TaskAppStatisticsService taskAppStatisticsService;
 
-    private long beginTime;
+    private long dayBeginTime;
 
-    private long endTime;
+    private long dayEndTime;
+
+    private long monthBeginTime;
+
+    private long monthEndTime;
+
+    @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.PUT)
+    public Long generateReviewerTaskMonthlyStatistics(@RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) {
+        this.setMonthBeginTimeAndEndTime(months);
+        return this.monthBeginTime;
+    }
 
     @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)
-    public List<List<TaskAppStatistics>> put(@RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) throws IllegalAccessException {
-        this.setBeginTimeAndEndTime(days);
+    public List<List<TaskAppStatistics>> generateTaskAppDailyStatistics(@RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) throws IllegalAccessException {
+        long beginTime = TimeUtil.dayEndTimestamp();
         List<List<TaskAppStatistics>> response = new ArrayList<>();
-        for (long curTime = this.endTime; curTime >= this.beginTime; curTime -= 86400L) {
-            long endTime = curTime;
-            long beginTime = endTime - 86400L;
+        for (int i = 0; i < days; i++) {
+            long endTime = beginTime;
+            beginTime = endTime - days * 86400L;
             response.add(taskAppStatisticsService.generateTaskAppStatistics(beginTime, endTime));
         }
         return response;
@@ -46,8 +56,8 @@ public class StatisticsController extends BaseController {
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
             @RequestParam(value = "isDistinctTask", defaultValue = LogicConstants.FALSE) boolean isDistinctTask,
             @RequestParam(value = "isDistinctApp", defaultValue = LogicConstants.FALSE) boolean isDistinctApp) {
-        this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.list(this.beginTime, this.endTime, isDistinctTask, isDistinctApp);
+        this.setDayBeginTimeAndEndTime(days);
+        return taskAppStatisticsService.list(this.dayBeginTime, this.dayEndTime, isDistinctTask, isDistinctApp);
     }
 
     /**
@@ -61,8 +71,8 @@ public class StatisticsController extends BaseController {
             @PathVariable long taskId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
             @RequestParam(value = "isDistinctApp", defaultValue = LogicConstants.FALSE) boolean isDistinctApp) {
-        this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listTaskStatistics(taskId, this.beginTime, this.endTime, false, isDistinctApp);
+        this.setDayBeginTimeAndEndTime(days);
+        return taskAppStatisticsService.listTaskStatistics(taskId, this.dayBeginTime, this.dayEndTime, false, isDistinctApp);
     }
 
     /**
@@ -76,8 +86,8 @@ public class StatisticsController extends BaseController {
             @PathVariable long appId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
             @RequestParam(value = "isDistinctTask", defaultValue = LogicConstants.FALSE) boolean isDistinctTask) {
-        this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listAppStatistics(appId, this.beginTime, this.endTime, isDistinctTask, false);
+        this.setDayBeginTimeAndEndTime(days);
+        return taskAppStatisticsService.listAppStatistics(appId, this.dayBeginTime, this.dayEndTime, isDistinctTask, false);
     }
 
     /**
@@ -92,18 +102,29 @@ public class StatisticsController extends BaseController {
             @PathVariable long taskId,
             @PathVariable long appId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) {
-        this.setBeginTimeAndEndTime(days);
-        return taskAppStatisticsService.listTaskAppStatistics(taskId, appId, this.beginTime, this.endTime, false, false);
+        this.setDayBeginTimeAndEndTime(days);
+        return taskAppStatisticsService.listTaskAppStatistics(taskId, appId, this.dayBeginTime, this.dayEndTime, false, false);
     }
 
-    private void setBeginTimeAndEndTime(int days) {
+    private void setDayBeginTimeAndEndTime(int days) {
         Assert.isTrue(days <= LogicConstants.MAX_STATISTICS_DAYS, "Days too large.");
         Assert.isTrue(days >= 0, "Days cannot be negative.");
-        this.endTime = TimeUtil.dayBeginTimestamp();
-        this.beginTime = this.endTime - days * 86400L;
-        if (this.beginTime == this.endTime) {
-            this.beginTime = -1L;
-            this.endTime = -1L;
+        this.dayEndTime = TimeUtil.dayBeginTimestamp();
+        this.dayBeginTime = this.dayEndTime - days * 86400L;
+        if (this.dayBeginTime == this.dayEndTime) {
+            this.dayBeginTime = -1L;
+            this.dayEndTime = -1L;
+        }
+    }
+
+    private void setMonthBeginTimeAndEndTime(int months) {
+        Assert.isTrue(months <= LogicConstants.MAX_STATISTICS_MONTHS, "Months too large.");
+        Assert.isTrue(months > 0, "Months cannot be negative.");
+        this.monthEndTime = TimeUtil.monthBeginTimestamp(0);
+        this.monthBeginTime = TimeUtil.monthBeginTimestamp(-months);
+        if (this.monthBeginTime == this.monthEndTime) {
+            this.monthBeginTime = -1L;
+            this.monthEndTime = -1L;
         }
     }
 }

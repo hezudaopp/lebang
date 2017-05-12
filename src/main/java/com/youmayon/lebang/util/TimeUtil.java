@@ -2,12 +2,20 @@ package com.youmayon.lebang.util;
 
 import org.springframework.util.Assert;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- * 时间工具类
+ * 时间工具类，
+ * 本类时间戳单位是s
  * Created by Jawinton on 16/12/19.
  */
 public class TimeUtil {
     private TimeUtil() {}
+
+    private static final SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 两个时间戳相差的天数
@@ -77,4 +85,23 @@ public class TimeUtil {
         timestamp += timeZone * 3600;
         return (timestamp - timestamp % 86400) - timeZone * 3600;
     }
+
+    /**
+     * 月开始时间戳
+     * @param months 月偏移量
+     * @return
+     */
+    public static long monthBeginTimestamp(int months) {
+        Calendar c = Calendar.getInstance();
+        Date now = null;
+        try {
+            c.set(Calendar.DATE, 1);
+            c.add(Calendar.MONTH, months);
+            now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return now.getTime() / 1000;
+    }
+
 }
