@@ -205,6 +205,16 @@
 ```
 
 ### 审核统计：REVIEWER_TASK_STATISTICS
+``` javascript
+{
+  "id": 3,
+  "reviewerUserId": 7, //审核人员UserId
+  "beginTime": 1493568000,
+  "endTime": 1496246400,
+  "reviewedAmount": 1, // 审核通过和拒绝总数量
+  "acceptedAmount": 1 // 审核通过数量
+}
+```
 
 ## 接口列表：
 
@@ -583,7 +593,7 @@
 
 ### 统计报表相关
 #### 生成任务app渠道报表
-  - 请求URI: /statistics/app_task_statistics
+  - 请求URI: /statistics/task_app_statistics
   - 请求Method: PUT
   - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
   - 请求内容: 无
@@ -593,6 +603,21 @@
     [
     [{TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...}],
     [{TASK_APP_STATISTICS, TASK_APP_STATISTICS, ...}],
+    ...
+    ]
+```
+
+#### 生成审核任务统计报表
+  - 请求URI: /statistics/reviewer_task_statistics
+  - 请求Method: PUT
+  - 请求参数: months: 统计天数，默认3个月，最大允许12个月（当月数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: 二维数据，第一个维度表示月份，第二个维度表示审核人员任务统计报表按月统计结果
+``` javascript
+    [
+    [{REVIEWER_TASK_STATISTICS, REVIEWER_TASK_STATISTICS, ...}],
+    [{REVIEWER_TASK_STATISTICS, REVIEWER_TASK_STATISTICS, ...}],
     ...
     ]
 ```

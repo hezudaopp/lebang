@@ -1,9 +1,6 @@
 package com.youmayon.lebang.service;
 
-import com.youmayon.lebang.domain.Task;
-import com.youmayon.lebang.domain.TaskAppStatistics;
-import com.youmayon.lebang.domain.User;
-import com.youmayon.lebang.domain.UserTask;
+import com.youmayon.lebang.domain.*;
 
 import java.util.List;
 
@@ -87,4 +84,19 @@ public interface UserTaskService {
      */
     List<TaskAppStatistics> acceptedAmountAndTotalFlowOfTaskIdAndAppId(long beginTime, long endTime);
 
+    /**
+     * 根据审核人员统计审核通过任务数量
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<ReviewerTaskStatistics> acceptedAmountOfReviewer(long beginTime, long endTime);
+
+    /**
+     * 根据审核人员统计已经审核的任务数量
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<ReviewerTaskStatistics> reviewedAmountOfReviewer(long beginTime, long endTime);
 }

@@ -31,4 +31,16 @@ public class UserTaskRepositoryImpl implements UserTaskDao {
         final String sql = "SELECT ut, COUNT(ut), SUM(ut.price) FROM UserTask ut WHERE ut.reviewedTime >= '" + beginTime + "' AND ut.reviewedTime < '" + endTime + "' AND ut.status = '" + UserTaskStatus.ACCEPTED.value() + "' GROUP BY ut.taskId, ut.appId";
         return entityManager.createQuery(sql).getResultList();
     }
+
+    @Override
+    public List<Object[]> reviewerTaskAcceptedAmount(long beginTime, long endTime) {
+        final String sql = "SELECT ut, COUNT(ut) FROM UserTask ut WHERE ut.reviewedTime >= '" + beginTime + "' AND ut.reviewedTime < '" + endTime + "' AND ut.status = '" + UserTaskStatus.ACCEPTED.value() + "' GROUP BY ut.reviewerUserId";
+        return entityManager.createQuery(sql).getResultList();
+    }
+
+    @Override
+    public List<Object[]> reviewerTaskReviewedAmount(long beginTime, long endTime) {
+        final String sql = "SELECT ut, COUNT(ut) FROM UserTask ut WHERE ut.reviewedTime >= '" + beginTime + "' AND ut.reviewedTime < '" + endTime + "' AND (ut.status = '" + UserTaskStatus.ACCEPTED.value() + "' OR ut.status = '" + UserTaskStatus.REJECTED.value() + "') GROUP BY ut.reviewerUserId";
+        return entityManager.createQuery(sql).getResultList();
+    }
 }

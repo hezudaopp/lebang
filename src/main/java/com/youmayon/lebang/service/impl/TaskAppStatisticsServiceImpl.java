@@ -1,6 +1,7 @@
 package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskAppStatisticsRepository;
+import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
 import com.youmayon.lebang.service.UserTaskService;

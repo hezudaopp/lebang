@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  * 任务渠道统计
  */
 @Entity
-@Table(indexes = { @Index(name = "uk_reviewer_begin_end", columnList = "taskId, appId, beginTime, endTime", unique = true)})
+@Table(indexes = { @Index(name = "uk_reviewer_begin_end", columnList = "reviewerUserId, beginTime, endTime", unique = true)})
 public class ReviewerTaskStatistics {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class ReviewerTaskStatistics {
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '统计结束时间'")
     private Long endTime;
 
-    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道领取量'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道通过和拒绝数量总和'")
     private Long reviewedAmount;
 
-    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道通过量'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道通过数量'")
     private Long acceptedAmount;
 
     public ReviewerTaskStatistics() {}

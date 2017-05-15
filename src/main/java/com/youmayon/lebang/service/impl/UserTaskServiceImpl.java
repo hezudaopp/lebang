@@ -209,4 +209,44 @@ public class UserTaskServiceImpl implements UserTaskService {
         }
         return taskAppStatisticsList;
     }
+
+    @Override
+    public List<ReviewerTaskStatistics> acceptedAmountOfReviewer(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.reviewerTaskAcceptedAmount(beginTime, endTime);
+        List<ReviewerTaskStatistics> reviewerTaskStatisticsList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            if (objects.length != 2) {
+                continue;
+            }
+            UserTask userTask = (UserTask) objects[0];
+            Long acceptedAmount = (Long) objects[1];
+            ReviewerTaskStatistics reviewerTaskStatistics = new ReviewerTaskStatistics();
+            reviewerTaskStatistics.setReviewerUserId(userTask.getReviewerUserId());
+            reviewerTaskStatistics.setBeginTime(beginTime);
+            reviewerTaskStatistics.setEndTime(endTime);
+            reviewerTaskStatistics.setAcceptedAmount(acceptedAmount);
+            reviewerTaskStatisticsList.add(reviewerTaskStatistics);
+        }
+        return reviewerTaskStatisticsList;
+    }
+
+    @Override
+    public List<ReviewerTaskStatistics> reviewedAmountOfReviewer(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.reviewerTaskReviewedAmount(beginTime, endTime);
+        List<ReviewerTaskStatistics> reviewerTaskStatisticsList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            if (objects.length != 2) {
+                continue;
+            }
+            UserTask userTask = (UserTask) objects[0];
+            Long reviewedAmount = (Long) objects[1];
+            ReviewerTaskStatistics reviewerTaskStatistics = new ReviewerTaskStatistics();
+            reviewerTaskStatistics.setReviewerUserId(userTask.getReviewerUserId());
+            reviewerTaskStatistics.setBeginTime(beginTime);
+            reviewerTaskStatistics.setEndTime(endTime);
+            reviewerTaskStatistics.setReviewedAmount(reviewedAmount);
+            reviewerTaskStatisticsList.add(reviewerTaskStatistics);
+        }
+        return reviewerTaskStatisticsList;
+    }
 }

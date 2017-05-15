@@ -1,7 +1,9 @@
 package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.constant.LogicConstants;
+import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
+import com.youmayon.lebang.service.ReviewerTaskStatisticsService;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class StatisticsController extends BaseController {
     @Autowired
     TaskAppStatisticsService taskAppStatisticsService;
 
+    @Autowired
+    ReviewerTaskStatisticsService reviewerTaskStatisticsService;
+
     private long dayBeginTime;
 
     private long dayEndTime;
@@ -29,9 +34,15 @@ public class StatisticsController extends BaseController {
     private long monthEndTime;
 
     @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.PUT)
-    public Long generateReviewerTaskMonthlyStatistics(@RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) {
-        this.setMonthBeginTimeAndEndTime(months);
-        return this.monthBeginTime;
+    public List<List<ReviewerTaskStatistics>> generateReviewerTaskMonthlyStatistics(@RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) throws IllegalAccessException {
+        long beginTime = TimeUtil.monthBeginTimestamp(0);
+        List<List<ReviewerTaskStatistics>> response = new ArrayList<>();
+        for (int i = 0; i < months; i++) {
+            long endTime = beginTime;
+            beginTime = TimeUtil.monthBeginTimestamp(-i-1);
+            response.add(reviewerTaskStatisticsService.generateReviewerTaskStatistics(beginTime, endTime));
+        }
+        return response;
     }
 
     @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-11 16:42:07
+Date: 2017-05-15 11:41:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,6 +56,30 @@ CREATE TABLE `city_task` (
 -- ----------------------------
 -- Records of city_task
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `reviewer_task_statistics`
+-- ----------------------------
+DROP TABLE IF EXISTS `reviewer_task_statistics`;
+CREATE TABLE `reviewer_task_statistics` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `accepted_amount` int(10) unsigned NOT NULL COMMENT '任务渠道通过量',
+  `begin_time` int(10) unsigned NOT NULL COMMENT '统计开始时间',
+  `end_time` int(10) unsigned NOT NULL COMMENT '统计结束时间',
+  `reviewed_amount` int(10) unsigned NOT NULL COMMENT '任务渠道领取量',
+  `reviewer_user_id` bigint(20) unsigned NOT NULL COMMENT '审核人员UserId',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_reviewer_begin_end` (`reviewer_user_id`,`begin_time`,`end_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of reviewer_task_statistics
+-- ----------------------------
+INSERT INTO `reviewer_task_statistics` VALUES ('1', '4', '1493568000', '1496246400', '7', '2');
+INSERT INTO `reviewer_task_statistics` VALUES ('2', '4', '1493568000', '1496246400', '5', '3');
+INSERT INTO `reviewer_task_statistics` VALUES ('3', '1', '1493568000', '1496246400', '1', '7');
+INSERT INTO `reviewer_task_statistics` VALUES ('4', '1', '1493568000', '1496246400', '3', '4');
+INSERT INTO `reviewer_task_statistics` VALUES ('5', '6', '1493568000', '1496246400', '6', '5');
 
 -- ----------------------------
 -- Table structure for `task`

@@ -1,11 +1,12 @@
 package com.youmayon.lebang.service;
 
+import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 
 import java.util.List;
 
 /**
- * 任务service类
+ * 任务APP渠道统计service类
  * Created by Jawinton on 17/05/03.
  */
 public interface TaskAppStatisticsService {
