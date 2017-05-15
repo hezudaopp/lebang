@@ -8,6 +8,7 @@ import com.youmayon.lebang.service.TaskAppStatisticsService;
 import com.youmayon.lebang.util.StringUtil;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,24 @@ public class StatisticsController extends BaseController {
     private long monthEndTime;
 
     /**
+     * 每天00:10执行任务APP渠道统计
+     * @throws IllegalAccessException
+     */
+    @Scheduled(cron = "0 10 0 * * ?")
+    public void generateTaskAppDailyStatistics() throws IllegalAccessException {
+        generateTaskAppDailyStatistics(1);
+    }
+
+    /**
+     * 每月1号的00:20执行审核统计
+     * @throws IllegalAccessException
+     */
+    @Scheduled(cron = "0 20 0 1 * ?")
+    public void generateReviewerTaskMonthlyStatistics() throws IllegalAccessException {
+        this.generateReviewerTaskMonthlyStatistics(1);
+    }
+
+    /**
      * 生成审核任务统计报表
      * @param months
      * @return
@@ -62,7 +81,7 @@ public class StatisticsController extends BaseController {
      * @throws IllegalAccessException
      */
     @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.GET)
-    public List<ReviewerTaskStatistics> generateReviewerTaskMonthlyStatistics(
+    public List<ReviewerTaskStatistics> get(
             @RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months,
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) throws IllegalAccessException {
@@ -77,7 +96,7 @@ public class StatisticsController extends BaseController {
      * @throws IllegalAccessException
      */
     @RequestMapping(value = "/reviewer_task_statistics/reviewer_user_ids/{reviewerUserIdsStr}", method = RequestMethod.GET)
-    public List<ReviewerTaskStatistics> generateReviewerTaskMonthlyStatistics(@PathVariable String reviewerUserIdsStr) throws IllegalAccessException {
+    public List<ReviewerTaskStatistics> get(@PathVariable String reviewerUserIdsStr) throws IllegalAccessException {
         long endTime = TimeUtil.monthBeginTimestamp(0);
         Set<Long> reviewerUserIds = StringUtil.splitStrToLongSet(reviewerUserIdsStr);
         return reviewerTaskStatisticsService.list(reviewerUserIds, 0, endTime);

@@ -3,6 +3,7 @@ package com.youmayon.lebang.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -19,6 +20,7 @@ import java.io.IOException;
  */
 @Configuration
 @EnableWebMvc
+@EnableScheduling
 @ComponentScan("com.youmayon.lebang.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
