@@ -593,6 +593,7 @@
 
 ### 统计报表相关
 #### 生成任务app渠道报表
+  - 接口说明: 每天00:10自动执行
   - 请求URI: /statistics/task_app_statistics
   - 请求Method: PUT
   - 请求参数: days: 统计天数，默认7天，最大允许30天（今天数据不参与统计）
@@ -660,6 +661,7 @@
 ```
 
 #### 生成审核任务统计报表
+  - 接口说明: 每月1号00:20自动执行
   - 请求URI: /statistics/reviewer_task_statistics
   - 请求Method: PUT
   - 请求参数:
