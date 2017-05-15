@@ -2,6 +2,7 @@ package com.youmayon.lebang.service;
 
 import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,4 +16,21 @@ public interface ReviewerTaskStatisticsService {
      * @param endTime
      */
     List<ReviewerTaskStatistics> generateReviewerTaskStatistics(long beginTime, long endTime) throws IllegalAccessException;
+
+    /**
+     * 统计审核人员的总审核数量
+     * @param reviewerUserIds
+     * @return
+     */
+    List<ReviewerTaskStatistics> list(Collection<Long> reviewerUserIds, long beginTime, long endTime);
+
+    /**
+     * 统计审核人员的月审核数量
+     * @param beginTime
+     * @param endTime
+     * @param page
+     * @param size
+     * @return
+     */
+    List<ReviewerTaskStatistics> list(long beginTime, long endTime, int page, int size);
 }

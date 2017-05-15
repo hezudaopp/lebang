@@ -5,6 +5,7 @@ import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.service.ReviewerTaskStatisticsService;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
+import com.youmayon.lebang.util.StringUtil;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -33,6 +35,12 @@ public class StatisticsController extends BaseController {
 
     private long monthEndTime;
 
+    /**
+     * 生成审核任务统计报表
+     * @param months
+     * @return
+     * @throws IllegalAccessException
+     */
     @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.PUT)
     public List<List<ReviewerTaskStatistics>> generateReviewerTaskMonthlyStatistics(@RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) throws IllegalAccessException {
         long beginTime = TimeUtil.monthBeginTimestamp(0);
@@ -43,6 +51,36 @@ public class StatisticsController extends BaseController {
             response.add(reviewerTaskStatisticsService.generateReviewerTaskStatistics(beginTime, endTime));
         }
         return response;
+    }
+
+    /**
+     * 按审核人员和月获取审核任务统计报表（不包含当月数据）
+     * @param months
+     * @param page
+     * @param size
+     * @return
+     * @throws IllegalAccessException
+     */
+    @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.GET)
+    public List<ReviewerTaskStatistics> generateReviewerTaskMonthlyStatistics(
+            @RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months,
+            @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) throws IllegalAccessException {
+        this.setMonthBeginTimeAndEndTime(months);
+        return reviewerTaskStatisticsService.list(this.monthBeginTime, this.monthEndTime, page, size);
+    }
+
+    /**
+     * 按审核人员获取历史审核总报表（不包含当月数据）
+     * @param reviewerUserIdsStr
+     * @return
+     * @throws IllegalAccessException
+     */
+    @RequestMapping(value = "/reviewer_task_statistics/reviewer_user_ids/{reviewerUserIdsStr}", method = RequestMethod.GET)
+    public List<ReviewerTaskStatistics> generateReviewerTaskMonthlyStatistics(@PathVariable String reviewerUserIdsStr) throws IllegalAccessException {
+        long endTime = TimeUtil.monthBeginTimestamp(0);
+        Set<Long> reviewerUserIds = StringUtil.splitStrToLongSet(reviewerUserIdsStr);
+        return reviewerTaskStatisticsService.list(reviewerUserIds, 0, endTime);
     }
 
     @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)
@@ -62,7 +100,7 @@ public class StatisticsController extends BaseController {
      * @param days
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/task_app_statistics", method = RequestMethod.GET)
     public List<TaskAppStatistics> get(
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
             @RequestParam(value = "isDistinctTask", defaultValue = LogicConstants.FALSE) boolean isDistinctTask,
@@ -77,7 +115,7 @@ public class StatisticsController extends BaseController {
      * @param days
      * @return
      */
-    @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/task_app_statistics/tasks/{taskId}", method = RequestMethod.GET)
     public List<TaskAppStatistics> getTaskStatistics(
             @PathVariable long taskId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
@@ -92,7 +130,7 @@ public class StatisticsController extends BaseController {
      * @param days
      * @return
      */
-    @RequestMapping(value = "/apps/{appId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/task_app_statistics/apps/{appId}", method = RequestMethod.GET)
     public List<TaskAppStatistics> getAppStatistics(
             @PathVariable long appId,
             @RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days,
@@ -108,7 +146,7 @@ public class StatisticsController extends BaseController {
      * @param days
      * @return
      */
-    @RequestMapping(value = "/tasks/{taskId}/apps/{appId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/task_app_statistics/tasks/{taskId}/apps/{appId}", method = RequestMethod.GET)
     public List<TaskAppStatistics> getAppStatistics(
             @PathVariable long taskId,
             @PathVariable long appId,
@@ -130,7 +168,7 @@ public class StatisticsController extends BaseController {
 
     private void setMonthBeginTimeAndEndTime(int months) {
         Assert.isTrue(months <= LogicConstants.MAX_STATISTICS_MONTHS, "Months too large.");
-        Assert.isTrue(months > 0, "Months cannot be negative.");
+        Assert.isTrue(months >= 0, "Months cannot be negative.");
         this.monthEndTime = TimeUtil.monthBeginTimestamp(0);
         this.monthBeginTime = TimeUtil.monthBeginTimestamp(-months);
         if (this.monthBeginTime == this.monthEndTime) {

@@ -8,6 +8,7 @@ import com.youmayon.lebang.util.ReflectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +45,15 @@ public class ReviewerTaskStatisticsServiceImpl implements ReviewerTaskStatistics
             reviewerTaskStatisticsSet.put(reviewerTaskStatistics, reviewerTaskStatistics);
         }
         return reviewerTaskStatisticsRepository.save(reviewerTaskStatisticsSet.values());
+    }
+
+    @Override
+    public List<ReviewerTaskStatistics> list(Collection<Long> reviewerUserIds, long beginTime, long endTime) {
+        return reviewerTaskStatisticsRepository.findByReviewerUserIdInAndBeginTimeAndEndTimeGroupByReviewerUserId(reviewerUserIds, beginTime, endTime);
+    }
+
+    @Override
+    public List<ReviewerTaskStatistics> list(long beginTime, long endTime, int page, int size) {
+        return reviewerTaskStatisticsRepository.findByBeginTimeGreaterThanAndEndTimeLessThanGroupByReviewerUserIdAndBeginTimeAndEndTime(beginTime, endTime, page, size);
     }
 }

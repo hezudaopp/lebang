@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by Jawinton on 17/05/03.
  */
 @Repository
-public interface ReviewerTaskStatisticsRepository extends JpaRepository<ReviewerTaskStatistics, Long> {
+public interface ReviewerTaskStatisticsRepository extends JpaRepository<ReviewerTaskStatistics, Long>, ReviewerTaskStatisticsDao {
     ReviewerTaskStatistics findByReviewerUserIdAndBeginTimeAndEndTime(long reviewerUserId, long beginTime, long endTime);
 }

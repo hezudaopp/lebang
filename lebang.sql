@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-15 11:41:07
+Date: 2017-05-15 15:08:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -70,7 +70,7 @@ CREATE TABLE `reviewer_task_statistics` (
   `reviewer_user_id` bigint(20) unsigned NOT NULL COMMENT '审核人员UserId',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_reviewer_begin_end` (`reviewer_user_id`,`begin_time`,`end_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of reviewer_task_statistics
@@ -80,6 +80,10 @@ INSERT INTO `reviewer_task_statistics` VALUES ('2', '4', '1493568000', '14962464
 INSERT INTO `reviewer_task_statistics` VALUES ('3', '1', '1493568000', '1496246400', '1', '7');
 INSERT INTO `reviewer_task_statistics` VALUES ('4', '1', '1493568000', '1496246400', '3', '4');
 INSERT INTO `reviewer_task_statistics` VALUES ('5', '6', '1493568000', '1496246400', '6', '5');
+INSERT INTO `reviewer_task_statistics` VALUES ('6', '11', '1490976000', '1493568000', '19', '2');
+INSERT INTO `reviewer_task_statistics` VALUES ('7', '111', '1490976000', '1493568000', '127', '3');
+INSERT INTO `reviewer_task_statistics` VALUES ('8', '99', '1490976000', '1493568000', '100', '5');
+INSERT INTO `reviewer_task_statistics` VALUES ('9', '30', '1488297600', '1490976000', '30', '2');
 
 -- ----------------------------
 -- Table structure for `task`

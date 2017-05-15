@@ -95,10 +95,27 @@ public class StringUtil {
         String strArr[] = str.trim().split(UtilConstants.STRING_ARRAY_SEPARATOR);
         Set<Integer> integerSet = new HashSet<>(strArr.length);
         for (String strTmp : strArr) {
-            int intTmp = Integer.parseInt(strTmp);
-            integerSet.add(intTmp);
+            integerSet.add(Integer.parseInt(strTmp));
         }
         return integerSet;
+    }
+
+    /**
+     * Convert separate split int array string to long array.
+     * Duplicated items will be merged.
+     * @param str
+     * @return not null set
+     */
+    public static final Set<Long> splitStrToLongSet(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return new HashSet<>(0);
+        }
+        String strArr[] = str.trim().split(UtilConstants.STRING_ARRAY_SEPARATOR);
+        Set<Long> longSet = new HashSet<>(strArr.length);
+        for (String strTmp : strArr) {
+            longSet.add(Long.parseLong(strTmp));
+        }
+        return longSet;
     }
 
     /**
