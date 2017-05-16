@@ -42,7 +42,7 @@ public class StatisticsController extends BaseController {
      */
     @Scheduled(cron = "0 10 0 * * ?")
     public void generateTaskAppDailyStatistics() throws IllegalAccessException {
-        generateTaskAppDailyStatistics(1);
+        this.generateTaskAppDailyStatistics(1);
     }
 
     /**
