@@ -1,13 +1,11 @@
 package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskAppStatisticsRepository;
-import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
 import com.youmayon.lebang.service.UserTaskService;
 import com.youmayon.lebang.util.ReflectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

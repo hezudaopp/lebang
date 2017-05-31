@@ -11,14 +11,21 @@ import com.youmayon.lebang.service.UserTaskLogService;
 import com.youmayon.lebang.service.UserTaskService;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jawinton on 17/05/04.
@@ -143,6 +150,26 @@ public class UserTaskServiceImpl implements UserTaskService {
     @Override
     public int count(String appId, String appUserId, long taskId) {
         return userTaskRepository.countByAppIdAndAppUserIdAndTaskId(appId, appUserId, taskId);
+    }
+
+    @Override
+    public Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size) {
+        Pageable pageable = new PageRequest(page, size);
+        Specification<UserTask> specification = new Specification<UserTask>() {
+            @Override
+            public Predicate toPredicate(Root<UserTask> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicate = new ArrayList<>();
+                if (reviewerUserId > 0) {
+                    predicate.add(cb.equal(root.get("reviewerUserId").as(Long.class), reviewerUserId));
+                }
+                if (statusSet != null && !statusSet.isEmpty()) {
+                    predicate.add(root.get("status").in(statusSet));
+                }
+                Predicate[] pre = new Predicate[predicate.size()];
+                return query.where(predicate.toArray(pre)).getRestriction();
+            }
+        };
+        return userTaskRepository.findAll(specification, pageable);
     }
 
     @Override

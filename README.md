@@ -582,6 +582,31 @@
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
 
+#### 用户任务列表
+  - 请求URI: /user_tasks
+  - 请求Method: GET
+  - 请求参数:
+     - page: 1, 默认0
+     - size:10, 默认10
+     - reviewerUserId:7, 审核人userId，默认-1，表示不区分审核人（必须是管理员才能查看所有用户任务列表）
+     - status:2,3 用户任务状态，逗号分隔，表示多个状态
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+{
+  "content": [USER_TASK, ...],
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 1,
+  "size": 2,
+  "number": 0,
+  "first": true,
+  "sort": null,
+  "numberOfElements": 1
+}
+```
+
 #### 审核用户任务
   - 请求URI: /user_tasks/{id}/status/{userTaskStatus}
   - 请求URI说明: userTaskStatus: 2. 审核通过 3. 审核拒绝 4. 重做任务

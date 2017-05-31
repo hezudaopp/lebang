@@ -1,5 +1,6 @@
 package com.youmayon.lebang.web;
 
+import com.youmayon.lebang.constant.LogicConstants;
 import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
@@ -8,7 +9,9 @@ import com.youmayon.lebang.enums.UserTaskStatus;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskService;
 import com.youmayon.lebang.service.UserTaskService;
+import com.youmayon.lebang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Set;
 
 /**
  * Created by Jawinton on 17/05/04.
@@ -96,6 +100,20 @@ public class UserTaskController extends BaseController {
         UserTask savedUserTask = userTaskService.findOne(id);
         Assert.notNull(savedUserTask, "User task not found.");
         return savedUserTask;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public Page<UserTask> list(
+            @RequestParam(value = "reviewerUserId", defaultValue = LogicConstants.NEGATIVE_ONE) long reviewerUserId,
+            @RequestParam(value = "status", defaultValue = LogicConstants.EMPTY_STRING) String status,
+            @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
+            @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size,
+            @AuthenticationPrincipal User user) {
+        if (!Role.ROLE_ADMIN.name().equals(user.getRole())) {
+            Assert.isTrue(user.getId() == reviewerUserId, "Forbidden.");
+        }
+        Set<Integer> statusSet = StringUtil.splitStrToIntSet(status);
+        return userTaskService.list(reviewerUserId, statusSet, page, size);
     }
 
     @RequestMapping(value = "/{id}/completed", method = RequestMethod.PATCH, consumes = "application/json")

@@ -204,10 +204,10 @@ public class TaskServiceImpl implements TaskService {
             public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 List<Predicate> predicate = new ArrayList<>();
                 if (taskFilter.getBeginTime() >= 0) {
-                    predicate.add(cb.ge(root.get("beginTime").as(Long.class), taskFilter.getBeginTime()));
+                    predicate.add(cb.le(root.get("beginTime").as(Long.class), taskFilter.getBeginTime()));
                 }
                 if (taskFilter.getEndTime() >= 0) {
-                    predicate.add(cb.le(root.get("endTime").as(Long.class), taskFilter.getEndTime()));
+                    predicate.add(cb.ge(root.get("endTime").as(Long.class), taskFilter.getEndTime()));
                 }
                 if (taskFilter.getTaskTypeId() >= 0) {
                     predicate.add(cb.equal(root.get("taskTypeId").as(Long.class), taskFilter.getTaskTypeId()));

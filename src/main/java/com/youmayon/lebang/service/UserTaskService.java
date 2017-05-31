@@ -1,8 +1,10 @@
 package com.youmayon.lebang.service;
 
 import com.youmayon.lebang.domain.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 任务service类
@@ -50,6 +52,16 @@ public interface UserTaskService {
      * @return
      */
     UserTask findOne(String appId, String appUserId, long taskId);
+
+    /**
+     * 用户任务列表
+     * @param reviewerUserId
+     * @param statusSet
+     * @param page
+     * @param size
+     * @return
+     */
+    Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size);
 
     /**
      * 用户已领取的任务数量
