@@ -22,7 +22,7 @@ public interface ReviewerTaskStatisticsService {
      * @param reviewerUserIds
      * @return
      */
-    List<ReviewerTaskStatistics> list(Collection<Long> reviewerUserIds, long beginTime, long endTime);
+    List<ReviewerTaskStatistics> listGroupByReviewerUserId(Collection<Long> reviewerUserIds, long beginTime, long endTime);
 
     /**
      * 统计审核人员的月审核数量
@@ -32,5 +32,13 @@ public interface ReviewerTaskStatisticsService {
      * @param size
      * @return
      */
-    List<ReviewerTaskStatistics> list(long beginTime, long endTime, int page, int size);
+    List<ReviewerTaskStatistics> listGroupByReviewerUserId(long beginTime, long endTime, int page, int size);
+
+    /**
+     * 月流水统计列表
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<ReviewerTaskStatistics> list(long beginTime, long endTime);
 }

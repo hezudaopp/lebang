@@ -27,20 +27,32 @@ public class ReviewerTaskStatistics {
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '统计结束时间'")
     private Long endTime;
 
-    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道通过和拒绝数量总和'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '用户审核通过和拒绝的任务数量总和'")
     private Long reviewedAmount;
 
-    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务渠道通过数量'")
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '用户审核通过的任务数量'")
     private Long acceptedAmount;
+
+    @Column(columnDefinition = "DECIMAL(11,2) UNSIGNED NOT NULL COMMENT '用户审核通过的总流水'")
+    private Double totalFlow;
 
     public ReviewerTaskStatistics() {}
 
-    public ReviewerTaskStatistics(Long reviewerUserId, Long beginTime, Long endTime, Long reviewedAmount, Long acceptedAmount) {
+    public ReviewerTaskStatistics(Long reviewerUserId, Long beginTime, Long endTime, Long reviewedAmount, Long acceptedAmount, Double totalFlow) {
         this.reviewerUserId = reviewerUserId;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.reviewedAmount = reviewedAmount;
         this.acceptedAmount = acceptedAmount;
+        this.totalFlow = totalFlow;
+    }
+
+    public ReviewerTaskStatistics(Long beginTime, Long endTime, Long reviewedAmount, Long acceptedAmount, Double totalFlow) {
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.reviewedAmount = reviewedAmount;
+        this.acceptedAmount = acceptedAmount;
+        this.totalFlow = totalFlow;
     }
 
     @Override
@@ -111,5 +123,13 @@ public class ReviewerTaskStatistics {
 
     public void setAcceptedAmount(Long acceptedAmount) {
         this.acceptedAmount = acceptedAmount;
+    }
+
+    public Double getTotalFlow() {
+        return totalFlow;
+    }
+
+    public void setTotalFlow(Double totalFlow) {
+        this.totalFlow = totalFlow;
     }
 }

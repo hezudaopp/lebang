@@ -86,8 +86,10 @@ public class StatisticsController extends BaseController {
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) throws IllegalAccessException {
         this.setMonthBeginTimeAndEndTime(months);
-        return reviewerTaskStatisticsService.list(this.monthBeginTime, this.monthEndTime, page, size);
+        return reviewerTaskStatisticsService.listGroupByReviewerUserId(this.monthBeginTime, this.monthEndTime, page, size);
     }
+
+
 
     /**
      * 按审核人员获取历史审核总报表（不包含当月数据）
@@ -99,7 +101,7 @@ public class StatisticsController extends BaseController {
     public List<ReviewerTaskStatistics> get(@PathVariable String reviewerUserIdsStr) throws IllegalAccessException {
         long endTime = TimeUtil.monthBeginTimestamp(0);
         Set<Long> reviewerUserIds = StringUtil.splitStrToLongSet(reviewerUserIdsStr);
-        return reviewerTaskStatisticsService.list(reviewerUserIds, 0, endTime);
+        return reviewerTaskStatisticsService.listGroupByReviewerUserId(reviewerUserIds, 0, endTime);
     }
 
     @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)

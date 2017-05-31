@@ -702,6 +702,19 @@
     ]
 ```
 
+#### 按月份统计审核报表
+  - 接口说明: 通过月份分类统计审核统计数据
+  - 请求URI: /statistics/monthly_statistics
+  - 请求Method: GET
+  - 请求参数:
+    - months: 统计月数，默认3个月，最大允许12个月（当月数据不参与统计）
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+    [REVIEWER_TASK_STATISTICS, REVIEWER_TASK_STATISTICS, ...]
+```
+
 #### 按审核人和月份统计审核报表
   - 接口说明: 通过审核人和月份分类统计审核统计数据
   - 请求URI: /statistics/reviewer_task_statistics

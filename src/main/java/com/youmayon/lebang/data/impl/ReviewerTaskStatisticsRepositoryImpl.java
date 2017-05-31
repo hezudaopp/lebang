@@ -28,7 +28,8 @@ public class ReviewerTaskStatisticsRepositoryImpl implements ReviewerTaskStatist
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("reviewedAmount")),
-                criteriaBuilder.sum(root.get("acceptedAmount"))));
+                criteriaBuilder.sum(root.get("acceptedAmount")),
+                criteriaBuilder.sum(root.get("totalFlow"))));
         List<Predicate> predicateList = new ArrayList<>();
         if (beginTime >= 0) {
             predicateList.add(criteriaBuilder.ge(root.get("beginTime").as(Long.class), beginTime));
@@ -49,6 +50,35 @@ public class ReviewerTaskStatisticsRepositoryImpl implements ReviewerTaskStatist
     }
 
     @Override
+    public List<ReviewerTaskStatistics> findByBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long beginTime, long endTime) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ReviewerTaskStatistics> criteriaQuery = criteriaBuilder.createQuery(ReviewerTaskStatistics.class);
+        Root<ReviewerTaskStatistics> root = criteriaQuery.from(ReviewerTaskStatistics.class);
+        criteriaQuery.select(criteriaBuilder.construct(ReviewerTaskStatistics.class,
+                root.get("beginTime"),
+                root.get("endTime"),
+                criteriaBuilder.sum(root.get("reviewedAmount")),
+                criteriaBuilder.sum(root.get("acceptedAmount")),
+                criteriaBuilder.sum(root.get("totalFlow"))));
+        List<Predicate> predicateList = new ArrayList<>();
+        if (beginTime >= 0) {
+            predicateList.add(criteriaBuilder.ge(root.get("beginTime").as(Long.class), beginTime));
+        }
+        if (endTime >= 0) {
+            predicateList.add(criteriaBuilder.le(root.get("endTime").as(Long.class), endTime));
+        }
+        Predicate[] predicates = new Predicate[predicateList.size()];
+        criteriaQuery.where(predicateList.toArray(predicates));
+        List<Expression<?>> groupList = new ArrayList<>();
+        if (beginTime != endTime) {
+            groupList.add(root.get("beginTime"));
+            groupList.add(root.get("endTime"));
+        }
+        criteriaQuery.groupBy(groupList);
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
     public List<ReviewerTaskStatistics> findByReviewerUserIdInAndBeginTimeAndEndTimeGroupByReviewerUserId(Collection<Long> reviewerUserIds, long beginTime, long endTime) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<ReviewerTaskStatistics> criteriaQuery = criteriaBuilder.createQuery(ReviewerTaskStatistics.class);
@@ -58,7 +88,8 @@ public class ReviewerTaskStatisticsRepositoryImpl implements ReviewerTaskStatist
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("reviewedAmount")),
-                criteriaBuilder.sum(root.get("acceptedAmount"))));
+                criteriaBuilder.sum(root.get("acceptedAmount")),
+                criteriaBuilder.sum(root.get("totalFlow"))));
         List<Predicate> predicateList = new ArrayList<>();
         predicateList.add(root.get("reviewerUserId").in(reviewerUserIds));
         if (beginTime >= 0) {

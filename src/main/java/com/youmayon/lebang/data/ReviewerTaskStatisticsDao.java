@@ -12,5 +12,7 @@ import java.util.List;
 public interface ReviewerTaskStatisticsDao {
     List<ReviewerTaskStatistics> findByBeginTimeGreaterThanAndEndTimeLessThanGroupByReviewerUserIdAndBeginTimeAndEndTime(long beginTime, long endTime, int page, int size);
 
+    List<ReviewerTaskStatistics> findByBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(long beginTime, long endTime);
+
     List<ReviewerTaskStatistics> findByReviewerUserIdInAndBeginTimeAndEndTimeGroupByReviewerUserId(Collection<Long> reviewerUserIds, long beginTime, long endTime);
 }

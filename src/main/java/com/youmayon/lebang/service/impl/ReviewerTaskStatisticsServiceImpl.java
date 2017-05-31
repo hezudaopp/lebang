@@ -27,7 +27,7 @@ public class ReviewerTaskStatisticsServiceImpl implements ReviewerTaskStatistics
     @Override
     public List<ReviewerTaskStatistics> generateReviewerTaskStatistics(long beginTime, long endTime) throws IllegalAccessException {
         List<ReviewerTaskStatistics> reviewerTaskStatisticsList = userTaskService.reviewedAmountOfReviewer(beginTime, endTime);
-        reviewerTaskStatisticsList.addAll(userTaskService.acceptedAmountOfReviewer(beginTime, endTime));
+        reviewerTaskStatisticsList.addAll(userTaskService.acceptedAmountAndTotalFlowOfReviewer(beginTime, endTime));
         Map<ReviewerTaskStatistics, ReviewerTaskStatistics> reviewerTaskStatisticsSet = new HashMap<>();
         for (ReviewerTaskStatistics reviewerTaskStatistics : reviewerTaskStatisticsList) {
             if (reviewerTaskStatisticsSet.containsKey(reviewerTaskStatistics)) {
@@ -48,12 +48,17 @@ public class ReviewerTaskStatisticsServiceImpl implements ReviewerTaskStatistics
     }
 
     @Override
-    public List<ReviewerTaskStatistics> list(Collection<Long> reviewerUserIds, long beginTime, long endTime) {
+    public List<ReviewerTaskStatistics> listGroupByReviewerUserId(Collection<Long> reviewerUserIds, long beginTime, long endTime) {
         return reviewerTaskStatisticsRepository.findByReviewerUserIdInAndBeginTimeAndEndTimeGroupByReviewerUserId(reviewerUserIds, beginTime, endTime);
     }
 
     @Override
-    public List<ReviewerTaskStatistics> list(long beginTime, long endTime, int page, int size) {
+    public List<ReviewerTaskStatistics> listGroupByReviewerUserId(long beginTime, long endTime, int page, int size) {
         return reviewerTaskStatisticsRepository.findByBeginTimeGreaterThanAndEndTimeLessThanGroupByReviewerUserIdAndBeginTimeAndEndTime(beginTime, endTime, page, size);
+    }
+
+    @Override
+    public List<ReviewerTaskStatistics> list(long beginTime, long endTime) {
+        return reviewerTaskStatisticsRepository.findByBeginTimeGreaterThanAndEndTimeLessThanGroupByBeginTimeAndEndTime(beginTime, endTime);
     }
 }

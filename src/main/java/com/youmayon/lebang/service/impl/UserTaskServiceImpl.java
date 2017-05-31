@@ -238,20 +238,22 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public List<ReviewerTaskStatistics> acceptedAmountOfReviewer(long beginTime, long endTime) {
-        List<Object[]> resultList = userTaskRepository.reviewerTaskAcceptedAmount(beginTime, endTime);
+    public List<ReviewerTaskStatistics> acceptedAmountAndTotalFlowOfReviewer(long beginTime, long endTime) {
+        List<Object[]> resultList = userTaskRepository.reviewerTaskAcceptedAmountAndTotalFlow(beginTime, endTime);
         List<ReviewerTaskStatistics> reviewerTaskStatisticsList = new ArrayList<>();
         for (Object[] objects : resultList) {
-            if (objects.length != 2) {
+            if (objects.length != 3) {
                 continue;
             }
             UserTask userTask = (UserTask) objects[0];
             Long acceptedAmount = (Long) objects[1];
+            Double totalFlow = (Double) objects[2];
             ReviewerTaskStatistics reviewerTaskStatistics = new ReviewerTaskStatistics();
             reviewerTaskStatistics.setReviewerUserId(userTask.getReviewerUserId());
             reviewerTaskStatistics.setBeginTime(beginTime);
             reviewerTaskStatistics.setEndTime(endTime);
             reviewerTaskStatistics.setAcceptedAmount(acceptedAmount);
+            reviewerTaskStatistics.setTotalFlow(totalFlow);
             reviewerTaskStatisticsList.add(reviewerTaskStatistics);
         }
         return reviewerTaskStatisticsList;

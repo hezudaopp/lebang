@@ -102,7 +102,7 @@ public interface UserTaskService {
      * @param endTime
      * @return
      */
-    List<ReviewerTaskStatistics> acceptedAmountOfReviewer(long beginTime, long endTime);
+    List<ReviewerTaskStatistics> acceptedAmountAndTotalFlowOfReviewer(long beginTime, long endTime);
 
     /**
      * 根据审核人员统计已经审核的任务数量

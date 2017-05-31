@@ -12,7 +12,7 @@ public interface UserTaskDao {
 
     List<Object[]> taskAppAcceptedAmountAndTotalFlow(long beginTime, long endTime);
 
-    List<Object[]> reviewerTaskAcceptedAmount(long beginTime, long endTime);
+    List<Object[]> reviewerTaskAcceptedAmountAndTotalFlow(long beginTime, long endTime);
 
     List<Object[]> reviewerTaskReviewedAmount(long beginTime, long endTime);
 }
