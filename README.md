@@ -741,3 +741,24 @@
 ``` javascript
     [REVIEWER_TASK_STATISTICS, REVIEWER_TASK_STATISTICS, ...]
 ```
+
+#### 首页统计报表
+  - 接口说明: 统计首页报表数据
+  - 请求URI: /statistics/index_statistics
+  - 请求Method: GET
+  - 请求路径变量: 无
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+{
+  "totalAmount": 60,
+  "totalCompletedAmount": 26,
+  "yesterdayAcceptedAmount": null,
+  "totalLeftAmount": 25,
+  "totalAcceptedAmount": 17,
+  "todayAcceptedAmount": 1,
+  "totalRejectedAmount": 0
+}
+```

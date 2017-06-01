@@ -12,6 +12,12 @@ import java.util.Set;
  */
 public interface UserTaskService {
     /**
+     * 今天审核通过的任务数量
+     * @return
+     */
+    long todayAcceptedAmount();
+
+    /**
      * 用户领取任务
      * @param userTask
      * @return

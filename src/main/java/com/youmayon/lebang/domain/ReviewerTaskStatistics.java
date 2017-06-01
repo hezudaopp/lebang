@@ -132,4 +132,16 @@ public class ReviewerTaskStatistics {
     public void setTotalFlow(Double totalFlow) {
         this.totalFlow = totalFlow;
     }
+
+    public void setNullDigitalToZero() {
+        if (this.getAcceptedAmount() == null) {
+            this.setAcceptedAmount(0L);
+        }
+        if (this.getReviewedAmount() == null) {
+            this.setReviewedAmount(0L);
+        }
+        if (this.getTotalFlow() == null) {
+            this.setTotalFlow(0D);
+        }
+    }
 }

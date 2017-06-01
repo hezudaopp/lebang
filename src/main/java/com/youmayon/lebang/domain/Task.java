@@ -51,6 +51,9 @@ public class Task {
     @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务完成量'")
     private Long completedAmount;
 
+    @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务拒绝量'")
+    private Long rejectedAmount;
+
     @Column(columnDefinition = "INT(10) UNSIGNED NOT NULL COMMENT '任务通过量'")
     private Long acceptedAmount;
 
@@ -174,6 +177,14 @@ public class Task {
 
     public void setCompletedAmount(Long completedAmount) {
         this.completedAmount = completedAmount;
+    }
+
+    public Long getRejectedAmount() {
+        return rejectedAmount;
+    }
+
+    public void setRejectedAmount(Long rejectedAmount) {
+        this.rejectedAmount = rejectedAmount;
     }
 
     public Long getAcceptedAmount() {

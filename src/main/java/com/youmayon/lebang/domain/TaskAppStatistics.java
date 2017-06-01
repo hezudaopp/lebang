@@ -150,4 +150,19 @@ public class TaskAppStatistics {
     public void setAcceptedAmount(Long acceptedAmount) {
         this.acceptedAmount = acceptedAmount;
     }
+
+    public void setNullDigitalToZero() {
+        if (this.getAcceptedAmount() == null) {
+            this.setAcceptedAmount(0L);
+        }
+        if (this.getCompletedAmount() == null) {
+            this.setCompletedAmount(0L);
+        }
+        if (this.getReceivedAmount() == null) {
+            this.setReceivedAmount(0L);
+        }
+        if (this.getTotalFlow() == null) {
+            this.setTotalFlow(0D);
+        }
+    }
 }

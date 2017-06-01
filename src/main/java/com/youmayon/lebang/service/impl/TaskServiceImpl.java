@@ -40,6 +40,27 @@ public class TaskServiceImpl implements TaskService {
     TaskCityService taskCityService;
 
     @Override
+    public Long[] totalAmountArray() {
+        List<Object[]> totalAmountObjectArrayList = taskRepository.totalAmountObjectArray();
+        if (totalAmountObjectArrayList == null || totalAmountObjectArrayList.isEmpty()) {
+            return null;
+        }
+        Object[] totalAmountArray = totalAmountObjectArrayList.get(0);
+        if (totalAmountArray == null) {
+            return null;
+        }
+        Long[] totalAmountIntArray = new Long[totalAmountArray.length];
+        for (int i = 0; i < totalAmountArray.length; i++) {
+            if (totalAmountArray[i] == null) {
+                totalAmountIntArray[i] = null;
+            } else {
+                totalAmountIntArray[i] = Long.valueOf(totalAmountArray[i].toString());
+            }
+        }
+        return totalAmountIntArray;
+    }
+
+    @Override
     @Transactional
     public Task save(Task task, boolean withProcedure) {
         Task savedTask = save(task);

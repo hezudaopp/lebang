@@ -1,6 +1,7 @@
 package com.youmayon.lebang.service.impl;
 
 import com.youmayon.lebang.data.TaskAppStatisticsRepository;
+import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
 import com.youmayon.lebang.service.UserTaskService;
@@ -82,8 +83,10 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
                     taskAppStatistics.setId(savedTaskAppStatistics.getId());
                 }
             }
-
             taskAppStatisticsSet.put(taskAppStatistics, taskAppStatistics);
+        }
+        for (TaskAppStatistics taskAppStatistics : taskAppStatisticsSet.values()) {
+            taskAppStatistics.setNullDigitalToZero();
         }
         return taskAppStatisticsRepository.save(taskAppStatisticsSet.values());
     }

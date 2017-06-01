@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * Created by Jawinton on 17/05/03.
  */
 @Repository
-public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
+public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task>, TaskDao {
 }

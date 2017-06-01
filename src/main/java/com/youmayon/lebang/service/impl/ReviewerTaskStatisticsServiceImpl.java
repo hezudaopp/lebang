@@ -41,8 +41,10 @@ public class ReviewerTaskStatisticsServiceImpl implements ReviewerTaskStatistics
                     reviewerTaskStatistics.setId(savedReviewerTaskStatistics.getId());
                 }
             }
-
             reviewerTaskStatisticsSet.put(reviewerTaskStatistics, reviewerTaskStatistics);
+        }
+        for (ReviewerTaskStatistics reviewerTaskStatistics : reviewerTaskStatisticsSet.values()) {
+            reviewerTaskStatistics.setNullDigitalToZero();
         }
         return reviewerTaskStatisticsRepository.save(reviewerTaskStatisticsSet.values());
     }

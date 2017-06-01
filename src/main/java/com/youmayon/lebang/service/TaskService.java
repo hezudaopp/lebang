@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface TaskService {
     /**
+     * 总数量，剩余总数量，完成总数量，审核通过总数量，审核拒绝总数量
+     * @return
+     */
+    Long[] totalAmountArray();
+
+    /**
      * 保存任务类型
      * @param task
      * @return

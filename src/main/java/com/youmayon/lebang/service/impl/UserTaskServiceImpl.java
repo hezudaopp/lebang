@@ -24,6 +24,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +44,14 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     @Autowired
     UserService userService;
+
+    @Override
+    public long todayAcceptedAmount() {
+        long startTime = TimeUtil.dayBeginTimestamp();
+        Collection<Integer> state = new ArrayList<>(1);
+        state.add(UserTaskStatus.ACCEPTED.value());
+        return userTaskRepository.countByReviewedTimeGreaterThanEqualAndStatusIn(startTime, state);
+    }
 
     @Override
     @Transactional
@@ -119,11 +128,15 @@ public class UserTaskServiceImpl implements UserTaskService {
         // save user task
         UserTask savedUserTask = userTaskRepository.save(userTask);
 
-        // increase task accepted amount.
-        if (toStatus == UserTaskStatus.ACCEPTED.value()) {
+        if (toStatus == UserTaskStatus.ACCEPTED.value()) { // increase task accepted amount.
             task.setAcceptedAmount(task.getAcceptedAmount() + 1);
-            taskService.save(task);
+        } else if (toStatus == UserTaskStatus.REJECTED.value()) { // increase task rejected amount.
+            task.setRejectedAmount(task.getRejectedAmount() + 1);
+        } else if (toStatus == UserTaskStatus.REDOING.value()) { // decrease task completed amount.
+            task.setCompletedAmount(task.getCompletedAmount() - 1);
         }
+
+        taskService.save(task);
 
         // save log
         UserTaskLog userTaskLog = new UserTaskLog();

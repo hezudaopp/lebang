@@ -5,6 +5,8 @@ import com.youmayon.lebang.domain.ReviewerTaskStatistics;
 import com.youmayon.lebang.domain.TaskAppStatistics;
 import com.youmayon.lebang.service.ReviewerTaskStatisticsService;
 import com.youmayon.lebang.service.TaskAppStatisticsService;
+import com.youmayon.lebang.service.TaskService;
+import com.youmayon.lebang.service.UserTaskService;
 import com.youmayon.lebang.util.StringUtil;
 import com.youmayon.lebang.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -27,6 +27,12 @@ public class StatisticsController extends BaseController {
 
     @Autowired
     ReviewerTaskStatisticsService reviewerTaskStatisticsService;
+
+    @Autowired
+    UserTaskService userTaskService;
+
+    @Autowired
+    TaskService taskService;
 
     private long dayBeginTime;
 
@@ -70,6 +76,26 @@ public class StatisticsController extends BaseController {
             response.add(reviewerTaskStatisticsService.generateReviewerTaskStatistics(beginTime, endTime));
         }
         return response;
+    }
+
+    @RequestMapping(value = "/index_statistics", method = RequestMethod.GET)
+    public Map<String, Long> indexStatistics() {
+        Map<String, Long> responseMap = new HashMap<>();
+        responseMap.put("todayAcceptedAmount", userTaskService.todayAcceptedAmount());
+        List<TaskAppStatistics> yesterdayStatisticsList = taskAppStatisticsService.list(TimeUtil.dayBeginTimestamp() - 86400, TimeUtil.dayBeginTimestamp(), false, false);
+        if (yesterdayStatisticsList != null && !yesterdayStatisticsList.isEmpty()) {
+            TaskAppStatistics yesterdayStatistics = yesterdayStatisticsList.get(0);
+            responseMap.put("yesterdayAcceptedAmount", yesterdayStatistics.getAcceptedAmount());
+        } else {
+            responseMap.put("yesterdayAcceptedAmount", 0L);
+        }
+        Long[] totalAmountArray = taskService.totalAmountArray();
+        responseMap.put("totalAmount", totalAmountArray[0]);
+        responseMap.put("totalLeftAmount", totalAmountArray[1]);
+        responseMap.put("totalCompletedAmount", totalAmountArray[2]);
+        responseMap.put("totalAcceptedAmount", totalAmountArray[3]);
+        responseMap.put("totalRejectedAmount", totalAmountArray[4]);
+        return responseMap;
     }
 
     /**
@@ -117,11 +143,11 @@ public class StatisticsController extends BaseController {
 
     @RequestMapping(value = "/task_app_statistics", method = RequestMethod.PUT)
     public List<List<TaskAppStatistics>> generateTaskAppDailyStatistics(@RequestParam(value = "days", defaultValue = LogicConstants.DEFAULT_STATISTICS_DAYS) int days) throws IllegalAccessException {
-        long beginTime = TimeUtil.dayEndTimestamp();
+        long beginTime = TimeUtil.dayBeginTimestamp();
         List<List<TaskAppStatistics>> response = new ArrayList<>();
         for (int i = 0; i < days; i++) {
             long endTime = beginTime;
-            beginTime = endTime - days * 86400L;
+            beginTime = endTime - 86400L;
             response.add(taskAppStatisticsService.generateTaskAppStatistics(beginTime, endTime));
         }
         return response;
