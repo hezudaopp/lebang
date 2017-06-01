@@ -89,7 +89,18 @@ public class StatisticsController extends BaseController {
         return reviewerTaskStatisticsService.listGroupByReviewerUserId(this.monthBeginTime, this.monthEndTime, page, size);
     }
 
-
+    /**
+     * 获取月流水统计
+     * @param months
+     * @return
+     * @throws IllegalAccessException
+     */
+    @RequestMapping(value = "/monthly_statistics", method = RequestMethod.GET)
+    public List<ReviewerTaskStatistics> get(
+            @RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) throws IllegalAccessException {
+        this.setMonthBeginTimeAndEndTime(months);
+        return reviewerTaskStatisticsService.list(this.monthBeginTime, this.monthEndTime);
+    }
 
     /**
      * 按审核人员获取历史审核总报表（不包含当月数据）
