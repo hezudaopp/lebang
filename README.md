@@ -753,12 +753,12 @@
   - 响应成功内容:
 ``` javascript
 {
-  "totalAmount": 60,
-  "totalCompletedAmount": 26,
-  "yesterdayAcceptedAmount": null,
-  "totalLeftAmount": 25,
-  "totalAcceptedAmount": 17,
-  "todayAcceptedAmount": 1,
-  "totalRejectedAmount": 0
+  "totalAmount": 60, // 全部任务数量
+  "totalCompletedAmount": 26, // 用户完成任务总数量
+  "yesterdayAcceptedAmount": 0, // 昨天审核通过的任务总数量
+  "totalLeftAmount": 25, // 剩余未领取的任务总数量
+  "totalAcceptedAmount": 17, // 审核通过的任务总数量
+  "todayAcceptedAmount": 1, // 今天审核通过的任务数量
+  "totalRejectedAmount": 0 // 今天审核拒绝的任务数量
 }
 ```
