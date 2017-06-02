@@ -101,6 +101,7 @@ public class UserTaskServiceImpl implements UserTaskService {
         User reviewerUser = userService.findOneRandomUser(Role.ROLE_TASK_REVIEWER.name(), UserStatus.NORMAL.value());
         if (reviewerUser != null) {
             userTask.setReviewerUserId(reviewerUser.getId());
+            userTask.setReviewerUsername(reviewerUser.getUsername());
         }
 
         // save user task

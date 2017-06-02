@@ -61,6 +61,9 @@ public class UserTask {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED DEFAULT NULL COMMENT '审核用户id'")
     private Long reviewerUserId;
 
+    @Column(columnDefinition = "VARCHAR(20) COMMENT '审核人员用户名'")
+    private String reviewerUsername;
+
     @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '审核截至时间'")
     private Long reviewEndTime;
 
@@ -188,6 +191,14 @@ public class UserTask {
 
     public void setReviewerUserId(Long reviewerUserId) {
         this.reviewerUserId = reviewerUserId;
+    }
+
+    public String getReviewerUsername() {
+        return reviewerUsername;
+    }
+
+    public void setReviewerUsername(String reviewerUsername) {
+        this.reviewerUsername = reviewerUsername;
     }
 
     public Long getReviewEndTime() {
