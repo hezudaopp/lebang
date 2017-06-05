@@ -138,7 +138,8 @@ public class UserTaskController extends BaseController {
         Assert.notNull(task, "Task not found.");
 
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.ONGOING.value() || savedUserTask.getStatus() == UserTaskStatus.REDOING.value(), "User task from status error.");
-        Assert.isTrue(auth.getOAuth2Request().getClientId().equals(savedUserTask.getAppId()), "App id is different.");
+        Long appId = Long.parseLong(auth.getOAuth2Request().getClientId());
+        Assert.isTrue(appId.equals(savedUserTask.getAppId()), "App id is different.");
         Assert.isTrue(savedUserTask.getAppUserId().equals(unsavedUserTask.getAppUserId()), "App user id is different.");
         Assert.notNull(unsavedUserTask.getNote(), "Note cannot be empty.");
         Assert.notNull(unsavedUserTask.getImages(), "Images cannot be empty.");

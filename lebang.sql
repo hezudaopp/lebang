@@ -11,7 +11,7 @@
  Target Server Version : 100110
  File Encoding         : utf-8
 
- Date: 06/05/2017 14:40:34 PM
+ Date: 06/05/2017 16:51:49 PM
 */
 
 SET NAMES utf8mb4;
@@ -30,7 +30,14 @@ CREATE TABLE `app` (
   `secret` char(32) NOT NULL COMMENT 'app_secret',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `app`
+-- ----------------------------
+BEGIN;
+INSERT INTO `app` VALUES ('1', '1496647145', '1', '1496647145', 'app1', 'DJnNL@f~PThY^eue1-sMhnx%Psa7DtE8'), ('2', '1496647154', '1', '1496647154', 'app2', 'V%nv~TPVj^8oYk18x$DJKW-9oK$$IYPe'), ('3', '1496647164', '1', '1496647164', 'app3', 'rx%Zw7nnc+jXPtGar~XVK%W3yGKOJfSj');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `reviewer_task_statistics`
@@ -47,7 +54,14 @@ CREATE TABLE `reviewer_task_statistics` (
   `total_flow` decimal(11,2) unsigned NOT NULL COMMENT '用户审核通过的总流水',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_reviewer_begin_end` (`reviewer_user_id`,`begin_time`,`end_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `reviewer_task_statistics`
+-- ----------------------------
+BEGIN;
+INSERT INTO `reviewer_task_statistics` VALUES ('1', '3', '1493568000', '1496246400', '4', '2', 'reviewer1', '23.89'), ('2', '2', '1493568000', '1496246400', '2', '3', 'reviewer2', '4.00'), ('3', '1', '1493568000', '1496246400', '2', '4', 'reviewer3', '2.00'), ('4', '2', '1493568000', '1496246400', '3', '5', 'reviewer4', '4.00');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `task`
@@ -78,7 +92,14 @@ CREATE TABLE `task` (
   `task_type_name` varchar(100) NOT NULL COMMENT '任务类型名称',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `task`
+-- ----------------------------
+BEGIN;
+INSERT INTO `task` VALUES ('1', '1', '5', '1493790500', '0', '1', '18.00', '1496647451', '127', '1', '1', '1573780500', '0', '1496647451', '淘宝评论任务', '19.89', null, '0', '0', null, '1', '淘宝评论'), ('2', '12', '500', '1393790500', '0', '18', '18.00', '1496647590', '127', '1', '1', '1603780500', '475', '1496647590', '微信朋友圈任务', '2.00', null, '0', '5', null, '2', '分享微信朋友圈');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `task_app_statistics`
@@ -94,11 +115,18 @@ CREATE TABLE `task_app_statistics` (
   `end_time` int(10) unsigned NOT NULL COMMENT '统计结束时间',
   `received_amount` int(10) unsigned NOT NULL COMMENT '任务渠道领取量',
   `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
-  `task_name` varchar(100) NOT NULL COMMENT '任务名称',
+  `task_name` varchar(100) DEFAULT NULL COMMENT '任务名称',
   `total_flow` decimal(11,2) unsigned NOT NULL COMMENT '任务渠道流水',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_task_app_begin_end` (`task_id`,`app_id`,`begin_time`,`end_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `task_app_statistics`
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_app_statistics` VALUES ('1', '5', '2', 'app2', '1496592000', '6', '1496678400', '0', '2', '微信朋友圈任务', '10.00'), ('2', '0', '1', 'app1', '1496160000', '0', '1496246400', '1', '1', '淘宝评论任务', '0.00');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `task_city`
@@ -129,7 +157,14 @@ CREATE TABLE `task_procedure` (
   `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_task_procedure_order` (`task_id`,`procedure_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `task_procedure`
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_procedure` VALUES ('1', '1496647451', 'order 1', '1.jpg,2.jpg', '1496647451', '3', '1'), ('2', '1496647451', 'order 2', '1.jpg,2.jpg', '1496647451', '1', '1'), ('3', '1496647590', 'order 1', '1.jpg,2.jpg', '1496647590', '3', '2'), ('4', '1496647590', 'order 2', '1.jpg,2.jpg', '1496647590', '1', '2');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `task_type`
@@ -142,7 +177,14 @@ CREATE TABLE `task_type` (
   `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
   `name` varchar(100) NOT NULL COMMENT '任务类型名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `task_type`
+-- ----------------------------
+BEGIN;
+INSERT INTO `task_type` VALUES ('1', '1496647192', '1', '1496647192', '淘宝评论'), ('2', '1496647267', '1', '1496647267', '分享微信朋友圈');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `user`
@@ -196,7 +238,14 @@ CREATE TABLE `user_task` (
   `task_name` varchar(100) NOT NULL COMMENT '任务名称',
   `task_type_name` varchar(100) NOT NULL COMMENT '任务类型名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `user_task`
+-- ----------------------------
+BEGIN;
+INSERT INTO `user_task` VALUES ('1', '1', 'app1', 'app1user1', null, '1496389969', '1496216357', '1.jpg,2.jpg', '1496247654', '', '19.89', null, '3643872769', '1496237654', '2', 'reviewer1', '2', '1573780500', '1', '淘宝评论任务', '淘宝评论'), ('2', '1', 'app1', 'app1user1', null, '1496389983', '1496130004', '1.jpg,2.jpg', '1496247662', '', '2.00', null, '3643872783', '1496237662', '2', 'reviewer1', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('3', '1', 'app1', 'app1user2', null, '1496390015', '1496130016', '1.jpg,2.jpg', '1496247665', '', '2.00', null, '3643872815', '1496237665', '3', 'reviewer2', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('4', '1', 'app1', 'app1user3', null, '1496390022', '1496130020', '1.jpg,2.jpg', '1496247666', '', '2.00', null, '3643872822', '1496237666', '2', 'reviewer1', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('5', '1', 'app1', 'app1user4', null, '1496390030', '1496130023', '1.jpg,2.jpg', '1496247667', '', '2.00', null, '3643872830', '1496237667', '4', 'reviewer3', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('6', '1', 'app1', 'app1user5', null, '1496390037', '1496130025', '1.jpg,2.jpg', '1496247675', '', '2.00', null, '3643872837', '1496237675', '4', 'reviewer3', '3', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('7', '1', 'app1', 'app1user6', null, '1496390045', '1496389361', '1.jpg,2.jpg', '1496247676', '', '2.00', null, '3643872845', '1496237676', '5', 'reviewer4', '3', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('8', '1', 'app1', 'app1user7', null, '1496390059', '1496389365', '1.jpg,2.jpg', '1496247678', '', '2.00', null, '3643872859', '1496237678', '2', 'reviewer1', '3', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('9', '1', 'app1', 'app1user8', null, '1496390081', '1496389375', '1.jpg,2.jpg', '1496247686', '', '2.00', null, '3643872881', '1496237686', '5', 'reviewer4', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('10', '1', 'app1', 'app1user9', null, '1496390098', '1496389382', '1.jpg,2.jpg', '1496247687', '', '2.00', null, '3643872898', '1496237687', '5', 'reviewer4', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('11', '1', 'app1', 'app1user10', null, '1496390108', '1496389387', '1.jpg,2.jpg', '1496247689', '', '2.00', null, '3643872908', '1496237689', '3', 'reviewer2', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('12', '1', 'app1', 'app1user10', null, null, '1496389390', null, '1496389390', null, '19.89', null, null, null, null, null, '0', '1573780500', '1', '淘宝评论任务', '淘宝评论'), ('13', '1', 'app1', 'app1user9', null, null, '1496389396', null, '1496389396', null, '19.89', null, null, null, null, null, '0', '1573780500', '1', '淘宝评论任务', '淘宝评论'), ('14', '1', 'app1', 'app1user8', null, null, '1496389411', null, '1496389411', null, '19.89', null, null, null, null, null, '0', '1573780500', '1', '淘宝评论任务', '淘宝评论'), ('15', '2', 'app2', 'app2user1', null, '1496591988', '1496591814', '1.jpg,2.jpg', '1496592140', '', '2.00', null, '3644074788', '1496592140', '6', 'reviewer5', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('16', '2', 'app2', 'app2user2', null, '1496591998', '1496591823', '1.jpg,2.jpg', '1496592171', '', '2.00', null, '3644074798', '1496592171', '4', 'reviewer3', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('17', '2', 'app2', 'app2user3', null, '1496592005', '1496591826', '1.jpg,2.jpg', '1496592184', '', '2.00', null, '3644074805', '1496592184', '4', 'reviewer3', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('18', '2', 'app2', 'app2user4', null, '1496592008', '1496591827', '1.jpg,2.jpg', '1496592195', '', '2.00', null, '3644074808', '1496592195', '2', 'reviewer1', '3', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('19', '2', 'app2', 'app2user5', null, '1496592014', '1496591828', '1.jpg,2.jpg', '1496592014', '', '2.00', null, '3644074814', null, '7', 'reviewer6', '1', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('20', '2', 'app2', 'app2user6', null, '1496592021', '1496591829', '1.jpg,2.jpg', '1496678057', '', '2.00', null, '3644074821', '1496678057', '2', 'reviewer1', '3', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('21', '2', 'app2', 'app2user7', null, '1496592040', '1496591836', '1.jpg,2.jpg', '1496678066', '', '2.00', null, '3644074840', '1496678066', '3', 'reviewer2', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('22', '2', 'app2', 'app2user8', null, '1496592050', '1496591840', '1.jpg,2.jpg', '1496678067', '', '2.00', null, '3644074850', '1496678067', '7', 'reviewer6', '2', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('23', '2', 'app2', 'app2user9', null, null, '1496591842', null, '1496591842', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('24', '2', 'app2', 'app2user10', null, null, '1496591844', null, '1496591844', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('25', '2', 'app2', 'app2user11', null, null, '1496591846', null, '1496591846', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('26', '2', 'app2', 'app2user12', null, null, '1496591847', null, '1496591847', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('27', '2', 'app2', 'app2user13', null, null, '1496591848', null, '1496591848', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('28', '2', 'app2', 'app2user14', null, null, '1496591849', null, '1496591849', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈'), ('29', '2', 'app2', 'app2user15', null, null, '1496591854', null, '1496591854', null, '2.00', null, null, null, null, null, '0', '1603780500', '2', '微信朋友圈任务', '分享微信朋友圈');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `user_task_log`
@@ -211,7 +260,15 @@ CREATE TABLE `user_task_log` (
   `operator_user_id` bigint(20) unsigned DEFAULT NULL COMMENT '操作用户',
   `to_status` tinyint(2) unsigned NOT NULL COMMENT '操作后任务进度',
   `user_task_id` bigint(20) unsigned NOT NULL COMMENT '用户任务id',
+  `remark` varchar(100) DEFAULT NULL COMMENT '操作备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `user_task_log`
+-- ----------------------------
+BEGIN;
+INSERT INTO `user_task_log` VALUES ('1', '1496648209', '0', '1', 'app1user1', null, '0', '1', null), ('2', '1496216357', '0', '1', 'app1user1', null, '0', '1', null), ('3', '1496130004', '0', '1', 'app1user1', null, '0', '2', null), ('4', '1496130016', '0', '1', 'app1user2', null, '0', '3', null), ('5', '1496130020', '0', '1', 'app1user3', null, '0', '4', null), ('6', '1496130023', '0', '1', 'app1user4', null, '0', '5', null), ('7', '1496130025', '0', '1', 'app1user5', null, '0', '6', null), ('8', '1496389361', '0', '1', 'app1user6', null, '0', '7', null), ('9', '1496389365', '0', '1', 'app1user7', null, '0', '8', null), ('10', '1496389375', '0', '1', 'app1user8', null, '0', '9', null), ('11', '1496389382', '0', '1', 'app1user9', null, '0', '10', null), ('12', '1496389387', '0', '1', 'app1user10', null, '0', '11', null), ('13', '1496389390', '0', '1', 'app1user10', null, '0', '12', null), ('14', '1496389396', '0', '1', 'app1user9', null, '0', '13', null), ('15', '1496389411', '0', '1', 'app1user8', null, '0', '14', null), ('16', '1496389969', '0', '1', 'app1user1', null, '1', '1', null), ('17', '1496389983', '0', '1', 'app1user1', null, '1', '2', null), ('18', '1496390015', '0', '1', 'app1user2', null, '1', '3', null), ('19', '1496390022', '0', '1', 'app1user3', null, '1', '4', null), ('20', '1496390030', '0', '1', 'app1user4', null, '1', '5', null), ('21', '1496390037', '0', '1', 'app1user5', null, '1', '6', null), ('22', '1496390045', '0', '1', 'app1user6', null, '1', '7', null), ('23', '1496390059', '0', '1', 'app1user7', null, '1', '8', null), ('24', '1496390081', '0', '1', 'app1user8', null, '1', '9', null), ('25', '1496390098', '0', '1', 'app1user9', null, '1', '10', null), ('26', '1496390108', '0', '1', 'app1user10', null, '1', '11', null), ('27', '1496591814', '0', '2', 'app2user1', null, '0', '15', null), ('28', '1496591823', '0', '2', 'app2user2', null, '0', '16', null), ('29', '1496591826', '0', '2', 'app2user3', null, '0', '17', null), ('30', '1496591827', '0', '2', 'app2user4', null, '0', '18', null), ('31', '1496591828', '0', '2', 'app2user5', null, '0', '19', null), ('32', '1496591829', '0', '2', 'app2user6', null, '0', '20', null), ('33', '1496591836', '0', '2', 'app2user7', null, '0', '21', null), ('34', '1496591840', '0', '2', 'app2user8', null, '0', '22', null), ('35', '1496591842', '0', '2', 'app2user9', null, '0', '23', null), ('36', '1496591844', '0', '2', 'app2user10', null, '0', '24', null), ('37', '1496591846', '0', '2', 'app2user11', null, '0', '25', null), ('38', '1496591847', '0', '2', 'app2user12', null, '0', '26', null), ('39', '1496591848', '0', '2', 'app2user13', null, '0', '27', null), ('40', '1496591849', '0', '2', 'app2user14', null, '0', '28', null), ('41', '1496591854', '0', '2', 'app2user15', null, '0', '29', null), ('42', '1496591988', '0', '2', 'app2user1', null, '1', '15', null), ('43', '1496591998', '0', '2', 'app2user2', null, '1', '16', null), ('44', '1496592005', '0', '2', 'app2user3', null, '1', '17', null), ('45', '1496592008', '0', '2', 'app2user4', null, '1', '18', null), ('46', '1496592014', '0', '2', 'app2user5', null, '1', '19', null), ('47', '1496592021', '0', '2', 'app2user6', null, '1', '20', null), ('48', '1496592040', '0', '2', 'app2user7', null, '1', '21', null), ('49', '1496592050', '0', '2', 'app2user8', null, '1', '22', null), ('50', '1496591988', '1', null, null, '1', '2', '15', null), ('51', '1496591998', '1', null, null, '1', '2', '16', '123456'), ('52', '1496592005', '1', null, null, '1', '2', '17', '123456'), ('53', '1496592008', '1', null, null, '1', '3', '18', '123456'), ('54', '1496592021', '1', null, null, '1', '3', '20', '123456'), ('55', '1496592040', '1', null, null, '1', '2', '21', '123456'), ('56', '1496592050', '1', null, null, '1', '2', '22', '123456'), ('57', '1496389969', '1', null, null, '1', '2', '1', '123456'), ('58', '1496389983', '1', null, null, '1', '2', '2', '123456'), ('59', '1496390015', '1', null, null, '1', '2', '3', '123456'), ('60', '1496390022', '1', null, null, '1', '2', '4', '123456'), ('61', '1496390030', '1', null, null, '1', '2', '5', '123456'), ('62', '1496390037', '1', null, null, '1', '3', '6', '123456'), ('63', '1496390045', '1', null, null, '1', '3', '7', '123456'), ('64', '1496390059', '1', null, null, '1', '3', '8', '123456'), ('65', '1496390081', '1', null, null, '1', '2', '9', '123456'), ('66', '1496390098', '1', null, null, '1', '2', '10', '123456'), ('67', '1496390108', '1', null, null, '1', '2', '11', '123456');
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

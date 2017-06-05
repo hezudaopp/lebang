@@ -44,7 +44,7 @@ public class TaskController extends BaseController {
             UriComponentsBuilder ucb) {
         assertFieldError(errors);
 
-        Assert.isNull(task.getName(), "Task name conflict.");
+        Assert.isNull(taskService.findOne(task.getName()), "Task name conflict.");
 
         TaskType taskType = taskTypeService.findOne(task.getTaskTypeId(), true);
         Assert.notNull(taskType, "Task type not found.");
@@ -56,6 +56,7 @@ public class TaskController extends BaseController {
         task.setLeftAmount(task.getAmount());
         task.setCompletedAmount(0L);
         task.setAcceptedAmount(0L);
+        task.setRejectedAmount(0L);
         Task savedTask = taskService.save(task, true);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -98,6 +99,7 @@ public class TaskController extends BaseController {
         unsavedTask.setLeftAmount(leftAmount);
         unsavedTask.setCompletedAmount(savedTask.getCompletedAmount());
         unsavedTask.setAcceptedAmount(savedTask.getAcceptedAmount());
+        unsavedTask.setRejectedAmount(savedTask.getRejectedAmount());
         unsavedTask.setEnabled(savedTask.getEnabled());
         return taskService.save(unsavedTask);
     }

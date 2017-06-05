@@ -19,7 +19,7 @@ public class TaskAppStatistics {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务id'")
     private Long taskId;
 
-    @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务名称'")
+    @Column(columnDefinition = "VARCHAR(100) COMMENT '任务名称'")
     private String taskName;
 
     @NotNull

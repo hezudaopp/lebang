@@ -199,7 +199,9 @@ public class UserTaskServiceImpl implements UserTaskService {
             Long receivedAmount = (Long) objects[1];
             TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
             taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setTaskName(userTask.getTaskName());
             taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setAppName(userTask.getAppName());
             taskAppStatistics.setBeginTime(beginTime);
             taskAppStatistics.setEndTime(endTime);
             taskAppStatistics.setReceivedAmount(receivedAmount);
@@ -220,7 +222,9 @@ public class UserTaskServiceImpl implements UserTaskService {
             Long completedAmount = (Long) objects[1];
             TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
             taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setTaskName(userTask.getTaskName());
             taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setAppName(userTask.getAppName());
             taskAppStatistics.setBeginTime(beginTime);
             taskAppStatistics.setEndTime(endTime);
             taskAppStatistics.setCompletedAmount(completedAmount);
@@ -242,7 +246,9 @@ public class UserTaskServiceImpl implements UserTaskService {
             Double totalFlow = (Double) objects[2];
             TaskAppStatistics taskAppStatistics = new TaskAppStatistics();
             taskAppStatistics.setTaskId(userTask.getTaskId());
+            taskAppStatistics.setTaskName(userTask.getTaskName());
             taskAppStatistics.setAppId(userTask.getAppId());
+            taskAppStatistics.setAppName(userTask.getAppName());
             taskAppStatistics.setBeginTime(beginTime);
             taskAppStatistics.setEndTime(endTime);
             taskAppStatistics.setAcceptedAmount(acceptedAmount);
@@ -265,6 +271,7 @@ public class UserTaskServiceImpl implements UserTaskService {
             Double totalFlow = (Double) objects[2];
             ReviewerTaskStatistics reviewerTaskStatistics = new ReviewerTaskStatistics();
             reviewerTaskStatistics.setReviewerUserId(userTask.getReviewerUserId());
+            reviewerTaskStatistics.setReviewerUsername(userTask.getReviewerUsername());
             reviewerTaskStatistics.setBeginTime(beginTime);
             reviewerTaskStatistics.setEndTime(endTime);
             reviewerTaskStatistics.setAcceptedAmount(acceptedAmount);

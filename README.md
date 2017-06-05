@@ -612,7 +612,12 @@
   - 请求URI说明: userTaskStatus: 2. 审核通过 3. 审核拒绝 4. 重做任务
   - 请求Method: PATCH
   - 请求参数: 无
-  - 请求内容: 无
+  - 请求内容:
+``` javascript
+{
+  "remark":"审核说明" // 可选
+}
+```
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
 

@@ -15,8 +15,7 @@ public class UserTask {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '自增id'")
     private Long id;
 
-    @NotNull
-    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '用户来源渠道app'")
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED NOT NULL COMMENT '用户来源渠道app'")
     private Long appId;
 
     @Column(columnDefinition = "VARCHAR(50) COMMENT '用户来源渠道app名称'")
