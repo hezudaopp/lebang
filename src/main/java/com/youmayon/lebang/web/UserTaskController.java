@@ -1,11 +1,13 @@
 package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.constant.LogicConstants;
+import com.youmayon.lebang.domain.App;
 import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
 import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserTaskStatus;
+import com.youmayon.lebang.service.AppService;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskService;
 import com.youmayon.lebang.service.UserTaskService;
@@ -24,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,6 +44,10 @@ public class UserTaskController extends BaseController {
     @Autowired
     UserTaskService userTaskService;
 
+    @Autowired
+    AppService appService;
+
+
     /**
      * 用户领取任务
      * @param userTask
@@ -56,7 +63,6 @@ public class UserTaskController extends BaseController {
             OAuth2Authentication auth) {
         assertFieldError(errors);
 
-        Assert.notNull(userTask.getTaskId(), "Task id cannot be empty.");
         Task task = taskService.findOne(userTask.getTaskId());
         Assert.notNull(task, "Task not found.");
 
@@ -70,7 +76,10 @@ public class UserTaskController extends BaseController {
             Assert.isTrue(taskCityService.containsCity(userTask));
         }
 
-        userTask.setAppId(auth.getOAuth2Request().getClientId());
+        userTask.setAppId(Long.parseLong(auth.getOAuth2Request().getClientId()));
+        App app = appService.findOne(userTask.getAppId());
+        Assert.notNull(app, "App not found.");
+        userTask.setAppName(app.getName());
         userTask.setTaskEndTime(task.getEndTime());
         userTask.setStatus(UserTaskStatus.ONGOING.value());
         userTask.setCreatedTime(now);
@@ -162,6 +171,7 @@ public class UserTaskController extends BaseController {
     public UserTask patch(
             @PathVariable long id,
             @PathVariable int userTaskStatus,
+            @RequestBody Map<String, String> requestMap,
             @AuthenticationPrincipal User user) {
 
         UserTask savedUserTask = userTaskService.findOne(id);
@@ -183,6 +193,6 @@ public class UserTaskController extends BaseController {
         savedUserTask.setStatus(userTaskStatus);
         savedUserTask.setModifiedTime(now);
 
-        return userTaskService.reviewTask(user, savedUserTask, task, userTaskStatus);
+        return userTaskService.reviewTask(user, savedUserTask, task, userTaskStatus, requestMap.get("remark"));
     }
 }

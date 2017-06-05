@@ -125,7 +125,7 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus) {
+    public UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus, String remark) {
         // save user task
         UserTask savedUserTask = userTaskRepository.save(userTask);
 
@@ -146,6 +146,7 @@ public class UserTaskServiceImpl implements UserTaskService {
         userTaskLog.setCreatedTime(userTask.getCompletedTime());
         userTaskLog.setFromStatus(UserTaskStatus.COMPLETED.value());
         userTaskLog.setToStatus(toStatus);
+        userTaskLog.setRemark(remark);
         userTaskLogService.save(userTaskLog);
 
         return savedUserTask;
@@ -157,12 +158,12 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public UserTask findOne(String appId, String appUserId, long taskId) {
+    public UserTask findOne(long appId, String appUserId, long taskId) {
         return userTaskRepository.findFirstByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(appId, appUserId, taskId);
     }
 
     @Override
-    public int count(String appId, String appUserId, long taskId) {
+    public int count(long appId, String appUserId, long taskId) {
         return userTaskRepository.countByAppIdAndAppUserIdAndTaskId(appId, appUserId, taskId);
     }
 

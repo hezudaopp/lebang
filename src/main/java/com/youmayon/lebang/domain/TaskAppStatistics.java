@@ -24,7 +24,7 @@ public class TaskAppStatistics {
 
     @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT 'app渠道id'")
-    private String appId;
+    private Long appId;
 
     @Column(columnDefinition = "VARCHAR(50) COMMENT '用户来源渠道app名称'")
     private String appName;
@@ -51,7 +51,7 @@ public class TaskAppStatistics {
 
     public TaskAppStatistics() {}
 
-    public TaskAppStatistics(Long taskId, String taskName, String appId, String appName, Long beginTime, Long endTime, Double totalFlow, Long receivedAmount, Long completedAmount, Long acceptedAmount) {
+    public TaskAppStatistics(Long taskId, String taskName, Long appId, String appName, Long beginTime, Long endTime, Double totalFlow, Long receivedAmount, Long completedAmount, Long acceptedAmount) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.appId = appId;
@@ -111,11 +111,11 @@ public class TaskAppStatistics {
         this.taskName = taskName;
     }
 
-    public String getAppId() {
+    public Long getAppId() {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
     }
 

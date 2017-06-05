@@ -17,7 +17,7 @@ public class UserTask {
 
     @NotNull
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '用户来源渠道app'")
-    private String appId;
+    private Long appId;
 
     @Column(columnDefinition = "VARCHAR(50) COMMENT '用户来源渠道app名称'")
     private String appName;
@@ -90,11 +90,11 @@ public class UserTask {
         this.id = id;
     }
 
-    public String getAppId() {
+    public Long getAppId() {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
     }
 

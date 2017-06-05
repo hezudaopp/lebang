@@ -40,7 +40,7 @@ public interface UserTaskService {
      * @param toStatus
      * @return
      */
-    UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus);
+    UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus, String remark);
 
 
     /**
@@ -57,7 +57,7 @@ public interface UserTaskService {
      * @param taskId
      * @return
      */
-    UserTask findOne(String appId, String appUserId, long taskId);
+    UserTask findOne(long appId, String appUserId, long taskId);
 
     /**
      * 用户任务列表
@@ -76,7 +76,7 @@ public interface UserTaskService {
      * @param taskId
      * @return
      */
-    int count(String appId, String appUserId, long taskId);
+    int count(long appId, String appUserId, long taskId);
 
     /**
      * 根据任务和APP渠道统计领取任务数据

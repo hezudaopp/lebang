@@ -22,8 +22,8 @@ public class UserTaskLog {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '操作用户'")
     private Long operatorUserId;
 
-    @Column(columnDefinition = "VARCHAR(20) DEFAULT NULL COMMENT '操作用户来源app'")
-    private String operatorAppId;
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED DEFAULT NULL COMMENT '操作用户来源app'")
+    private Long operatorAppId;
 
     @Size(min = 2, max = 32)
     @Column(columnDefinition = "VARCHAR(32) DEFAULT NULL COMMENT '操作用户在来源app中user_id'")
@@ -39,6 +39,9 @@ public class UserTaskLog {
 
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '创建时间'")
     private Long createdTime;
+
+    @Column(columnDefinition = "VARCHAR(100) DEFAULT NULL COMMENT '操作备注'")
+    private String remark;
 
     public UserTaskLog() {}
 
@@ -66,11 +69,11 @@ public class UserTaskLog {
         this.operatorUserId = operatorUserId;
     }
 
-    public String getOperatorAppId() {
+    public Long getOperatorAppId() {
         return operatorAppId;
     }
 
-    public void setOperatorAppId(String operatorAppId) {
+    public void setOperatorAppId(Long operatorAppId) {
         this.operatorAppId = operatorAppId;
     }
 
@@ -104,5 +107,13 @@ public class UserTaskLog {
 
     public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

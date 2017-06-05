@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface TaskAppStatisticsRepository extends JpaRepository<TaskAppStatistics, Long>, JpaSpecificationExecutor<TaskAppStatistics>, TaskAppStatisticsDao {
-    TaskAppStatistics findFirstByTaskIdAndAppIdAndBeginTimeAndEndTime(long taskId, String appId, long beginTime, long endTime);
+    TaskAppStatistics findFirstByTaskIdAndAppIdAndBeginTimeAndEndTime(long taskId, long appId, long beginTime, long endTime);
 }
