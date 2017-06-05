@@ -194,9 +194,9 @@
 {
     "id": 1,
     "taskId": 2,
-    "taskName": "任务名称",
+    "taskName": "微信朋友圈分享", // 任务名称
     "appId": 4,
-    "appName": "渠道名",
+    "appName": "appName1", // 渠道名
     "beginTime": 1494259200, // 统计开始时间（包含）， 按天统计的话就是一天的开始时间
     "endTime": 1494345600, // 统计结束时间（不包含），按天统计的话就是第二天的开始时间
     "totalFlow": 39.78, // 审核通过的流水
@@ -210,7 +210,8 @@
 ``` javascript
 {
   "id": 3,
-  "reviewerUserId": 7, //审核人员UserId
+  "reviewerUserId": 7, // 审核人员UserId
+  "reviewerUsername": "reviewer1", // 审核人员username
   "beginTime": 1493568000,
   "endTime": 1496246400,
   "reviewedAmount": 1, // 审核通过和拒绝总数量
