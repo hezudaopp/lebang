@@ -37,4 +37,9 @@ public class AppServiceImpl implements AppService {
     public List<App> list(boolean enabled) {
         return appRepository.findByEnabled(enabled);
     }
+
+    @Override
+    public App findOne(String name) {
+        return appRepository.findFirstByName(name);
+    }
 }

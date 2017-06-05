@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface AppRepository extends JpaRepository<App, Long> {
     List<App> findByEnabled(boolean enabled);
+    App findFirstByName(String name);
 }

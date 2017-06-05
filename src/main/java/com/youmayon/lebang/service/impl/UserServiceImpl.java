@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsernameIgnoringCase(username);
+        return userRepository.findFirstByUsernameIgnoringCase(username);
     }
 
     @Override
@@ -63,11 +63,6 @@ public class UserServiceImpl implements UserService {
         userFilter.setStatus(status);
         Specification<User> specification = this.getWhereClause(userFilter);
         return  userRepository.findAll(specification);
-    }
-
-    @Override
-    public boolean isUsernameExists(String username) {
-        return findByUsername(username) != null;
     }
 
     @Override

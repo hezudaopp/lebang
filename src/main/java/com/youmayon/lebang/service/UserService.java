@@ -57,11 +57,4 @@ public interface UserService extends UserDetailsService {
      * @return
      */
     List<User> list(String role, int status);
-
-    /**
-     * 判断用户是否存在
-     * @param username
-     * @return
-     */
-    boolean isUsernameExists(String username);
 }

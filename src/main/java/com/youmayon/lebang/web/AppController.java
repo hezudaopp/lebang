@@ -43,6 +43,8 @@ public class AppController extends BaseController {
             UriComponentsBuilder ucb) {
         assertFieldError(errors);
 
+        Assert.isNull(appService.findOne(app.getName()), "App name conflict.");
+
         app.setCreatedTime(System.currentTimeMillis() / 1000);
         app.setModifiedTime(app.getCreatedTime());
         // generate app secret

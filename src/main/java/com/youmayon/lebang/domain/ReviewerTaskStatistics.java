@@ -19,6 +19,9 @@ public class ReviewerTaskStatistics {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '审核人员UserId'")
     private Long reviewerUserId;
 
+    @Column(columnDefinition = "VARCHAR(20) COMMENT '审核人员用户名'")
+    private String reviewerUsername;
+
     @NotNull
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '统计开始时间'")
     private Long beginTime;
@@ -38,8 +41,9 @@ public class ReviewerTaskStatistics {
 
     public ReviewerTaskStatistics() {}
 
-    public ReviewerTaskStatistics(Long reviewerUserId, Long beginTime, Long endTime, Long reviewedAmount, Long acceptedAmount, Double totalFlow) {
+    public ReviewerTaskStatistics(Long reviewerUserId, String reviewerUsername, Long beginTime, Long endTime, Long reviewedAmount, Long acceptedAmount, Double totalFlow) {
         this.reviewerUserId = reviewerUserId;
+        this.reviewerUsername = reviewerUsername;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.reviewedAmount = reviewedAmount;
@@ -91,6 +95,14 @@ public class ReviewerTaskStatistics {
 
     public void setReviewerUserId(Long reviewerUserId) {
         this.reviewerUserId = reviewerUserId;
+    }
+
+    public String getReviewerUsername() {
+        return reviewerUsername;
+    }
+
+    public void setReviewerUsername(String reviewerUsername) {
+        this.reviewerUsername = reviewerUsername;
     }
 
     public Long getBeginTime() {

@@ -17,21 +17,21 @@ public interface TaskService {
     Long[] totalAmountArray();
 
     /**
-     * 保存任务类型
+     * 保存任务
      * @param task
      * @return
      */
     Task save(Task task, boolean withProcedure);
 
     /**
-     * 保存任务类型
+     * 保存任务
      * @param task
      * @return
      */
     Task save(Task task);
 
     /**
-     * 分页获取任务类型列表
+     * 分页获取任务列表
      * @param beginTime
      * @param endTime
      * @param taskTypeId
@@ -43,24 +43,31 @@ public interface TaskService {
     Page<Task> list(long beginTime, long endTime, long taskTypeId, int enabled, int page, int size);
 
     /**
-     * 任务类型详情
+     * 任务详情
      * @param id
      * @return
      */
     Task findOne(long id);
 
     /**
-     * 任务类型详情，任务步骤一并返回
+     * 任务详情，任务步骤一并返回
      * @param id
      * @return
      */
     Task findOneWithProcedures(long id);
 
     /**
-     * 任务类型详情
+     * 任务详情
      * @param id
      * @param enabled
      * @return
      */
     Task findOne(long id, boolean enabled);
+
+    /**
+     * 任务详情
+     * @param name
+     * @return
+     */
+    Task findOne(String name);
 }

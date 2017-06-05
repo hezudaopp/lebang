@@ -37,4 +37,11 @@ public interface AppService {
      * @return
      */
     List<App> list(boolean enabled);
+
+    /**
+     * 获取app详情
+     * @param name
+     * @return
+     */
+    App findOne(String name);
 }

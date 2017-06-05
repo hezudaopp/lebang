@@ -15,6 +15,7 @@ import java.util.Set;
  * 任务
  */
 @Entity
+@Table(indexes = { @Index(name = "uk_name", columnList = "name", unique = true)})
 public class Task {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

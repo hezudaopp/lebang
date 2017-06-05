@@ -1,7 +1,5 @@
 package com.youmayon.lebang.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,8 +15,12 @@ public class UserTask {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '自增id'")
     private Long id;
 
-    @Column(columnDefinition = "VARCHAR(20) NOT NULL COMMENT '用户来源app'")
+    @NotNull
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '用户来源渠道app'")
     private String appId;
+
+    @Column(columnDefinition = "VARCHAR(50) COMMENT '用户来源渠道app名称'")
+    private String appName;
 
     @NotNull
     @Size(min = 2, max = 32)
@@ -29,7 +31,6 @@ public class UserTask {
     @Column(columnDefinition = "BIGINT(20) UNSIGNED COMMENT '任务id'")
     private Long taskId;
 
-    @Size(min = 2, max = 100)
     @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务名称'")
     private String taskName;
 
@@ -95,6 +96,14 @@ public class UserTask {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getAppUserId() {

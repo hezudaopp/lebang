@@ -23,7 +23,9 @@ public class TaskAppStatisticsRepositoryImpl implements TaskAppStatisticsDao {
         Root<TaskAppStatistics> root = criteriaQuery.from(TaskAppStatistics.class);
         criteriaQuery.select(criteriaBuilder.construct(TaskAppStatistics.class,
                 root.get("taskId"),
+                root.get("taskName"),
                 root.get("appId"),
+                root.get("appName"),
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("totalFlow")),

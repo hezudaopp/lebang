@@ -44,6 +44,8 @@ public class TaskController extends BaseController {
             UriComponentsBuilder ucb) {
         assertFieldError(errors);
 
+        Assert.isNull(task.getName(), "Task name conflict.");
+
         TaskType taskType = taskTypeService.findOne(task.getTaskTypeId(), true);
         Assert.notNull(taskType, "Task type not found.");
         Assert.isTrue(task.getEndTime() > task.getBeginTime(), "End time should be greater than begin time.");

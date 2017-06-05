@@ -68,7 +68,7 @@ public class UserController extends BaseController {
             UriComponentsBuilder ucb) {
         assertFieldError(errors);
 
-        Assert.isTrue(!userService.isUsernameExists(user.getUsername()), "Username already exists.");
+        Assert.isNull(userService.findByUsername(user.getUsername()), "Username already exists.");
 
         user.setCreatedTime(System.currentTimeMillis() / 1000);
         user.setModifiedTime(user.getCreatedTime());

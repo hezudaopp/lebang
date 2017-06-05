@@ -241,4 +241,9 @@ public class TaskServiceImpl implements TaskService {
             }
         };
     }
+
+    @Override
+    public Task findOne(String name) {
+        return taskRepository.findFirstByName(name);
+    }
 }

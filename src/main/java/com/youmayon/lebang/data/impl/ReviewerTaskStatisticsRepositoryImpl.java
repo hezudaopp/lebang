@@ -25,6 +25,7 @@ public class ReviewerTaskStatisticsRepositoryImpl implements ReviewerTaskStatist
         Root<ReviewerTaskStatistics> root = criteriaQuery.from(ReviewerTaskStatistics.class);
         criteriaQuery.select(criteriaBuilder.construct(ReviewerTaskStatistics.class,
                 root.get("reviewerUserId"),
+                root.get("reviewerUsername"),
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("reviewedAmount")),
@@ -85,6 +86,7 @@ public class ReviewerTaskStatisticsRepositoryImpl implements ReviewerTaskStatist
         Root<ReviewerTaskStatistics> root = criteriaQuery.from(ReviewerTaskStatistics.class);
         criteriaQuery.select(criteriaBuilder.construct(ReviewerTaskStatistics.class,
                 root.get("reviewerUserId"),
+                root.get("reviewerUsername"),
                 root.get("beginTime"),
                 root.get("endTime"),
                 criteriaBuilder.sum(root.get("reviewedAmount")),

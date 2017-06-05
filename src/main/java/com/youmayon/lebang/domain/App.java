@@ -1,23 +1,16 @@
 package com.youmayon.lebang.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youmayon.lebang.constant.LogicConstants;
-import com.youmayon.lebang.enums.UserStatus;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by Jawinton on 17/05/02.
  * 用户，使用username登录到系统
  */
 @Entity
+@Table(indexes = { @Index(name = "uk_name", columnList = "name", unique = true)})
 public class App {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
