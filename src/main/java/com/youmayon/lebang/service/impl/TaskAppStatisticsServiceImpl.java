@@ -46,12 +46,14 @@ public class TaskAppStatisticsServiceImpl implements TaskAppStatisticsService {
         if (!isDistinctApp) {
             for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
                 taskAppStatistics.setAppId(null);
+                taskAppStatistics.setAppName(null);
             }
         }
 
         if (!isDistinctTask) {
             for (TaskAppStatistics taskAppStatistics : taskAppStatisticsList) {
                 taskAppStatistics.setTaskId(null);
+                taskAppStatistics.setTaskName(null);
             }
         }
 
