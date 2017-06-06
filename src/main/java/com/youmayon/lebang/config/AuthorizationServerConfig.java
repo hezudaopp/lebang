@@ -1,10 +1,9 @@
 package com.youmayon.lebang.config;
 
 import com.youmayon.lebang.constant.SecurityConstants;
-import com.youmayon.lebang.domain.App;
-import com.youmayon.lebang.domain.OAuth2Client;
 import com.youmayon.lebang.enums.ClientRole;
 import com.youmayon.lebang.service.AppService;
+import com.youmayon.lebang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+
+import javax.sql.DataSource;
 
 /**
  * Auth2 认证服务器配置类
@@ -38,6 +40,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthorizationCodeServices authorizationCodeServices;
+
+    @Autowired
+    private DataSource dataSource;
+
     /**
      * 客户端认证配置
      * @param clients
@@ -45,25 +56,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        ClientDetailsServiceBuilder csb = clients.inMemory();
-        for (OAuth2Client client : SecurityConstants.O_AUTH2_CLIENTS) {
-            csb.withClient(client.getId())
-                    .secret(client.getSecret())
-                    .authorizedGrantTypes(client.getGrantTypes())
-                    .authorities(client.getRoles())
-                    .scopes(client.getScopes())
-                    .accessTokenValiditySeconds(client.getAccessTokenValidSeconds())
-                    .refreshTokenValiditySeconds(client.getAccessTokenValidSeconds());
-        }
+        ClientDetailsServiceBuilder csb = clients.jdbc(dataSource);
+        csb.withClient("lebang_client")
+                .secret("lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO")
+                .authorizedGrantTypes(new String[]{"password", "refresh_token"})
+                .authorities(new String[]{ClientRole.ROLE_CLIENT.name()})
+                .scopes(new String[]{"read", "write"})
+                .accessTokenValiditySeconds(7200)
+                .refreshTokenValiditySeconds(86400 * 30);
 
-        for (App app : appService.list(true)) {
-            csb.withClient(app.getId().toString())
-                    .secret(app.getSecret())
-                    .authorizedGrantTypes(new String[]{"client_credentials"})
-                    .authorities(new String[]{ClientRole.ROLE_APP.name()})
-                    .scopes(new String[]{"read", "trust"})
-                    .accessTokenValiditySeconds(7200);
-        }
+//        for (App app : appService.list(true)) {
+//            csb.withClient(app.getId().toString())
+//                    .secret(app.getSecret())
+//                    .authorizedGrantTypes(new String[]{"client_credentials"})
+//                    .authorities(new String[]{ClientRole.ROLE_APP.name()})
+//                    .scopes(new String[]{"read", "trust"})
+//                    .accessTokenValiditySeconds(7200);
+//        }
     }
 
     @Override
@@ -71,7 +80,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .tokenStore(tokenStore)
                 .userApprovalHandler(userApprovalHandler)
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+                .authorizationCodeServices(authorizationCodeServices)
+                .approvalStoreDisabled();
     }
 
     /**
