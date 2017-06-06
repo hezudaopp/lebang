@@ -14,4 +14,9 @@ public class SecurityConstants {
     // security constants
     public static final String REALM = "com.youmayon.lebang";
     public static final String RESOURCE_ID = "lebang_rest_resource";
+
+    // oauth client constants
+    public static final String APP_AUTHORIZED_GRANT_TYPES = "client_credentials";
+    public static final String APP_SCOPE = "trust";
+    public static final int APP_ACCESS_TOKEN_VALIDITY = 7200;
 }

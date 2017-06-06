@@ -1,8 +1,10 @@
 package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.constant.LogicConstants;
-import com.youmayon.lebang.domain.App;
-import com.youmayon.lebang.service.AppService;
+import com.youmayon.lebang.constant.SecurityConstants;
+import com.youmayon.lebang.domain.OauthClientDetails;
+import com.youmayon.lebang.enums.ClientRole;
+import com.youmayon.lebang.service.OauthClientDetailsService;
 import com.youmayon.lebang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 import static com.youmayon.lebang.constant.LogicConstants.APP_SECRET_LEN;
 
@@ -27,40 +28,44 @@ import static com.youmayon.lebang.constant.LogicConstants.APP_SECRET_LEN;
 @RequestMapping("/apps")
 public class AppController extends BaseController {
     @Autowired
-    private AppService appService;
+    private OauthClientDetailsService oauthClientDetailsService;
 
     /**
      * 添加APP
-     * @param app
+     * @param oauthClientDetails
      * @param errors
      * @param ucb
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<App> save(
-            @Valid @RequestBody App app,
+    public ResponseEntity<OauthClientDetails> save(
+            @Valid @RequestBody OauthClientDetails oauthClientDetails,
             Errors errors,
             UriComponentsBuilder ucb) {
         assertFieldError(errors);
 
-        Assert.isNull(appService.findOne(app.getName()), "App name conflict.");
+        Assert.isNull(oauthClientDetailsService.findOne(oauthClientDetails.getClientId()), "Client id conflict.");
 
-        app.setCreatedTime(System.currentTimeMillis() / 1000);
-        app.setModifiedTime(app.getCreatedTime());
         // generate app secret
-        app.setSecret(StringUtil.generateRandomString(APP_SECRET_LEN));
-        app.setEnabled(true);
+        oauthClientDetails.setClientSecret(StringUtil.generateRandomString(APP_SECRET_LEN));
+        oauthClientDetails.setAuthorizedGrantTypes(SecurityConstants.APP_AUTHORIZED_GRANT_TYPES);
+        oauthClientDetails.setAuthorities(ClientRole.ROLE_APP.name());
+        oauthClientDetails.setScope(SecurityConstants.APP_SCOPE);
+        oauthClientDetails.setAccessTokenValidity(SecurityConstants.APP_ACCESS_TOKEN_VALIDITY);
+        oauthClientDetails.setResourceIds(LogicConstants.EMPTY_STRING);
+        oauthClientDetails.setWebServerRedirectUri(LogicConstants.EMPTY_STRING);
+        oauthClientDetails.setAutoapprove(LogicConstants.EMPTY_STRING);
 
-        App savedApp = appService.save(app);
+        OauthClientDetails savedOauthClientDetails = oauthClientDetailsService.save(oauthClientDetails);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         URI locationUri = ucb.path("/apps/")
-                .path(String.valueOf(savedApp.getId()))
+                .path(String.valueOf(savedOauthClientDetails.getId()))
                 .build()
                 .toUri();
         httpHeaders.setLocation(locationUri);
 
-        return new ResponseEntity<>(savedApp, httpHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedOauthClientDetails, httpHeaders, HttpStatus.CREATED);
     }
 
     /**
@@ -69,29 +74,11 @@ public class AppController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public App get(@PathVariable long id) {
-        App savedApp = appService.findOne(id);
-        Assert.notNull(savedApp, "App not found.");
+    public OauthClientDetails get(@PathVariable long id) {
+        OauthClientDetails savedOauthClientDetails = oauthClientDetailsService.findOne(id);
+        Assert.notNull(savedOauthClientDetails, "App not found.");
 
-        return savedApp;
-    }
-    
-    /**
-     * 修改APP状态
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/{id}/enabled/{enabled}", method = RequestMethod.PATCH, consumes = "application/json")
-    public App patch(
-            @PathVariable long id,
-            @PathVariable boolean enabled) {
-        App savedApp = appService.findOne(id);
-        Assert.notNull(savedApp, "App not found.");
-
-        savedApp.setEnabled(enabled);
-        savedApp.setModifiedTime(System.currentTimeMillis() / 1000);
-
-        return appService.save(savedApp);
+        return savedOauthClientDetails;
     }
 
     /**
@@ -101,18 +88,9 @@ public class AppController extends BaseController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Page<App> list(
+    public Page<OauthClientDetails> list(
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) {
-        return appService.list(page, size);
-    }
-
-    /**
-     * APP列表
-     * @return
-     */
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<App> list() {
-        return appService.list(true);
+        return oauthClientDetailsService.list(ClientRole.ROLE_APP, page, size);
     }
 }

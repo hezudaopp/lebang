@@ -1,13 +1,13 @@
 package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.constant.LogicConstants;
-import com.youmayon.lebang.domain.App;
+import com.youmayon.lebang.domain.OauthClientDetails;
 import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.User;
 import com.youmayon.lebang.domain.UserTask;
 import com.youmayon.lebang.enums.Role;
 import com.youmayon.lebang.enums.UserTaskStatus;
-import com.youmayon.lebang.service.AppService;
+import com.youmayon.lebang.service.OauthClientDetailsService;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskService;
 import com.youmayon.lebang.service.UserTaskService;
@@ -45,7 +45,7 @@ public class UserTaskController extends BaseController {
     UserTaskService userTaskService;
 
     @Autowired
-    AppService appService;
+    OauthClientDetailsService oauthClientDetailsService;
 
 
     /**
@@ -76,10 +76,10 @@ public class UserTaskController extends BaseController {
             Assert.isTrue(taskCityService.containsCity(userTask));
         }
 
-        userTask.setAppId(Long.parseLong(auth.getOAuth2Request().getClientId()));
-        App app = appService.findOne(userTask.getAppId());
-        Assert.notNull(app, "App not found.");
-        userTask.setAppName(app.getName());
+        userTask.setAppName(auth.getOAuth2Request().getClientId());
+        OauthClientDetails oauthClientDetails = oauthClientDetailsService.findOne(userTask.getAppName());
+        Assert.notNull(oauthClientDetails, "App not found.");
+        userTask.setAppId(oauthClientDetails.getId());
         userTask.setTaskEndTime(task.getEndTime());
         userTask.setStatus(UserTaskStatus.ONGOING.value());
         userTask.setCreatedTime(now);

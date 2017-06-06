@@ -27,14 +27,20 @@
 
 ###### APP渠道：APP
 ``` javascript
-   {
-     "id": 1,
-     "name": "app1",
-     "secret": "23dsfdsgvfdfertjuyiu5642ewwefvf",
-     "enabled": true,
-     "createdTime": 1494313266,
-     "modifiedTime": 1494313487
-   }
+{
+  "id": 3,
+  "clientId": "app1",
+  "resourceIds": "",
+  "clientSecret": "2Ni@lnd@Ta@!eTl$2is9-%Ak+Kc$47-w",
+  "scope": "trust",
+  "authorizedGrantTypes": "client_credentials",
+  "webServerRedirectUri": "",
+  "authorities": "ROLE_APP",
+  "accessTokenValidity": 7200,
+  "refreshTokenValidity": null,
+  "additionalInformation": null,
+  "autoapprove": ""
+}
 ```
 
 ### 用户信息：USER

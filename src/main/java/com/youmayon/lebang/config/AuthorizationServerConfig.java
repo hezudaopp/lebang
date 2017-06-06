@@ -2,7 +2,7 @@ package com.youmayon.lebang.config;
 
 import com.youmayon.lebang.constant.SecurityConstants;
 import com.youmayon.lebang.enums.ClientRole;
-import com.youmayon.lebang.service.AppService;
+import com.youmayon.lebang.service.OauthClientDetailsService;
 import com.youmayon.lebang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +31,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private TokenStore tokenStore;
 
     @Autowired
-    private AppService appService;
+    private OauthClientDetailsService appService;
 
     @Autowired
     private UserApprovalHandler userApprovalHandler;
@@ -57,13 +57,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         ClientDetailsServiceBuilder csb = clients.jdbc(dataSource);
-        csb.withClient("lebang_client")
-                .secret("lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO")
-                .authorizedGrantTypes(new String[]{"password", "refresh_token"})
-                .authorities(new String[]{ClientRole.ROLE_CLIENT.name()})
-                .scopes(new String[]{"read", "write"})
-                .accessTokenValiditySeconds(7200)
-                .refreshTokenValiditySeconds(86400 * 30);
+//        csb.withClient("lebang_client")
+//                .secret("lnpOeaUQrmQj7r9a6f94ltjCuzqY7jEvO")
+//                .authorizedGrantTypes(new String[]{"password", "refresh_token"})
+//                .authorities(new String[]{ClientRole.ROLE_CLIENT.name()})
+//                .scopes(new String[]{"read", "write"})
+//                .accessTokenValiditySeconds(7200)
+//                .refreshTokenValiditySeconds(86400 * 30);
 
 //        for (App app : appService.list(true)) {
 //            csb.withClient(app.getId().toString())
