@@ -293,6 +293,7 @@ public class UserTaskServiceImpl implements UserTaskService {
             Long reviewedAmount = (Long) objects[1];
             ReviewerTaskStatistics reviewerTaskStatistics = new ReviewerTaskStatistics();
             reviewerTaskStatistics.setReviewerUserId(userTask.getReviewerUserId());
+            reviewerTaskStatistics.setReviewerUsername(userTask.getReviewerUsername());
             reviewerTaskStatistics.setBeginTime(beginTime);
             reviewerTaskStatistics.setEndTime(endTime);
             reviewerTaskStatistics.setReviewedAmount(reviewedAmount);

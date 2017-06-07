@@ -52,10 +52,10 @@ public class StatisticsController extends BaseController {
     }
 
     /**
-     * 每月1号的00:20执行审核统计
+     * 每天00:01执行审核统计
      * @throws IllegalAccessException
      */
-    @Scheduled(cron = "0 20 0 1 * ?")
+    @Scheduled(cron = "0 1 0 * * ?")
     public void generateReviewerTaskMonthlyStatistics() throws IllegalAccessException {
         this.generateReviewerTaskMonthlyStatistics(1);
     }
@@ -68,11 +68,11 @@ public class StatisticsController extends BaseController {
      */
     @RequestMapping(value = "/reviewer_task_statistics", method = RequestMethod.PUT)
     public List<List<ReviewerTaskStatistics>> generateReviewerTaskMonthlyStatistics(@RequestParam(value = "months", defaultValue = LogicConstants.DEFAULT_STATISTICS_MONTHS) int months) throws IllegalAccessException {
-        long beginTime = TimeUtil.monthBeginTimestamp(0);
+        long beginTime = TimeUtil.monthBeginTimestamp(1);
         List<List<ReviewerTaskStatistics>> response = new ArrayList<>();
         for (int i = 0; i < months; i++) {
             long endTime = beginTime;
-            beginTime = TimeUtil.monthBeginTimestamp(-i-1);
+            beginTime = TimeUtil.monthBeginTimestamp(-i);
             response.add(reviewerTaskStatisticsService.generateReviewerTaskStatistics(beginTime, endTime));
         }
         return response;
@@ -99,7 +99,7 @@ public class StatisticsController extends BaseController {
     }
 
     /**
-     * 按审核人员和月获取审核任务统计报表（不包含当月数据）
+     * 按审核人员和月获取审核任务统计报表（含当月数据，当月数据不含当天数据）
      * @param months
      * @param page
      * @param size
