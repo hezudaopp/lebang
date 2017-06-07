@@ -232,16 +232,13 @@
   - 请求URI: /apps
   - 请求Method: POST
   - 请求参数: 无
-  - 请求内容: APP, id不用传
+  - 请求内容:
+``` javascript
+{
+  "client_id":"appname" // app名称
+}
+```
   - 响应成功代码: 201
-  - 响应成功内容: APP
-
-#### 禁用启用APP渠道
-  - 请求URI: /apps/{id}/enabled/{enabled}
-  - 请求Method: PATCH
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
   - 响应成功内容: APP
 
 #### APP渠道详情
@@ -251,17 +248,6 @@
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容: APP
-
-#### APP渠道列表
-  - 请求URI: /apps/all
-  - 请求Method: GET
-  - 请求参数: 无
-  - 请求内容: 无
-  - 响应成功代码: 200
-  - 响应成功内容:
-``` javascript
-  [APP, APP, ...]
-```
 
 #### APP渠道列表（分页）
   - 请求URI: /apps
@@ -304,16 +290,18 @@
 
 ### 用户相关
 #### 用户登录
-  - 接口说明: 目前支持两个方式的登录，password和refresh_token
+  - 接口说明:
+    - 目前支持三种个方式的登录，password、refresh_token和client_credentials
+    - client_credentials用于渠道app授权
   - 请求URI: /oauth/token
   - 请求Method: POST
   - 请求参数:
-    - grant_type: password or refresh_token
+    - grant_type: password or refresh_token or client_credentials
     - username: 登录用户名 // grant_type为password时需要
     - password: 用户登录密码 // grant_type为password时需要
     - refresh_token: 9caeb2e2-89ac-4438-b029-e0ee1fb9fd4e // grant_type为refresh_token时需要
   - 请求头部:
-    - Authorization: Basic ZW50OmFtcG5 //向服务端开发人员拿
+    - Authorization: Basic ZW50OmFtcG5 // 向服务端开发人员拿
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:
