@@ -227,8 +227,8 @@ public class StatisticsController extends BaseController {
     private void setMonthBeginTimeAndEndTime(int months) {
         Assert.isTrue(months <= LogicConstants.MAX_STATISTICS_MONTHS, "Months too large.");
         Assert.isTrue(months >= 0, "Months cannot be negative.");
-        this.monthEndTime = TimeUtil.monthBeginTimestamp(0);
-        this.monthBeginTime = TimeUtil.monthBeginTimestamp(-months);
+        this.monthEndTime = TimeUtil.monthBeginTimestamp(1);
+        this.monthBeginTime = TimeUtil.monthBeginTimestamp(-months + 1);
         if (this.monthBeginTime == this.monthEndTime) {
             this.monthBeginTime = -1L;
             this.monthEndTime = -1L;
