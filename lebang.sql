@@ -64,15 +64,15 @@ COMMIT;
 -- ----------------------------
 --  Table structure for `oauth_approvals`
 -- ----------------------------
-DROP TABLE IF EXISTS `oauth_approvals`;
-CREATE TABLE `oauth_approvals` (
-  `userId` varchar(255) DEFAULT NULL,
-  `clientId` varchar(255) DEFAULT NULL,
-  `scope` varchar(255) DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL,
-  `expiresAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lastModifiedAt` timestamp
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- DROP TABLE IF EXISTS `oauth_approvals`;
+-- CREATE TABLE `oauth_approvals` (
+--   `userId` varchar(255) DEFAULT NULL,
+--   `clientId` varchar(255) DEFAULT NULL,
+--   `scope` varchar(255) DEFAULT NULL,
+--   `status` varchar(10) DEFAULT NULL,
+--   `expiresAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--   `lastModifiedAt` timestamp
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `oauth_client_details`

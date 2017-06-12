@@ -137,9 +137,9 @@
         </dependency>
         <!--图片服务器控件-->
         <dependency>
-            <groupId>org.csource</groupId>
-            <artifactId>fastdfs-client-java</artifactId>
-            <version>1.25</version>
+            <groupId>com.upyun</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>3.14</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

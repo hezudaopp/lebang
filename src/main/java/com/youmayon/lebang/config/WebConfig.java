@@ -36,4 +36,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+    //配置multipart解析器
+    //具体参数的配置在AbstractAnnotationConfigDispatcherServletInitializer的方法
+    //customizeRegistration(Dynamic registration)方法或web.xml中设置
+    @Bean
+    public MultipartResolver multipartResolver() throws IOException {
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setDefaultEncoding("UTF-8");
+        commonsMultipartResolver.setMaxUploadSize(10724000);
+        return commonsMultipartResolver;
+    }
 }
