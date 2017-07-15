@@ -80,6 +80,7 @@ public class UserTaskController extends BaseController {
         OauthClientDetails oauthClientDetails = oauthClientDetailsService.findOne(userTask.getAppName());
         Assert.notNull(oauthClientDetails, "App not found.");
         userTask.setAppId(oauthClientDetails.getId());
+        userTask.setAppName(userTask.getAppName());
         userTask.setTaskEndTime(task.getEndTime());
         userTask.setStatus(UserTaskStatus.ONGOING.value());
         userTask.setCreatedTime(now);
@@ -138,8 +139,8 @@ public class UserTaskController extends BaseController {
         Assert.notNull(task, "Task not found.");
 
         Assert.isTrue(savedUserTask.getStatus() == UserTaskStatus.ONGOING.value() || savedUserTask.getStatus() == UserTaskStatus.REDOING.value(), "User task from status error.");
-        Long appId = Long.parseLong(auth.getOAuth2Request().getClientId());
-        Assert.isTrue(appId.equals(savedUserTask.getAppId()), "App id is different.");
+        String appName = auth.getOAuth2Request().getClientId();
+        Assert.isTrue(appName.equals(savedUserTask.getAppName()), "App is different.");
         Assert.isTrue(savedUserTask.getAppUserId().equals(unsavedUserTask.getAppUserId()), "App user id is different.");
         Assert.notNull(unsavedUserTask.getNote(), "Note cannot be empty.");
         Assert.notNull(unsavedUserTask.getImages(), "Images cannot be empty.");
