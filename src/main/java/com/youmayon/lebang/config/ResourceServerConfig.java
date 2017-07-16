@@ -37,19 +37,25 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/user_tasks").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
+                .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
+                .antMatchers(HttpMethod.GET, "/tasks").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
+                .antMatchers(HttpMethod.GET, "/tasks/**").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
+                .antMatchers(HttpMethod.GET, "/user_tasks").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
+                .antMatchers("/image/**").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
+
                 .antMatchers(POST, "/users").hasAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers(GET, "/users/me").authenticated()
                 .antMatchers(PATCH, "/users/password").authenticated()
                 .antMatchers(DELETE, "/users/logout").authenticated()
                 .antMatchers("/users/**").hasAuthority(Role.ROLE_ADMIN.name())
 
+                .antMatchers("/tasks").hasAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers("/tasks/**").hasAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers("/task_types/**").hasAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers("/task_procedures/**").hasAnyAuthority(Role.ROLE_ADMIN.name())
                 .antMatchers("/apps/**").hasAuthority(Role.ROLE_ADMIN.name())
 
-                .antMatchers(HttpMethod.POST, "/user_tasks").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
-                .antMatchers(HttpMethod.PATCH, "/user_tasks/**/completed").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
                 .antMatchers("/user_tasks/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_TASK_REVIEWER.name())
 
                 .antMatchers("/statistics/**").hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_REPORT_VIEWER.name())
