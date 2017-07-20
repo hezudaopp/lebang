@@ -25,7 +25,19 @@
 
 ## 基础数据结构：
 
-###### APP渠道：APP
+### 渠道用户: APP_USER
+``` javascript
+{
+    "id": 1,
+    "appUserId": "appUser1",
+    "deviceId": "android mix 1",
+    "extraInfo": null,
+    "createdTime": 1500561995,
+    "modifiedTime": 1500562145
+}
+```
+
+### APP渠道：APP
 ``` javascript
 {
   "id": 3,
@@ -287,6 +299,29 @@
     "ROLE_REPORT_VIEWER"
   ]
 ```
+
+### 渠道用户相关
+#### 添加或者修改渠道用户
+  - 接口说明：
+    - appUserId字段必填，以此判断添加还是更新渠道用户；如果appUserId存在，则更新渠道用户，否则，新增渠道用户
+  - 请求URI: /app_users
+  - 请求Method: POST
+  - 请求参数: 无
+  - 请求内容: APP_USER
+  - 响应成功代码:
+    - 更新渠道用户 200
+    - 新增渠道用户 201
+  - 响应成功内容: APP_USER
+
+#### 渠道用户详情
+  - 接口说明：
+    - 根据appUserId获取渠道用户
+  - 请求URI: /app_users/app_user_id/{appUserId}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: APP_USER
 
 ### 用户相关
 #### 用户登录
