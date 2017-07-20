@@ -16,6 +16,21 @@ SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+--  Table structure for `app_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `app_user`;
+CREATE TABLE `app_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `app_user_id` varchar(32) NOT NULL COMMENT 'app user_id',
+  `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `device_id` varchar(50) NOT NULL COMMENT '最近一次更新的设备id',
+  `extra_info` varchar(500) DEFAULT NULL COMMENT '额外信息',
+  `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_app_user_id` (`app_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+-- ----------------------------
 --  Table structure for `oauth_access_token`
 -- ----------------------------
 DROP TABLE IF EXISTS `oauth_access_token`;
