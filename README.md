@@ -284,6 +284,14 @@
   }
 ```
 
+#### 删除APP渠道
+  - 请求URI: /apps/{id}
+  - 请求Method: DELETE
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: 无
+
 ### 角色相关
 #### 获取角色列表
   - 请求URI: /roles
@@ -526,6 +534,32 @@
     - endTime:1234567890, 任务结束时间
     - taskTypeId: 1, 任务类型id
     - enabled: true, 是否启用
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  {
+    "content": [TASK, ...],
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 1,
+    "size": 2,
+    "number": 0,
+    "first": true,
+    "sort": null,
+    "numberOfElements": 1
+  }
+```
+
+#### 我的可领取的任务列表
+  - 功能说明：可领取逻辑说明
+    - 当前任务在有效期内且启用
+    - 用户没有领取过的任务或者当日领取的任务数未达到任务每日可领取数的上限
+    - 设备掩码号要和任务的设备掩码匹配
+  - 请求URI: /app_user_receivable_tasks/app_users/{appUserId}
+  - 请求Method: GET
+  - 请求参数:
+    - deviceTypeMask: 设备掩码号
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:
