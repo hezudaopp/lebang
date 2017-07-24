@@ -98,7 +98,7 @@ public class AppController extends BaseController {
      * APP列表
      * @return
      */
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long id) {
         oauthClientDetailsService.delete(id);
     }
