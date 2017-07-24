@@ -38,4 +38,10 @@ public interface OauthClientDetailsService {
      * @return
      */
     OauthClientDetails findOne(String clientId);
+
+    /**
+     * 删除app
+     * @param id
+     */
+    void delete(long id);
 }

@@ -93,4 +93,13 @@ public class AppController extends BaseController {
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size) {
         return oauthClientDetailsService.list(ClientRole.ROLE_APP, page, size);
     }
+
+    /**
+     * APP列表
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void delete(@PathVariable long id) {
+        oauthClientDetailsService.delete(id);
+    }
 }

@@ -36,4 +36,9 @@ public class OauthClientDetailsServiceImpl implements OauthClientDetailsService 
     public OauthClientDetails findOne(String clientId) {
         return oauthClientDetailsRepository.findFirstByClientId(clientId);
     }
+
+    @Override
+    public void delete(long id) {
+        oauthClientDetailsRepository.delete(id);
+    }
 }
