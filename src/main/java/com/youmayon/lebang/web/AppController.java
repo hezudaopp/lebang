@@ -53,7 +53,7 @@ public class AppController extends BaseController {
         oauthClientDetails.setScope(SecurityConstants.APP_SCOPE);
         oauthClientDetails.setAccessTokenValidity(SecurityConstants.APP_ACCESS_TOKEN_VALIDITY);
         oauthClientDetails.setResourceIds(LogicConstants.EMPTY_STRING);
-        oauthClientDetails.setWebServerRedirectUri(LogicConstants.EMPTY_STRING);
+//        oauthClientDetails.setWebServerRedirectUri(LogicConstants.EMPTY_STRING);
         oauthClientDetails.setAutoapprove(LogicConstants.EMPTY_STRING);
 
         OauthClientDetails savedOauthClientDetails = oauthClientDetailsService.save(oauthClientDetails);
