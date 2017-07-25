@@ -556,25 +556,17 @@
     - 当前任务在有效期内且启用
     - 用户没有领取过的任务或者当日领取的任务数未达到任务每日可领取数的上限
     - 设备掩码号要和任务的设备掩码匹配
-  - 请求URI: /app_user_receivable_tasks/app_users/{appUserId}
+  - 请求URI: /app_user_receivable_tasks
   - 请求Method: GET
   - 请求参数:
-    - deviceTypeMask: 设备掩码号
+    - appId: 渠道id
+    - appUserId: 渠道用户userId
+    - deviceType: 设备掩码号
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:
 ``` javascript
-  {
-    "content": [TASK, ...],
-    "last": true,
-    "totalPages": 1,
-    "totalElements": 1,
-    "size": 2,
-    "number": 0,
-    "first": true,
-    "sort": null,
-    "numberOfElements": 1
-  }
+  [TASK, ...]
 ```
 
 ### 任务步骤相关

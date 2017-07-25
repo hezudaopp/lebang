@@ -70,4 +70,12 @@ public interface TaskService {
      * @return
      */
     Task findOne(String name);
+
+    /**
+     * 用户可以领取的任务列表
+     * @param appUserId
+     * @param deviceType
+     * @return
+     */
+    List<Task> userReceivableTaskList(String appName, String appUserId, int deviceType);
 }

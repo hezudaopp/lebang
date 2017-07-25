@@ -79,6 +79,15 @@ public interface UserTaskService {
     int count(long appId, String appUserId, long taskId);
 
     /**
+     * 用户已领取的任务数量
+     * @param appName
+     * @param appUserId
+     * @param taskId
+     * @return
+     */
+    int count(String appName, String appUserId, long taskId);
+
+    /**
      * 根据任务和APP渠道统计领取任务数据
      * @param beginTime
      * @param endTime

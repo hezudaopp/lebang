@@ -42,8 +42,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/app_users").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
                 .antMatchers(HttpMethod.GET, "/app_users/app_user_id/**").access("#oauth2.clientHasRole('" + ClientRole.ROLE_APP.name() + "')")
 
-
-                .antMatchers(HttpMethod.GET, "/tasks").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
+                .antMatchers(HttpMethod.GET, "/tasks/app_user_receivable_tasks").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + "')")
                 .antMatchers(HttpMethod.GET, "/tasks/**").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
                 .antMatchers(HttpMethod.GET, "/user_tasks").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")
                 .antMatchers("/image/**").access("#oauth2.clientHasAnyRole('" + ClientRole.ROLE_APP.name() + ", " + ClientRole.ROLE_CLIENT.name() + "')")

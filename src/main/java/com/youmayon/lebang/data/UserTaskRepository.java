@@ -16,5 +16,6 @@ import java.util.Collection;
 public interface UserTaskRepository extends JpaRepository<UserTask, Long>, UserTaskDao, JpaSpecificationExecutor<UserTask> {
     UserTask findFirstByAppIdAndAppUserIdAndTaskIdOrderByCreatedTimeDesc(Long appId, String appUserId, long taskId);
     int countByAppIdAndAppUserIdAndTaskId(Long appId, String appUserId, long taskId);
+    int countByAppNameAndAppUserIdAndTaskId(String appName, String appUserId, long taskId);
     long countByReviewedTimeGreaterThanEqualAndStatusIn(long reviewedTime, Collection<Integer> state);
 }

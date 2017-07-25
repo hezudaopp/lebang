@@ -72,7 +72,7 @@ public class Task {
     @NotNull
     @Max(LogicConstants.ALL_DEVICE_TYPES_MASK)
     @Column(columnDefinition = "TINYINT(3) UNSIGNED COMMENT '设备类型掩码'")
-    private Double deviceTypeMask;
+    private Integer deviceTypeMask;
 
     @NotNull
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '每人限制次数'")
@@ -220,11 +220,11 @@ public class Task {
         this.endTime = endTime;
     }
 
-    public Double getDeviceTypeMask() {
+    public Integer getDeviceTypeMask() {
         return deviceTypeMask;
     }
 
-    public void setDeviceTypeMask(Double deviceTypeMask) {
+    public void setDeviceTypeMask(Integer deviceTypeMask) {
         this.deviceTypeMask = deviceTypeMask;
     }
 

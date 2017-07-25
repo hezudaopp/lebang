@@ -168,6 +168,11 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
+    public int count(String appName, String appUserId, long taskId) {
+        return userTaskRepository.countByAppNameAndAppUserIdAndTaskId(appName, appUserId, taskId);
+    }
+
+    @Override
     public Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size) {
         Pageable pageable = new PageRequest(page, size);
         Specification<UserTask> specification = new Specification<UserTask>() {

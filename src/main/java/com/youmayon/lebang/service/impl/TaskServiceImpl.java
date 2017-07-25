@@ -7,6 +7,7 @@ import com.youmayon.lebang.domain.TaskProcedure;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskProcedureService;
 import com.youmayon.lebang.service.TaskService;
+import com.youmayon.lebang.service.UserTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     TaskCityService taskCityService;
+
+    @Autowired
+    UserTaskService userTaskService;
 
     @Override
     public Long[] totalAmountArray() {
@@ -245,5 +249,30 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task findOne(String name) {
         return taskRepository.findFirstByName(name);
+    }
+
+    @Override
+    public List<Task> userReceivableTaskList(String appName, String appUserId, int deviceType) {
+        long now = System.currentTimeMillis() / 1000;
+        List<Task> availableTaskList = taskRepository.findByBeginTimeLessThanEqualAndEndTimeGreaterThanAndEnabled(now, now, true);
+        List<Task> result = new ArrayList<>();
+        for (Task task : availableTaskList) {
+            // 任务已经被领取完
+            if (task.getLeftAmount() == 0) {
+                continue;
+            }
+            // 设备类型不匹配
+            if ((task.getDeviceTypeMask() & deviceType) == 0) {
+                continue;
+            }
+            // 用户领取该任务达到上限
+            // TODO: 性能优化，for循环里边不建议进行sql查询
+            int userReceivedTaskAmount = userTaskService.count(appName, appUserId, task.getId());
+            if (userReceivedTaskAmount >= task.getEachPersonLimit()) {
+                continue;
+            }
+            result.add(task);
+        }
+        return result;
     }
 }

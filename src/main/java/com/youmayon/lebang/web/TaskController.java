@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -148,5 +150,15 @@ public class TaskController extends BaseController {
         savedTask.setEnabled(enabled);
         savedTask.setModifiedTime(System.currentTimeMillis() / 1000);
         return taskService.save(savedTask);
+    }
+
+    @RequestMapping(value = "/app_user_receivable_tasks", method = RequestMethod.GET, consumes = "application/json")
+    public List<Task> appUserReceivableTasks(
+            @RequestParam(value = "appUserId") String appUserId,
+            @RequestParam(value = "deviceType") int deviceType,
+            OAuth2Authentication auth) {
+        String appName = auth.getOAuth2Request().getClientId();
+        return taskService.userReceivableTaskList(appName, appUserId, deviceType);
+
     }
 }
