@@ -115,14 +115,21 @@ public class UserTaskController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserTask> list(
             @RequestParam(value = "status", defaultValue = LogicConstants.EMPTY_STRING) String status,
+            @RequestParam(value = "appUserId", defaultValue = LogicConstants.EMPTY_STRING) String appUserId,
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size,
-            @AuthenticationPrincipal User user) {
+            @AuthenticationPrincipal User user,
+            OAuth2Authentication auth) {
+        Set<Integer> statusSet = StringUtil.splitStrToIntSet(status);
+        if (user == null && auth != null) {
+            Assert.isTrue(!LogicConstants.EMPTY_STRING.equals(appUserId) && appUserId != null, "AppUserId cannot be empty.");
+            String appName = auth.getOAuth2Request().getClientId();
+            return userTaskService.list(appName, appUserId, statusSet, page, size);
+        }
         long reviewerUserId = user.getId();
         if (Role.ROLE_ADMIN.name().equals(user.getRole())) {
             reviewerUserId = -1L;
         }
-        Set<Integer> statusSet = StringUtil.splitStrToIntSet(status);
         return userTaskService.list(reviewerUserId, statusSet, page, size);
     }
 

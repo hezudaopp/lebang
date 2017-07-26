@@ -1,5 +1,6 @@
 package com.youmayon.lebang.service.impl;
 
+import com.youmayon.lebang.constant.LogicConstants;
 import com.youmayon.lebang.data.UserTaskRepository;
 import com.youmayon.lebang.domain.*;
 import com.youmayon.lebang.enums.Role;
@@ -181,6 +182,27 @@ public class UserTaskServiceImpl implements UserTaskService {
                 List<Predicate> predicate = new ArrayList<>();
                 if (reviewerUserId > 0) {
                     predicate.add(cb.equal(root.get("reviewerUserId").as(Long.class), reviewerUserId));
+                }
+                if (statusSet != null && !statusSet.isEmpty()) {
+                    predicate.add(root.get("status").in(statusSet));
+                }
+                Predicate[] pre = new Predicate[predicate.size()];
+                return query.where(predicate.toArray(pre)).getRestriction();
+            }
+        };
+        return userTaskRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Page<UserTask> list(String appName, String appUserId, Set<Integer> statusSet, int page, int size) {
+        Pageable pageable = new PageRequest(page, size);
+        Specification<UserTask> specification = new Specification<UserTask>() {
+            @Override
+            public Predicate toPredicate(Root<UserTask> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicate = new ArrayList<>();
+                if (!LogicConstants.EMPTY_STRING.equals(appName) && !LogicConstants.EMPTY_STRING.equals(appUserId) && appName != null && appUserId != null) {
+                    predicate.add(cb.equal(root.get("appName").as(String.class), appName));
+                    predicate.add(cb.equal(root.get("appUserId").as(String.class), appUserId));
                 }
                 if (statusSet != null && !statusSet.isEmpty()) {
                     predicate.add(root.get("status").in(statusSet));

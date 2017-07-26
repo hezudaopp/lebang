@@ -60,7 +60,7 @@ public interface UserTaskService {
     UserTask findOne(long appId, String appUserId, long taskId);
 
     /**
-     * 用户任务列表
+     * 审核人员的用户任务列表
      * @param reviewerUserId
      * @param statusSet
      * @param page
@@ -68,6 +68,17 @@ public interface UserTaskService {
      * @return
      */
     Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size);
+
+    /**
+     * 渠道用户的用户任务列表
+     * @param appName
+     * @param appUserId
+     * @param statusSet
+     * @param page
+     * @param size
+     * @return
+     */
+    Page<UserTask> list(String appName, String appUserId, Set<Integer> statusSet, int page, int size);
 
     /**
      * 用户已领取的任务数量
