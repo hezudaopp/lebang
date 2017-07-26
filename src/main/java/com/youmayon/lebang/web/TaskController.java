@@ -152,9 +152,9 @@ public class TaskController extends BaseController {
         return taskService.save(savedTask);
     }
 
-    @RequestMapping(value = "/app_user_receivable_tasks", method = RequestMethod.GET, consumes = "application/json")
+    @RequestMapping(value = "/app_users/{appUserId}", method = RequestMethod.GET, consumes = "application/json")
     public List<Task> appUserReceivableTasks(
-            @RequestParam(value = "appUserId") String appUserId,
+            @PathVariable String appUserId,
             @RequestParam(value = "deviceType") int deviceType,
             OAuth2Authentication auth) {
         String appName = auth.getOAuth2Request().getClientId();
