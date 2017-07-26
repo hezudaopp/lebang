@@ -174,6 +174,7 @@
   "id": 1,
   "appId": "1",
   "appUserId": "9822438",
+  "deviceId":"12883772663771",
   "taskId": 1,
   "taskName": "评论快去",
   "price": 19.89,
@@ -556,12 +557,12 @@
     - 当前任务在有效期内且启用
     - 用户没有领取过的任务或者当日领取的任务数未达到任务每日可领取数的上限
     - 设备掩码号要和任务的设备掩码匹配
-  - 请求URI: /app_user_receivable_tasks
+  - 请求URI: /tasks/app_user_receivable_tasks
   - 请求Method: GET
   - 请求参数:
     - appId: 渠道id
     - appUserId: 渠道用户userId
-    - deviceType: 设备掩码号
+    - deviceType: 设备掩码号 1: ios设备 2: android设备
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容:

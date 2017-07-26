@@ -21,6 +21,9 @@ public class UserTask {
     @Column(columnDefinition = "VARCHAR(50) COMMENT '用户来源渠道app名称'")
     private String appName;
 
+    @Column(columnDefinition = "VARCHAR(50) COMMENT '领取任务所用的设备id'")
+    private String deviceId;
+
     @NotNull
     @Size(min = 2, max = 32)
     @Column(columnDefinition = "VARCHAR(32) COMMENT '用户在来源app中user_id'")
@@ -111,6 +114,14 @@ public class UserTask {
 
     public void setAppUserId(String appUserId) {
         this.appUserId = appUserId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public Long getTaskId() {
