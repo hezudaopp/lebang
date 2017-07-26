@@ -28,7 +28,7 @@ CREATE TABLE `app_user` (
   `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_app_user_id` (`app_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `oauth_access_token`
