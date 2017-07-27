@@ -268,7 +268,7 @@ public class TaskServiceImpl implements TaskService {
             // 用户领取该任务达到上限
             // TODO: 性能优化，for循环里边不建议进行sql查询
             int userReceivedTaskAmount = userTaskService.count(appName, appUserId, task.getId());
-            if (userReceivedTaskAmount >= task.getEachPersonLimit()) {
+            if (task.getEachPersonLimit() > 0 && userReceivedTaskAmount >= task.getEachPersonLimit()) {
                 continue;
             }
             result.add(task);
