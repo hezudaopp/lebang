@@ -76,6 +76,9 @@ public class UserTask {
     @Column(columnDefinition = "INT(10) UNSIGNED DEFAULT NULL COMMENT '任务审核时间'")
     private Long reviewedTime;
 
+    @Column(columnDefinition = "VARCHAR(256) DEFAULT NULL COMMENT '审核意见'")
+    private String reviewNote;
+
     @Column(columnDefinition = "INT(10) UNSIGNED COMMENT '创建时间'")
     private Long createdTime;
 
@@ -226,6 +229,14 @@ public class UserTask {
 
     public void setReviewEndTime(Long reviewEndTime) {
         this.reviewEndTime = reviewEndTime;
+    }
+
+    public String getReviewNote() {
+        return reviewNote;
+    }
+
+    public void setReviewNote(String reviewNote) {
+        this.reviewNote = reviewNote;
     }
 
     public Long getCompletedTime() {

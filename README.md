@@ -189,6 +189,7 @@
   "reviewEndTime": 3641434072,
   "completedTime": 1493951272,
   "reviewedTime": null,
+  "reviewNote": "审核意见",
   "createdTime": 1493910000,
   "modifiedTime": 1493951272
 }
@@ -565,7 +566,9 @@
   - 响应成功代码: 200
   - 响应成功内容:
 ``` javascript
-  [TASK, ...]
+  {
+    "content":[TASK,...]
+  }
 ```
 
 ### 任务步骤相关

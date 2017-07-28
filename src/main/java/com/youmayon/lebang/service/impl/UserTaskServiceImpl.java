@@ -126,8 +126,10 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
+    @Transactional
     public UserTask reviewTask(User user, UserTask userTask, Task task, int toStatus, String remark) {
         // save user task
+        userTask.setReviewNote(remark);
         UserTask savedUserTask = userTaskRepository.save(userTask);
 
         if (toStatus == UserTaskStatus.ACCEPTED.value()) { // increase task accepted amount.

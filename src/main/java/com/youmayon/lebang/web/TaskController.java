@@ -18,7 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jawinton on 17/05/03.
@@ -153,12 +155,14 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/app_users/{appUserId}", method = RequestMethod.GET, consumes = "application/json")
-    public List<Task> appUserReceivableTasks(
+    public Map<String, List<Task>> appUserReceivableTasks(
             @PathVariable String appUserId,
             @RequestParam(value = "deviceType") int deviceType,
             OAuth2Authentication auth) {
         String appName = auth.getOAuth2Request().getClientId();
-        return taskService.userReceivableTaskList(appName, appUserId, deviceType);
-
+        List<Task> content = taskService.userReceivableTaskList(appName, appUserId, deviceType);
+        Map<String, List<Task>> contentMap = new HashMap<>();
+        contentMap.put("content", content);
+        return contentMap;
     }
 }
