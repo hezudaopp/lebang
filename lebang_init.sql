@@ -206,15 +206,13 @@ CREATE TABLE `task_city` (
 -- ----------------------------
 DROP TABLE IF EXISTS `task_procedure`;
 CREATE TABLE `task_procedure` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
-  `description` varchar(2000) NOT NULL COMMENT '描述',
-  `images` varchar(500) NOT NULL COMMENT '图片',
-  `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
-  `procedure_order` tinyint(1) unsigned NOT NULL COMMENT '顺序',
   `task_id` bigint(20) unsigned NOT NULL COMMENT '任务id',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_task_procedure_order` (`task_id`,`procedure_order`)
+  `procedure_order` tinyint(1) unsigned NOT NULL COMMENT '顺序',
+  `images` varchar(500) NOT NULL COMMENT '图片',
+  `description` varchar(2000) NOT NULL COMMENT '描述',
+  `created_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `modified_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`task_id`,`procedure_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
