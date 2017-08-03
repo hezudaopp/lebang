@@ -2,6 +2,7 @@ package com.youmayon.lebang.web;
 
 import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.TaskProcedure;
+import com.youmayon.lebang.domain.TaskProcedureId;
 import com.youmayon.lebang.service.TaskProcedureService;
 import com.youmayon.lebang.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,34 +31,31 @@ public class TaskProcedureController extends BaseController {
     TaskService taskService;
 
     /**
-     * 添加任务步骤
-     * @param taskProcedure
+     * 批量添加任务步骤
+     * @param taskProcedureList
      * @param errors
-     * @param ucb
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<TaskProcedure> save(
-            @Valid @RequestBody TaskProcedure taskProcedure,
-            Errors errors,
-            UriComponentsBuilder ucb) {
+    public List<TaskProcedure> save(
+            @RequestParam(value = "taskId") long taskId,
+            @Valid @RequestBody List<TaskProcedure> taskProcedureList,
+            Errors errors) {
         assertFieldError(errors);
 
-        Task task = taskService.findOne(taskProcedure.getTaskId(), true);
+        Task task = taskService.findOne(taskId, true);
         Assert.notNull(task, "Task not found.");
 
-        taskProcedure.setCreatedTime(System.currentTimeMillis() / 1000);
-        taskProcedure.setModifiedTime(taskProcedure.getCreatedTime());
-        TaskProcedure savedTaskProcedure = taskProcedureService.save(taskProcedure);
+        int i = 0;
+        for (TaskProcedure taskProcedure : taskProcedureList) {
+            taskProcedure.setTaskProcedureId(new TaskProcedureId(taskId, ++i));
+            taskProcedure.setCreatedTime(System.currentTimeMillis() / 1000);
+            taskProcedure.setModifiedTime(taskProcedure.getCreatedTime());
+        }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        URI locationUri = ucb.path("/task_procedures/")
-                .path(String.valueOf(savedTaskProcedure.getId()))
-                .build()
-                .toUri();
-        httpHeaders.setLocation(locationUri);
+        List<TaskProcedure> savedTaskProcedureList = taskProcedureService.save(taskProcedureList);
 
-        return new ResponseEntity<>(savedTaskProcedure, httpHeaders, HttpStatus.CREATED);
+        return savedTaskProcedureList;
     }
 
     /**
@@ -90,29 +88,5 @@ public class TaskProcedureController extends BaseController {
     @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.GET)
     public List<TaskProcedure> list(@PathVariable long taskId) {
         return taskProcedureService.list(taskId);
-    }
-
-    /**
-     * 修改任务步骤
-     * @param id
-     * @param unsavedTaskProcedure
-     * @param errors
-     * @return
-     */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-    public TaskProcedure update(
-            @PathVariable long id,
-            @Valid @RequestBody TaskProcedure unsavedTaskProcedure,
-            Errors errors) {
-        assertFieldError(errors);
-
-        TaskProcedure savedTask = taskProcedureService.findOne(id);
-        Assert.notNull(savedTask, "Task procedure not found.");
-
-        unsavedTaskProcedure.setId(id);
-        unsavedTaskProcedure.setTaskId(savedTask.getTaskId());
-        unsavedTaskProcedure.setCreatedTime(savedTask.getCreatedTime());
-        unsavedTaskProcedure.setModifiedTime(System.currentTimeMillis() / 1000);
-        return taskProcedureService.save(unsavedTaskProcedure);
     }
 }

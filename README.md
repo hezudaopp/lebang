@@ -158,13 +158,14 @@
 ### 任务步骤：TASK_PROCEDURE
 ``` javascript
 {
-  "id": 19,
-  "taskId": 1,
-  "procedureOrder": 5,
+  "taskProcedureId": {
+    "taskId": 1,
+    "procedureOrder": 1
+  },
   "description": "order 1",
   "images": "1.jpg,2.jpg",
-  "createdTime": 1493968385,
-  "modifiedTime": 1493968385
+  "createdTime": 1501773979,
+  "modifiedTime": 1501773979
 }
 ```
 
@@ -212,18 +213,18 @@
 ### 任务渠道统计：TASK_APP_STATISTICS
 ``` javascript
 {
-    "id": 1,
-    "taskId": 2,
-    "taskName": "微信朋友圈分享", // 任务名称
-    "appId": 4,
-    "appName": "appName1", // 渠道名
-    "beginTime": 1494259200, // 统计开始时间（包含）， 按天统计的话就是一天的开始时间
-    "endTime": 1494345600, // 统计结束时间（不包含），按天统计的话就是第二天的开始时间
-    "totalFlow": 39.78, // 审核通过的流水
-    "receivedAmount": 6, // 领取的任务数
-    "completedAmount": 2, // 完成的任务数
-    "acceptedAmount": 2  // 审核通过的任务数
-  }
+  "id": 1,
+  "taskId": 2,
+  "taskName": "微信朋友圈分享", // 任务名称
+  "appId": 4,
+  "appName": "appName1", // 渠道名
+  "beginTime": 1494259200, // 统计开始时间（包含）， 按天统计的话就是一天的开始时间
+  "endTime": 1494345600, // 统计结束时间（不包含），按天统计的话就是第二天的开始时间
+  "totalFlow": 39.78, // 审核通过的流水
+  "receivedAmount": 6, // 领取的任务数
+  "completedAmount": 2, // 完成的任务数
+  "acceptedAmount": 2  // 审核通过的任务数
+}
 ```
 
 ### 审核统计：REVIEWER_TASK_STATISTICS
@@ -575,8 +576,21 @@
 #### 添加任务步骤
   - 请求URI: /task_procedures
   - 请求Method: POST
-  - 请求参数: 无
-  - 请求内容: TASK_PROCEDURE, id不用传
+  - 请求参数: 
+    - taskId: 任务id
+  - 请求内容: 
+``` javascript
+[{
+  "images":"1.jpg,2.jpg",
+  "description":"order 1"
+},
+{
+  "images":"3.jpg",
+  "description":"22222"
+}
+...
+]
+```
   - 响应成功代码: 201
   - 响应成功内容: TASK_PROCEDURE
 
@@ -595,14 +609,6 @@
   - 请求内容: 无
   - 响应成功代码: 200
   - 响应成功内容: 无
-
-#### 编辑任务
-  - 请求URI: /task_procedures/{id}
-  - 请求Method: PUT
-  - 请求参数: 无
-  - 请求内容: TASK
-  - 响应成功代码: 200
-  - 响应成功内容: TASK_PROCEDURE
 
 #### 任务步骤列表
   - 接口说明: 任务的步骤列表

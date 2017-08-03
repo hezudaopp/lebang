@@ -4,6 +4,7 @@ import com.youmayon.lebang.data.TaskRepository;
 import com.youmayon.lebang.domain.Task;
 import com.youmayon.lebang.domain.TaskCity;
 import com.youmayon.lebang.domain.TaskProcedure;
+import com.youmayon.lebang.domain.TaskProcedureId;
 import com.youmayon.lebang.service.TaskCityService;
 import com.youmayon.lebang.service.TaskProcedureService;
 import com.youmayon.lebang.service.TaskService;
@@ -76,11 +77,11 @@ public class TaskServiceImpl implements TaskService {
         }
 
         // save task procedures
+        int i = 0;
         for (TaskProcedure taskProcedure : task.getTaskProcedures()) {
             Assert.notNull(taskProcedure.getDescription(), "Task procedure description cannot be empty.");
             Assert.notNull(taskProcedure.getImages(), "Task procedure images cannot be empty.");
-            Assert.notNull(taskProcedure.getProcedureOrder(), "Task procedure order cannot be empty.");
-            taskProcedure.setTaskId(savedTask.getId());
+            taskProcedure.setTaskProcedureId(new TaskProcedureId(savedTask.getId(), ++i));
             taskProcedure.setCreatedTime(task.getModifiedTime());
             taskProcedure.setModifiedTime(task.getModifiedTime());
         }
