@@ -690,6 +690,26 @@
   - 响应成功代码: 200
   - 响应成功内容: USER_TASK
 
+#### 获取用户任务的日志列表
+  - 接口说明: 用户任务的日志列表
+  - 请求URI: /user_task_logs/user_tasks/{userTaskId}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容:
+``` javascript
+  [USER_TASK_LOG, USER_TASK_LOG, ...]
+```
+
+#### 任务步骤详情
+  - 请求URI: /user_task_logs/{id}
+  - 请求Method: GET
+  - 请求参数: 无
+  - 请求内容: 无
+  - 响应成功代码: 200
+  - 响应成功内容: USER_TASK_LOG
+
 ### 统计报表相关
 #### 生成任务app渠道报表
   - 接口说明: 每天00:10自动执行

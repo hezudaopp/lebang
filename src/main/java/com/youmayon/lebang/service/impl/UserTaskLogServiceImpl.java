@@ -6,6 +6,8 @@ import com.youmayon.lebang.service.UserTaskLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Jawinton on 17/05/04.
  */
@@ -17,5 +19,15 @@ public class UserTaskLogServiceImpl implements UserTaskLogService {
     @Override
     public UserTaskLog save(UserTaskLog userTaskLog) {
         return userTaskLogRepository.save(userTaskLog);
+    }
+
+    @Override
+    public List<UserTaskLog> list(long userTaskId) {
+        return userTaskLogRepository.findByUserTaskId(userTaskId);
+    }
+
+    @Override
+    public UserTaskLog get(long id) {
+        return userTaskLogRepository.findOne(id);
     }
 }
