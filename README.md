@@ -574,10 +574,9 @@
 
 ### 任务步骤相关
 #### 添加任务步骤
-  - 请求URI: /task_procedures
-  - 请求Method: POST
+  - 请求URI: /task_procedures/tasks/{taskId}
+  - 请求Method: PUT
   - 请求参数: 
-    - taskId: 任务id
   - 请求内容: 
 ``` javascript
 [{
