@@ -267,7 +267,7 @@
   "webServerRedirectUri":"http://www.google.com" // 重定向url
 }
 ```
-  - 响应成功代码: 201
+  - 响应成功代码: 200
   - 响应成功内容: APP
 
 #### APP渠道详情
