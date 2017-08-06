@@ -250,7 +250,21 @@
   - 请求内容:
 ``` javascript
 {
-  "client_id":"appname" // app名称
+  "clientId":"appname" // app名称
+  "webServerRedirectUri":"http://www.google.com" // 重定向url 
+}
+```
+  - 响应成功代码: 201
+  - 响应成功内容: APP
+  
+#### 修改APP渠道
+  - 请求URI: /apps/{id}
+  - 请求Method: PUT
+  - 请求参数: 无
+  - 请求内容:
+``` javascript
+{
+  "webServerRedirectUri":"http://www.google.com" // 重定向url
 }
 ```
   - 响应成功代码: 201

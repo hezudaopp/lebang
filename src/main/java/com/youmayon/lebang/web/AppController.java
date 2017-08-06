@@ -3,6 +3,8 @@ package com.youmayon.lebang.web;
 import com.youmayon.lebang.constant.LogicConstants;
 import com.youmayon.lebang.constant.SecurityConstants;
 import com.youmayon.lebang.domain.OauthClientDetails;
+import com.youmayon.lebang.domain.Task;
+import com.youmayon.lebang.domain.TaskType;
 import com.youmayon.lebang.enums.ClientRole;
 import com.youmayon.lebang.service.OauthClientDetailsService;
 import com.youmayon.lebang.util.StringUtil;
@@ -66,6 +68,28 @@ public class AppController extends BaseController {
         httpHeaders.setLocation(locationUri);
 
         return new ResponseEntity<>(savedOauthClientDetails, httpHeaders, HttpStatus.CREATED);
+    }
+
+    /**
+     * 修改渠道信息
+     * @param id
+     * @param oauthClientDetails
+     * @param errors
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
+    public OauthClientDetails update(
+            @PathVariable long id,
+            @Valid @RequestBody OauthClientDetails oauthClientDetails,
+            Errors errors) {
+        assertFieldError(errors);
+
+        OauthClientDetails savedOauthClientDetails = oauthClientDetailsService.findOne(id);
+        Assert.notNull(savedOauthClientDetails, "App not found.");
+        Assert.isTrue(savedOauthClientDetails.getAuthorities() != null && savedOauthClientDetails.getAuthorities().contains(ClientRole.ROLE_APP.name()), "App not found");
+
+        savedOauthClientDetails.setWebServerRedirectUri(oauthClientDetails.getWebServerRedirectUri());
+        return oauthClientDetailsService.save(savedOauthClientDetails);
     }
 
     /**
