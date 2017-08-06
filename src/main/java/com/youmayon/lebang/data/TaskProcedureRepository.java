@@ -19,8 +19,8 @@ import java.util.List;
 public interface TaskProcedureRepository extends JpaRepository<TaskProcedure, Long> {
     @Modifying
     @Transactional
-    @Query("delete from TaskProcedure tp where tp.taskProcedureId.taskId=:taskId and tp.taskProcedureId.procedureOrder>:procedureOrder")
-    void deleteByTaskIdAndProcedureOrderGreaterThan(@Param("taskId") long taskId, @Param("procedureOrder") int procedureOrder);
+    @Query("delete from TaskProcedure tp where tp.taskProcedureId.taskId=:taskId and tp.taskProcedureId.procedureOrder>=:procedureOrder")
+    void deleteByTaskIdAndProcedureOrderGreaterEqual(@Param("taskId") long taskId, @Param("procedureOrder") int procedureOrder);
 
     @Query("from TaskProcedure tp where tp.taskProcedureId.taskId=:taskId order by tp.taskProcedureId.procedureOrder")
     List<TaskProcedure> findByTaskIdOrderByProcedureOrderAsc(@Param("taskId") long taskId);

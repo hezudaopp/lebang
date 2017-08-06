@@ -35,7 +35,7 @@ public class TaskProcedureServiceImpl implements TaskProcedureService {
 
     @Override
     public List<TaskProcedure> save(long taskId, Collection<TaskProcedure> taskProcedures) {
-        taskProcedureRepository.deleteByTaskIdAndProcedureOrderGreaterThan(taskId, taskProcedures.size());
+        taskProcedureRepository.deleteByTaskIdAndProcedureOrderGreaterEqual(taskId, taskProcedures.size());
         try {
             return taskProcedureRepository.save(taskProcedures);
         } catch (DataIntegrityViolationException e) {

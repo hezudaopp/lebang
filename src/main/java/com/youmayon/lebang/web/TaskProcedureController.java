@@ -48,7 +48,7 @@ public class TaskProcedureController extends BaseController {
 
         int i = 0;
         for (TaskProcedure taskProcedure : taskProcedureList) {
-            taskProcedure.setTaskProcedureId(new TaskProcedureId(taskId, ++i));
+            taskProcedure.setTaskProcedureId(new TaskProcedureId(taskId, i++));
             taskProcedure.setCreatedTime(System.currentTimeMillis() / 1000);
             taskProcedure.setModifiedTime(taskProcedure.getCreatedTime());
         }
