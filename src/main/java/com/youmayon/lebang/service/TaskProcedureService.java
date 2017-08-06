@@ -26,10 +26,11 @@ public interface TaskProcedureService {
 
     /**
      * 批量保存任务步骤
+     * @param taskId
      * @param taskProcedures
      * @return
      */
-    List<TaskProcedure> save(Collection<TaskProcedure> taskProcedures);
+    List<TaskProcedure> save(long taskId, Collection<TaskProcedure> taskProcedures);
 
     /**
      * 任务步骤列表

@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
             taskProcedure.setCreatedTime(task.getModifiedTime());
             taskProcedure.setModifiedTime(task.getModifiedTime());
         }
-        taskProcedureService.save(task.getTaskProcedures());
+        taskProcedureService.save(task.getId(), task.getTaskProcedures());
 
         return savedTask;
     }

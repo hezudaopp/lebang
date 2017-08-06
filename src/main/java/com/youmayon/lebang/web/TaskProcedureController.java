@@ -36,9 +36,9 @@ public class TaskProcedureController extends BaseController {
      * @param errors
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public List<TaskProcedure> save(
-            @RequestParam(value = "taskId") long taskId,
+    @RequestMapping(value = "/tasks/{taskId}", method = RequestMethod.PUT, consumes = "application/json")
+    public List<TaskProcedure> put(
+            @PathVariable long taskId,
             @Valid @RequestBody List<TaskProcedure> taskProcedureList,
             Errors errors) {
         assertFieldError(errors);
@@ -53,7 +53,7 @@ public class TaskProcedureController extends BaseController {
             taskProcedure.setModifiedTime(taskProcedure.getCreatedTime());
         }
 
-        List<TaskProcedure> savedTaskProcedureList = taskProcedureService.save(taskProcedureList);
+        List<TaskProcedure> savedTaskProcedureList = taskProcedureService.save(taskId, taskProcedureList);
 
         return savedTaskProcedureList;
     }
