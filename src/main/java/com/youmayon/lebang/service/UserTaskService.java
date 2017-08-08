@@ -63,11 +63,14 @@ public interface UserTaskService {
      * 审核人员的用户任务列表
      * @param reviewerUserId
      * @param statusSet
+     * @param taskName
+     * @param taskTypeName
+     * @param appName
      * @param page
      * @param size
      * @return
      */
-    Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size);
+    Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, String taskName, String taskTypeName, String appName, int page, int size);
 
     /**
      * 渠道用户的用户任务列表

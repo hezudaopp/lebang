@@ -87,6 +87,7 @@ public class UserTaskController extends BaseController {
         userTask.setCreatedTime(now);
         userTask.setModifiedTime(now);
         userTask.setTaskName(task.getName());
+        userTask.setTaskTypeId(task.getTaskTypeId());
         userTask.setTaskTypeName(task.getTaskTypeName());
         userTask.setPrice(task.getPrice());
         userTask.setCompletedTime(null);
@@ -106,6 +107,11 @@ public class UserTaskController extends BaseController {
         return new ResponseEntity<>(savedUserTask, httpHeaders, HttpStatus.CREATED);
     }
 
+    /**
+     * 获取用户任务详情
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserTask get(@PathVariable long id) {
         UserTask savedUserTask = userTaskService.findOne(id);
@@ -113,10 +119,23 @@ public class UserTaskController extends BaseController {
         return savedUserTask;
     }
 
+    /**
+     * 用户任务列表
+     * @param status
+     * @param appUserId
+     * @param page
+     * @param size
+     * @param user
+     * @param auth
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
     public Page<UserTask> list(
             @RequestParam(value = "status", defaultValue = LogicConstants.EMPTY_STRING) String status,
             @RequestParam(value = "appUserId", defaultValue = LogicConstants.EMPTY_STRING) String appUserId,
+            @RequestParam(value = "taskName", defaultValue = LogicConstants.EMPTY_STRING) String taskName,
+            @RequestParam(value = "taskTypeName", defaultValue = LogicConstants.EMPTY_STRING) String taskTypeName,
+            @RequestParam(value = "appName", defaultValue = LogicConstants.EMPTY_STRING) String appName,
             @RequestParam(value = "page", defaultValue = LogicConstants.DEFAULT_PAGE) int page,
             @RequestParam(value = "size", defaultValue = LogicConstants.DEFAULT_SIZE) int size,
             @AuthenticationPrincipal User user,
@@ -124,16 +143,23 @@ public class UserTaskController extends BaseController {
         Set<Integer> statusSet = StringUtil.splitStrToIntSet(status);
         if (user == null && auth != null) {
             Assert.isTrue(!LogicConstants.EMPTY_STRING.equals(appUserId) && appUserId != null, "AppUserId cannot be empty.");
-            String appName = auth.getOAuth2Request().getClientId();
-            return userTaskService.list(appName, appUserId, statusSet, page, size);
+            String clientId = auth.getOAuth2Request().getClientId();
+            return userTaskService.list(clientId, appUserId, statusSet, page, size);
         }
         long reviewerUserId = user.getId();
         if (Role.ROLE_ADMIN.name().equals(user.getRole())) {
             reviewerUserId = -1L;
         }
-        return userTaskService.list(reviewerUserId, statusSet, page, size);
+        return userTaskService.list(reviewerUserId, statusSet, taskName, taskTypeName, appName, page, size);
     }
 
+    /**
+     * 提交用户任务（用户完成任务后提交审核）
+     * @param id
+     * @param unsavedUserTask
+     * @param auth
+     * @return
+     */
     @RequestMapping(value = "/{id}/completed", method = RequestMethod.PATCH, consumes = "application/json")
     public UserTask patch(
             @PathVariable long id,

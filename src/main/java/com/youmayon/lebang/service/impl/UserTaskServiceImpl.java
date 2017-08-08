@@ -176,7 +176,7 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, int page, int size) {
+    public Page<UserTask> list(long reviewerUserId, Set<Integer> statusSet, String taskName, String taskTypeName, String appName, int page, int size) {
         Pageable pageable = new PageRequest(page, size);
         Specification<UserTask> specification = new Specification<UserTask>() {
             @Override
@@ -187,6 +187,15 @@ public class UserTaskServiceImpl implements UserTaskService {
                 }
                 if (statusSet != null && !statusSet.isEmpty()) {
                     predicate.add(root.get("status").in(statusSet));
+                }
+                if (!LogicConstants.EMPTY_STRING.equals(taskName)) {
+                    predicate.add(cb.like(root.get("taskName").as(String.class), "%" + taskName + "%"));
+                }
+                if (!LogicConstants.EMPTY_STRING.equals(taskTypeName)) {
+                    predicate.add(cb.like(root.get("taskTypeName").as(String.class), "%" + taskTypeName + "%"));
+                }
+                if (!LogicConstants.EMPTY_STRING.equals(appName)) {
+                    predicate.add(cb.like(root.get("appName").as(String.class), "%" + appName + "%"));
                 }
                 Predicate[] pre = new Predicate[predicate.size()];
                 return query.where(predicate.toArray(pre)).getRestriction();

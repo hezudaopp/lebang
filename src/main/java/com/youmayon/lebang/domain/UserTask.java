@@ -39,6 +39,9 @@ public class UserTask {
     @Column(columnDefinition = "DECIMAL(6,2) UNSIGNED NOT NULL COMMENT '任务单价'")
     private Double price;
 
+    @Column(columnDefinition = "BIGINT(20) UNSIGNED NOT NULL COMMENT '任务类型id'")
+    private Long taskTypeId;
+
     @Size(min = 2, max = 100)
     @Column(columnDefinition = "VARCHAR(100) NOT NULL COMMENT '任务类型名称'")
     private String taskTypeName;
@@ -149,6 +152,14 @@ public class UserTask {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Long getTaskTypeId() {
+        return taskTypeId;
+    }
+
+    public void setTaskTypeId(Long taskTypeId) {
+        this.taskTypeId = taskTypeId;
     }
 
     public String getTaskTypeName() {
